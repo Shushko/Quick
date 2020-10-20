@@ -1,0 +1,81 @@
+.menu_container {
+  position: relative;
+  box-sizing: border-box;
+  width: 30.6%;
+  display: flex;
+  align-items: center;
+}
+.menu_container .menu_button {
+  height: 25px;
+  width: 25px;
+  margin-left: 15px;
+  cursor: pointer;
+  z-index: 1;
+}
+.menu_container .menu_button img {
+  height: 100%;
+  width: 100%;
+}
+.menu_container .menu_button:hover {
+  height: 28px;
+}
+.menu_container .menu_active {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  height: 250px;
+  width: 100%;
+  background-color: #fff;
+  z-index: 200;
+  transition: all 0.3s;
+}
+.menu_container .menu {
+  position: absolute;
+  top: -400px;
+  left: 0px;
+  height: 250px;
+  width: 100%;
+  transition: all 0.3s;
+}
+.menu_container .header {
+  height: 70px;
+  background-color: #3C6181;
+  display: flex;
+  justify-content: center;
+}
+.menu_container .header img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+.menu_container .header .profileInfo {
+  width: 50%;
+  margin: 10px;
+}
+.menu_container .header .profileInfo .user_name {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.menu_container .menu_item {
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+.menu_container .menu_item img {
+  height: 15px;
+  width: 15px;
+}
+.menu_container .menu_item span {
+  margin: 4px 0 0 10px;
+}
+.menu_container .menu_item:hover {
+  background-color: #e6fffa;
+}
+
+/*# sourceMappingURL=BurgerMenu.module.css.map */

@@ -1,0 +1,61 @@
+.chat_item_first {
+  display: flex;
+  margin-top: 20px;
+}
+
+.chat_item {
+  display: flex;
+}
+
+.user_photo {
+  height: 42px;
+  width: 42px;
+}
+
+.user_message {
+  margin: 0 15px;
+  width: 100%;
+}
+.user_message .user_name {
+  color: #3a6d99;
+  font-weight: 700;
+}
+.user_message .message_item_first {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.user_message .message_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 42px;
+}
+.user_message .message_content {
+  margin-top: 10px;
+  width: 80%;
+  word-break: break-all;
+}
+.user_message .message_status_delivered {
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  background: #6490b1;
+}
+.user_message .message_status_read {
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  background: #64c270;
+}
+.user_message .message_time {
+  margin-top: 6px;
+  color: #adadad;
+  font-size: 0.8em;
+}
+
+/*# sourceMappingURL=ChatItem.module.css.map */

@@ -1,0 +1,25 @@
+.dialogs_container {
+  box-sizing: border-box;
+  width: 31%;
+  height: 100%;
+  border-right: 2px solid #E9EBED;
+}
+.dialogs_container .dialogs {
+  height: 100%;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.dialogs_container .dialogs::-webkit-scrollbar {
+  background-color: #dfe5ec;
+  width: 2px;
+}
+.dialogs_container .dialogs::-webkit-scrollbar-thumb {
+  background-color: #6490b1;
+}
+.dialogs_container .dialogs > a {
+  text-decoration: none;
+  color: black;
+}
+
+/*# sourceMappingURL=UserDialogs.module.css.map */

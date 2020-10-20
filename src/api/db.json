@@ -1,0 +1,763 @@
+{
+  "dialogs" : {
+    "4fewc814-j1w0-38m9-r149-c4e819e516s1" : {
+      "content" : {
+        "d82283ce-8ae1-4a3e-9c48-7b88ea75aa8a" : {
+          "id" : "d82283ce-8ae1-4a3e-9c48-7b88ea75aa8a",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "rerere",
+          "time" : "10/13/2020, 5:55:07 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "d924edeb-3bf4-4b2c-b849-4aa9023747af" : {
+          "id" : "d924edeb-3bf4-4b2c-b849-4aa9023747af",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Hello",
+          "time" : "10/08/2020, 7:11:12 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "db8b0e9c-2ce3-41f2-b73b-e3cf24cc7666" : {
+          "id" : "db8b0e9c-2ce3-41f2-b73b-e3cf24cc7666",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Роо",
+          "time" : "10/15/2020, 3:37:39 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "dba29ff9-93d0-4494-8e13-4435a644aeea" : {
+          "id" : "dba29ff9-93d0-4494-8e13-4435a644aeea",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Ро\n",
+          "time" : "10/14/2020, 1:56:25 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "dc0203aa-93c8-4905-a854-8e80d85bf3b1" : {
+          "id" : "dc0203aa-93c8-4905-a854-8e80d85bf3b1",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "carrridddda",
+          "time" : "10/08/2020, 6:57:58 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "df366067-dfcd-4de2-a799-4f02c1ffba58" : {
+          "id" : "df366067-dfcd-4de2-a799-4f02c1ffba58",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Unread Message",
+          "time" : "10/15/2020, 2:19:30 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "e058dfe9-8fa5-4cb9-904c-c733c0836e38" : {
+          "id" : "e058dfe9-8fa5-4cb9-904c-c733c0836e38",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "TEST\n",
+          "time" : "10/12/2020, 8:20:02 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "e0d00b72-8d87-4fc3-be58-53bbdeb77f20" : {
+          "id" : "e0d00b72-8d87-4fc3-be58-53bbdeb77f20",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "5еееееее",
+          "time" : "10/14/2020, 3:58:05 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "e2dba9b4-acf3-4c79-ad4c-e728aaddb569" : {
+          "id" : "e2dba9b4-acf3-4c79-ad4c-e728aaddb569",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Xx",
+          "time" : "10/07/2020, 11:07:16 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "e79913ac-09c1-4bdd-9fe0-b03d38c5c946" : {
+          "id" : "e79913ac-09c1-4bdd-9fe0-b03d38c5c946",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "How are you?",
+          "time" : "10/05/2020, 1:15:27 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "e8ef4631-ef3d-4594-88ec-9b4db7b1b05b" : {
+          "id" : "e8ef4631-ef3d-4594-88ec-9b4db7b1b05b",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Qqq",
+          "time" : "10/13/2020, 7:04:29 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "e96306de-675f-4a9f-993f-6f865a7af553" : {
+          "id" : "e96306de-675f-4a9f-993f-6f865a7af553",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Й",
+          "time" : "10/14/2020, 1:36:34 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        },
+        "ea086293-07e1-4bc1-b8b0-e08fa3134019" : {
+          "id" : "ea086293-07e1-4bc1-b8b0-e08fa3134019",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Xxxx cccc",
+          "time" : "10/08/2020, 5:41:33 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "fee001f6-a1f3-468a-9db5-00ba790f7a53" : {
+          "id" : "fee001f6-a1f3-468a-9db5-00ba790f7a53",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "О\n",
+          "time" : "10/14/2020, 2:00:07 PM",
+          "userId" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12"
+        }
+      },
+      "id" : "4fewc814-j1w0-38m9-r149-c4e819e516s1",
+      "members" : {
+        "-MIokQCAp1DOlGSsRLHp" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12",
+        "-MIolQCSz1ZOlMSWqLHK" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+      }
+    },
+    "a72g96fd-9z34-1d0a-2e44-a9zfgf431234" : {
+      "content" : {
+        "02c7dd8a-7509-424b-8f06-4848fa911f3f" : {
+          "id" : "02c7dd8a-7509-424b-8f06-4848fa911f3f",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Hello",
+          "time" : "10/11/2020, 12:00:01 AM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "16593eb6-38b7-4351-8f77-5e25b558fe0c" : {
+          "id" : "16593eb6-38b7-4351-8f77-5e25b558fe0c",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "рркркркр\n",
+          "time" : "10/11/2020, 12:23:32 AM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "230b6b32-4419-4421-be34-de348aba4946" : {
+          "id" : "230b6b32-4419-4421-be34-de348aba4946",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "kj",
+          "time" : "10/15/2020, 4:29:13 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "38fd0fd7-2c4a-4049-a117-148e509da4d4" : {
+          "id" : "38fd0fd7-2c4a-4049-a117-148e509da4d4",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "n",
+          "time" : "10/15/2020, 4:27:09 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "403faf65-4273-449a-bede-bc10d471c3e4" : {
+          "id" : "403faf65-4273-449a-bede-bc10d471c3e4",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "qqq",
+          "time" : "10/15/2020, 4:37:44 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "40c04312-4163-4301-b180-ccb8f300a2a0" : {
+          "id" : "40c04312-4163-4301-b180-ccb8f300a2a0",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "qq",
+          "time" : "10/15/2020, 4:28:29 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "413cb363-afba-43c4-8ef1-0e33cfb507e9" : {
+          "id" : "413cb363-afba-43c4-8ef1-0e33cfb507e9",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "😋",
+          "time" : "10/11/2020, 12:25:04 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "45a6fdf3-81a8-488f-a7e5-45047525f8a6" : {
+          "id" : "45a6fdf3-81a8-488f-a7e5-45047525f8a6",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "✅",
+          "time" : "10/11/2020, 12:26:10 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "5262cd5b-f6b6-4811-bb4e-65aacb4eba7c" : {
+          "id" : "5262cd5b-f6b6-4811-bb4e-65aacb4eba7c",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "kukuk\n",
+          "time" : "10/13/2020, 5:55:28 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "639a3a98-4399-4a4a-9dc2-e12374fcd77d" : {
+          "id" : "639a3a98-4399-4a4a-9dc2-e12374fcd77d",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "lfhjdf\n",
+          "time" : "10/11/2020, 12:23:07 AM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "73440bff-e0d0-42da-8ba4-937ceb38ea08" : {
+          "id" : "73440bff-e0d0-42da-8ba4-937ceb38ea08",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "d",
+          "time" : "10/15/2020, 4:34:37 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "775e9d4e-e5d8-426c-8ec5-46487e2e6b9a" : {
+          "id" : "775e9d4e-e5d8-426c-8ec5-46487e2e6b9a",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "ddd",
+          "time" : "10/15/2020, 4:28:54 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "8105d29d-55c4-4409-aca2-d7d7ee271ce9" : {
+          "id" : "8105d29d-55c4-4409-aca2-d7d7ee271ce9",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "d",
+          "time" : "10/15/2020, 4:27:32 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "822e05b1-0999-4c6b-9980-9edc7a9d8f1b" : {
+          "id" : "822e05b1-0999-4c6b-9980-9edc7a9d8f1b",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "qqqaaa",
+          "time" : "10/15/2020, 4:47:31 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "86b1a015-b99b-4d58-a561-52d8693b8a8c" : {
+          "id" : "86b1a015-b99b-4d58-a561-52d8693b8a8c",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Коньяк почти выпит 😋",
+          "time" : "10/11/2020, 12:27:02 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "89b4a1df-381a-4dab-bea2-8b2f7211bac3" : {
+          "id" : "89b4a1df-381a-4dab-bea2-8b2f7211bac3",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "🤷",
+          "time" : "10/11/2020, 12:25:14 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "8b453104-ad17-4305-bd3d-8ce074825bad" : {
+          "id" : "8b453104-ad17-4305-bd3d-8ce074825bad",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Hello",
+          "time" : "10/11/2020, 12:22:56 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "92dd454b-b553-4683-b3e7-c8e6a0490223" : {
+          "id" : "92dd454b-b553-4683-b3e7-c8e6a0490223",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "nn\n",
+          "time" : "10/15/2020, 4:21:58 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "934c6df9-70fc-48ff-baad-519b5142a9e3" : {
+          "id" : "934c6df9-70fc-48ff-baad-519b5142a9e3",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "qqqqwe",
+          "time" : "10/15/2020, 4:38:38 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "9ba2a35d-b94b-4c04-9ecf-49e6a9a13523" : {
+          "id" : "9ba2a35d-b94b-4c04-9ecf-49e6a9a13523",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "xv",
+          "time" : "10/15/2020, 4:31:38 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "9fe463bb-4d76-402d-946c-2047d5e18efe" : {
+          "id" : "9fe463bb-4d76-402d-946c-2047d5e18efe",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "https://tse2.mm.bing.net/th?id=OGC.2b234ff0ed7e4b09555c5a0fc1e0b2ac&pid=Api&rurl=https%3a%2f%2fmedia.giphy.com%2fmedia%2fAqItGN3ZYI6J2%2fgiphy-downsized-large.gif&ehk=qn9pMKDbdwtDlfTAolQcEOwKxNQriZWzeippq2cWbeo%3d ",
+          "time" : "10/11/2020, 12:30:09 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "a47757dc-3bb9-4170-999a-516844bb2e8b" : {
+          "id" : "a47757dc-3bb9-4170-999a-516844bb2e8b",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "КУКУ!\n",
+          "time" : "10/11/2020, 12:25:04 AM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "b5f9edd9-12b7-4d78-ba2f-ff47de58b1db" : {
+          "id" : "b5f9edd9-12b7-4d78-ba2f-ff47de58b1db",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "🙈",
+          "time" : "10/11/2020, 12:26:17 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "b8a9f7ce-a6df-4e65-b26d-f9258831f979" : {
+          "id" : "b8a9f7ce-a6df-4e65-b26d-f9258831f979",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "x",
+          "time" : "10/15/2020, 4:32:29 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "c034f731-a9e6-4061-b641-54465e27aad0" : {
+          "id" : "c034f731-a9e6-4061-b641-54465e27aad0",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Как дела?\n",
+          "time" : "10/11/2020, 12:26:37 AM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "cab295e4-664a-4815-bb30-68ebcff5a9b6" : {
+          "id" : "cab295e4-664a-4815-bb30-68ebcff5a9b6",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "У нас теперь есть свой собственный мессенжер? 😍",
+          "time" : "10/11/2020, 12:24:10 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "d42cab4e-24c1-4cfa-9ad8-180fed675577" : {
+          "id" : "d42cab4e-24c1-4cfa-9ad8-180fed675577",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "🤬",
+          "time" : "10/11/2020, 12:26:03 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "eedfcd74-bc2e-445b-a4f7-a1d29e06ec07" : {
+          "id" : "eedfcd74-bc2e-445b-a4f7-a1d29e06ec07",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "qwd",
+          "time" : "10/15/2020, 4:35:19 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "f9181bad-e6b9-40ac-a8ea-1adc610b92d0" : {
+          "id" : "f9181bad-e6b9-40ac-a8ea-1adc610b92d0",
+          "isRead" : false,
+          "isDelivered": true,
+          "message" : "ccc",
+          "time" : "10/15/2020, 4:33:45 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        }
+      },
+      "id" : "a72g96fd-9z34-1d0a-2e44-a9zfgf431234",
+      "members" : {
+        "PbBbamBOVQVLuv89zoxnyVqbXe02" : "PbBbamBOVQVLuv89zoxnyVqbXe02",
+        "uSRA6Uf3lPhf5jzSmauRQTe9d4K2" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+      }
+    },
+    "a72g96fd-9z34-1d0a-2e44-a9zfgf431f27" : {
+      "content" : {
+        "02c7dd8a-7509-424b-8f06-4848fa911f2b" : {
+          "id" : "02c7dd8a-7509-424b-8f06-4848fa911f2b",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "будем сегодня смотреть сериал?\n",
+          "time" : "10/08/2020, 7:21:01 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "077b96fe-9b36-4d4a-9e49-b9afdf451f44" : {
+          "id" : "077b96fe-9b36-4d4a-9e49-b9afdf451f44",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Вроде того)",
+          "time" : "10/06/2020, 8:16:46 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "0feac854-a1e0-48d9-b147-c3e899e216c1" : {
+          "id" : "0feac854-a1e0-48d9-b147-c3e899e216c1",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "ljfjgvkljbjkn",
+          "time" : "10/05/2020, 6:20:58 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "1af7e0ce-2416-484d-b2e7-fefa716e68bf" : {
+          "id" : "1af7e0ce-2416-484d-b2e7-fefa716e68bf",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "а в ески поиграем?\n",
+          "time" : "10/08/2020, 7:21:22 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "213b9d78-0b79-4973-9ac4-9162ffdcc12e" : {
+          "id" : "213b9d78-0b79-4973-9ac4-9162ffdcc12e",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Идем пиратить)\n",
+          "time" : "10/06/2020, 8:13:22 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "21d9c4bb-b7b4-4cb5-8b08-c7d7873997ea" : {
+          "id" : "21d9c4bb-b7b4-4cb5-8b08-c7d7873997ea",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "и ужина\n",
+          "time" : "10/08/2020, 7:21:53 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "2b54d586-88d4-4a52-b046-63499621d5b7" : {
+          "id" : "2b54d586-88d4-4a52-b046-63499621d5b7",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "хорошо))\n",
+          "time" : "10/08/2020, 7:21:40 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "33c79ad0-fa58-491d-96db-d1da2c1d1773" : {
+          "id" : "33c79ad0-fa58-491d-96db-d1da2c1d1773",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Как дела?\n",
+          "time" : "10/08/2020, 7:13:31 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "33e4ec0f-906a-48f6-8378-f5ada0c7a9ca" : {
+          "id" : "33e4ec0f-906a-48f6-8378-f5ada0c7a9ca",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "мне нравится\n",
+          "time" : "10/08/2020, 7:13:45 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "3ab55b03-ade7-404c-bc34-f0e9f8161a72" : {
+          "id" : "3ab55b03-ade7-404c-bc34-f0e9f8161a72",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Мммм, скажи это еще раз :***\n",
+          "time" : "10/06/2020, 8:06:06 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "3ae1909a-2fd9-442d-b551-ec0a19cc2533" : {
+          "id" : "3ae1909a-2fd9-442d-b551-ec0a19cc2533",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "и обучаемый\n",
+          "time" : "10/08/2020, 7:22:53 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "3b44c447-65a5-4251-a708-8a2bde9c0200" : {
+          "id" : "3b44c447-65a5-4251-a708-8a2bde9c0200",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "есть за что!\n",
+          "time" : "10/08/2020, 7:22:30 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "3ce840ac-d908-44d6-88e3-57ea52206070" : {
+          "id" : "3ce840ac-d908-44d6-88e3-57ea52206070",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "я же оворила что ты сможешь все\n",
+          "time" : "10/08/2020, 7:22:37 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "440dd202-3b17-40d4-a8a1-54f2ef633356" : {
+          "id" : "440dd202-3b17-40d4-a8a1-54f2ef633356",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "I'm OK",
+          "time" : "10/05/2020, 1:16:27 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "456fd527-559b-4881-8f01-4eefc73215f5" : {
+          "id" : "456fd527-559b-4881-8f01-4eefc73215f5",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Ага))\n",
+          "time" : "10/08/2020, 7:13:49 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "48c1cfff-43fc-4b32-855f-321d1865281c" : {
+          "id" : "48c1cfff-43fc-4b32-855f-321d1865281c",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "I love you too\n",
+          "time" : "10/08/2020, 7:13:26 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "4af6183f-f04a-4a29-8e3f-64db1afb21a3" : {
+          "id" : "4af6183f-f04a-4a29-8e3f-64db1afb21a3",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Я в шоке)",
+          "time" : "10/06/2020, 8:17:48 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "4d5b6d3d-926a-45d7-a0cf-31a48284d0f6" : {
+          "id" : "4d5b6d3d-926a-45d7-a0cf-31a48284d0f6",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "А по лдж",
+          "time" : "10/11/2020, 12:06:27 AM",
+          "userId" : "PbBbamBOVQVLuv89zoxnyVqbXe02"
+        },
+        "5900bb18-6dc5-49b5-b864-0878566374fe" : {
+          "id" : "5900bb18-6dc5-49b5-b864-0878566374fe",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Вау\n",
+          "time" : "10/08/2020, 7:13:39 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "5cc8b8c3-a40f-43cd-8bd6-bd883562f49e" : {
+          "id" : "5cc8b8c3-a40f-43cd-8bd6-bd883562f49e",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "How are you?",
+          "time" : "10/05/2020, 1:15:35 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "5ec97d5e-4840-4fbc-94e4-c7abcd37a6be" : {
+          "id" : "5ec97d5e-4840-4fbc-94e4-c7abcd37a6be",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "All RIGHT!\n",
+          "time" : "10/05/2020, 5:56:13 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "65ac9814-3150-468d-959a-b5bd7ad3614e" : {
+          "id" : "65ac9814-3150-468d-959a-b5bd7ad3614e",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "How are you?",
+          "time" : "10/05/2020, 1:15:27 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "763548ed-cf69-46e4-aa07-5997fa75fd41" : {
+          "id" : "763548ed-cf69-46e4-aa07-5997fa75fd41",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "или будем бухать?\n",
+          "time" : "10/08/2020, 7:22:08 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "805a9d16-6ce6-4cc1-b0b8-2ce65f7273f0" : {
+          "id" : "805a9d16-6ce6-4cc1-b0b8-2ce65f7273f0",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "lolola\n",
+          "time" : "10/08/2020, 6:56:05 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "847cf39b-c81c-4ff2-8154-286484df9f9f" : {
+          "id" : "847cf39b-c81c-4ff2-8154-286484df9f9f",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "да?\n",
+          "time" : "10/08/2020, 7:21:57 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "9780a88b-6010-4b8b-a736-678b13b8b76f" : {
+          "id" : "9780a88b-6010-4b8b-a736-678b13b8b76f",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Это все ты))",
+          "time" : "10/06/2020, 8:17:36 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "97feebf5-c928-43e0-8895-b03f45de02c0" : {
+          "id" : "97feebf5-c928-43e0-8895-b03f45de02c0",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "I love you!\n",
+          "time" : "10/08/2020, 7:10:33 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "a237b194-9f57-41d8-b9e7-bbb10af918ed" : {
+          "id" : "a237b194-9f57-41d8-b9e7-bbb10af918ed",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "ну пожалуйста\n",
+          "time" : "10/08/2020, 7:21:33 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "a6fafd39-07c4-4c74-b087-dd63abb85947" : {
+          "id" : "a6fafd39-07c4-4c74-b087-dd63abb85947",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "давай\n",
+          "time" : "10/08/2020, 7:21:32 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "ab801970-c3bb-4774-8c1e-1b56439eb897" : {
+          "id" : "ab801970-c3bb-4774-8c1e-1b56439eb897",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "ты умница\n",
+          "time" : "10/08/2020, 7:13:57 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "ae235321-9dba-450a-a970-bfb26fdbb975" : {
+          "id" : "ae235321-9dba-450a-a970-bfb26fdbb975",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Hello!",
+          "time" : "10/05/2020, 1:13:27 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "c7bb3535-0db5-4ad5-8053-1d4a360afc19" : {
+          "id" : "c7bb3535-0db5-4ad5-8053-1d4a360afc19",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "после душа\n",
+          "time" : "10/08/2020, 7:21:46 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "cb8180eb-4127-4144-adfa-03f6079084f4" : {
+          "id" : "cb8180eb-4127-4144-adfa-03f6079084f4",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "testtttt\n",
+          "time" : "10/08/2020, 6:54:32 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "ced9abcc-cb1f-45b6-99f6-004483321423" : {
+          "id" : "ced9abcc-cb1f-45b6-99f6-004483321423",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Олег! Давай веселиться!\n",
+          "time" : "10/06/2020, 8:03:32 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "d0229e8b-5f17-4595-966b-bda2f724d725" : {
+          "id" : "d0229e8b-5f17-4595-966b-bda2f724d725",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "test",
+          "time" : "10/08/2020, 6:43:50 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "d392c870-c48f-47d2-ab99-d5bb02d1cab5" : {
+          "id" : "d392c870-c48f-47d2-ab99-d5bb02d1cab5",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "не очень\n",
+          "time" : "10/08/2020, 7:22:13 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "de57ba24-124b-417b-a54c-127fa9d5d80c" : {
+          "id" : "de57ba24-124b-417b-a54c-127fa9d5d80c",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "ты у меня умненький\n",
+          "time" : "10/08/2020, 7:22:51 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "e51db1c9-1265-4043-8113-d9a9cb0edf32" : {
+          "id" : "e51db1c9-1265-4043-8113-d9a9cb0edf32",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "хочешь ужинать?\n",
+          "time" : "10/08/2020, 7:22:04 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        },
+        "ea323725-386a-4cf4-9904-fbe2e440cf1f" : {
+          "id" : "ea323725-386a-4cf4-9904-fbe2e440cf1f",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "test2\n",
+          "time" : "10/05/2020, 11:00:37 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "ecce43ce-bbf7-4bf7-a1b0-0b17988b55e7" : {
+          "id" : "ecce43ce-bbf7-4bf7-a1b0-0b17988b55e7",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "а отметить надо!\n",
+          "time" : "10/08/2020, 7:22:20 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "edfec5a7-e7c5-48da-ba1d-06a2a0db6804" : {
+          "id" : "edfec5a7-e7c5-48da-ba1d-06a2a0db6804",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Давай:) идем есть\n",
+          "time" : "10/06/2020, 8:04:19 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "f083354b-d19a-4f19-ba11-3208a68e91ba" : {
+          "id" : "f083354b-d19a-4f19-ba11-3208a68e91ba",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "test\n",
+          "time" : "10/05/2020, 10:47:01 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "f2052031-9bb4-4c28-9e8c-d11abbe0a311" : {
+          "id" : "f2052031-9bb4-4c28-9e8c-d11abbe0a311",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "КОНЕЧНО)\n",
+          "time" : "10/08/2020, 7:21:11 PM",
+          "userId" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2"
+        },
+        "f8de9e72-c0c2-404f-9977-347ae31b974e" : {
+          "id" : "f8de9e72-c0c2-404f-9977-347ae31b974e",
+          "isRead" : true,
+          "isDelivered": true,
+          "message" : "Ты представь, у нас есть личный мессенджер!!",
+          "time" : "10/06/2020, 8:17:20 PM",
+          "userId" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+        }
+      },
+      "id" : "a72g96fd-9z34-1d0a-2e44-a9zfgf431f27",
+      "members" : {
+        "-MIoeQC6z1fOlGSWiLHf" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2",
+        "-MIohDCGk1TOmNC4QhHK" : "rPhZUmhpTcamoyKrEz72L5DXAdf1"
+      }
+    }
+  },
+  "users" : {
+    "9W9nOQloQ5XIuPXTlvrx8z9ydI12" : {
+      "avatar" : "https://cdn.iconscout.com/icon/free/png-256/avatar-365-456317.png",
+      "currentDialogs" : {
+        "4fewc814-j1w0-38m9-r149-c4e819e516s1" : "4fewc814-j1w0-38m9-r149-c4e819e516s1"
+      },
+      "id" : "9W9nOQloQ5XIuPXTlvrx8z9ydI12",
+      "name" : "Ch_Darvin"
+    },
+    "PbBbamBOVQVLuv89zoxnyVqbXe02" : {
+      "avatar" : "https://cdn.iconscout.com/icon/free/png-256/avatar-365-456317.png",
+      "currentDialogs" : {
+        "a72g96fd-9z34-1d0a-2e44-a9zfgf431234" : "a72g96fd-9z34-1d0a-2e44-a9zfgf431234"
+      },
+      "id" : "PbBbamBOVQVLuv89zoxnyVqbXe02",
+      "name" : "TEST"
+    },
+    "rPhZUmhpTcamoyKrEz72L5DXAdf1" : {
+      "avatar" : "https://www.iconfinder.com/data/icons/avatars-xmas-giveaway/128/girl_female_woman_avatar-512.png",
+      "currentDialogs" : {
+        "a72g96fd-9z34-1d0a-2e44-a9zfgf431f27" : "a72g96fd-9z34-1d0a-2e44-a9zfgf431f27"
+      },
+      "id" : "rPhZUmhpTcamoyKrEz72L5DXAdf1",
+      "name" : "Lola"
+    },
+    "uSRA6Uf3lPhf5jzSmauRQTe9d4K2" : {
+      "avatar" : "https://www.iconfinder.com/data/icons/avatars-xmas-giveaway/128/man_male_avatar_portrait-512.png",
+      "currentDialogs" : {
+        "4fewc814-j1w0-38m9-r149-c4e819e516s1" : "4fewc814-j1w0-38m9-r149-c4e819e516s1",
+        "a72g96fd-9z34-1d0a-2e44-a9zfgf431234" : "a72g96fd-9z34-1d0a-2e44-a9zfgf431234",
+        "a72g96fd-9z34-1d0a-2e44-a9zfgf431f27" : "a72g96fd-9z34-1d0a-2e44-a9zfgf431f27"
+      },
+      "id" : "uSRA6Uf3lPhf5jzSmauRQTe9d4K2",
+      "name" : "Oleg"
+    }
+  }
+}

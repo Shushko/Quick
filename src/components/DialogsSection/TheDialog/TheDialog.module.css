@@ -1,0 +1,65 @@
+.dialog_item {
+  height: 65px;
+  cursor: pointer;
+  outline: none;
+}
+.dialog_item:hover {
+  background-color: #e6fffa;
+}
+.dialog_item .item {
+  height: 100%;
+  width: 100%;
+  padding: 12px 10px 12px 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.dialog_item .active_item {
+  height: 100%;
+  width: 100%;
+  padding: 12px 10px 12px 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: #6490b1;
+  color: white;
+}
+.dialog_item .active_item .dialog_description_last_time {
+  color: white;
+}
+.dialog_item img {
+  margin-left: 15px;
+  width: 48px;
+  border-radius: 50%;
+}
+.dialog_item .dialog_description {
+  height: 100%;
+  width: 100%;
+  margin-left: 10px;
+}
+.dialog_item .dialog_description_user_name {
+  font-weight: bold;
+}
+.dialog_item .dialog_description_last_time {
+  float: right;
+  color: #adadad;
+  font-size: 11px;
+  font-weight: bold;
+}
+.dialog_item .dialog_description_message {
+  margin-top: 12px;
+}
+.dialog_item .dialog_description_message .last_message {
+  font-size: 12px;
+}
+.dialog_item .dialog_description_message .unread_messages {
+  background: #64c270;
+  padding: 4px 5px 1px 5px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8em;
+  float: right;
+}
+
+/*# sourceMappingURL=TheDialog.module.css.map */

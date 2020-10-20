@@ -1,0 +1,56 @@
+.chats_window {
+  box-sizing: border-box;
+  width: 100%;
+  height: 457px;
+  overflow: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chats_window::-webkit-scrollbar {
+  background-color: #dfe5ec;
+  width: 3px;
+}
+.chats_window::-webkit-scrollbar-thumb {
+  background-color: #6490b1;
+}
+.chats_window .start_text {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #adadad;
+}
+.chats_window .chat_wrapper {
+  height: 100%;
+  width: 100%;
+  max-width: 560px;
+  padding-top: 20px;
+}
+.chats_window .end_block {
+  height: 20px;
+}
+.chats_window .arrowDown_wrap {
+  float: right;
+  margin-right: 20px;
+}
+.chats_window .arrowDown_wrap .sum_unread_messages {
+  background: #005c99;
+  padding: 4px 5px 1px 5px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8em;
+  position: fixed;
+  bottom: 200px;
+  z-index: 2;
+}
+.chats_window .arrowDown_wrap .arrow_down {
+  cursor: pointer;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  position: fixed;
+  bottom: 170px;
+}
+
+/*# sourceMappingURL=ChatWindow.module.css.map */

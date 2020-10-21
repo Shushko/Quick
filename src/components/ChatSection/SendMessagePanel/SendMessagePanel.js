@@ -16,14 +16,14 @@ const SendMessagePanel = (props) => {
                         onChange={ props.onChangeInput }
                         onKeyUp={ e => {
                             if (e.key === 'Enter') {
-                                props.addNewMessage(uuidv4(), props.currentDialog, props.currentUser.id, new Date(), props.inputValue)
+                                props.addNewMessage(uuidv4(), props.currentDialog, props.currentUser.id, moment().format(), props.inputValue)
                             }
                         } }
                         value={ props.inputValue }
                         placeholder="Type a message..."
                     />
                     <button
-                        onClick={ () => props.addNewMessage(uuidv4(), props.currentDialog, props.currentUser.id, new Date(), props.inputValue) }
+                        onClick={ () => props.addNewMessage(uuidv4(), props.currentDialog, props.currentUser.id, moment().format(), props.inputValue) }
                     >
                         Send
                     </button>

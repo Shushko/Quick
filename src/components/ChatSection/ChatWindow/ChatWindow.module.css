@@ -23,15 +23,14 @@
 .chats_window .chat_wrapper {
   height: 100%;
   width: 100%;
-  max-width: 560px;
+  max-width: 520px;
   padding-top: 20px;
 }
 .chats_window .end_block {
   height: 20px;
 }
 .chats_window .arrowDown_wrap {
-  float: right;
-  margin-right: 20px;
+  margin-top: 50%;
 }
 .chats_window .arrowDown_wrap .sum_unread_messages {
   background: #005c99;
@@ -45,12 +44,11 @@
   z-index: 2;
 }
 .chats_window .arrowDown_wrap .arrow_down {
+  position: fixed;
   cursor: pointer;
   border-radius: 50%;
   height: 40px;
   width: 40px;
-  position: fixed;
-  bottom: 170px;
 }
 
 /*# sourceMappingURL=ChatWindow.module.css.map */

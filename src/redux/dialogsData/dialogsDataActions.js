@@ -98,22 +98,15 @@ const sortMessages = (dialog) => {
 }
 
 const setUpdatedDialog = (data, userDialogs, userId) => {
-    if (userDialogs && data) {
-        const updDialog = Object.values(data.content)
-        const oldDialog = Object.values(userDialogs.find(i => i.id === data.id).content)
-        const message = updDialog.find(i => !oldDialog.find(n => i.id === n.id))
-        if (message) {
-            localStorage.setItem('updMessage', JSON.stringify(message))
-            const updMessage = JSON.parse(localStorage.getItem('updMessage'))
-            if (!updMessage.isDelivered && updMessage.userId !== userId) {
-                data.content[updMessage.id].isDelivered = true
-                changeMessageStatus(data.id, updMessage, true, updMessage.isRead)
-            }
-        }
-        const sortedMessages = sortMessages(data.content)
-        const sumUnreadMessages = calculateUnreadMessages(data.content, userId)
-        return { sortedMessages, sumUnreadMessages }
+    const updDialog = Object.values(data.content)
+    const oldDialog = Object.values(userDialogs.find(i => i.id === data.id).content)
+    const updMessage = updDialog.find(i => !oldDialog.find(n => i.id === n.id))
+    if (updMessage && !updMessage.isDelivered && updMessage.userId !== userId) {
+        changeMessageStatus(data.id, updMessage, true, updMessage.isRead)()
     }
+    const sortedMessages = sortMessages(data.content)
+    const sumUnreadMessages = calculateUnreadMessages(data.content, userId)
+    return { sortedMessages, sumUnreadMessages }
 }
 
 export const setDialogs = () => {

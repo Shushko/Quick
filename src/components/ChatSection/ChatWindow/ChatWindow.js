@@ -112,22 +112,26 @@ class ChatWindow extends React.Component {
     render() {
         return (
             <div className={ classes.chats_window }>
-                { !this.props.match.params.dialogId ?
-                    <span className={ classes.start_text }>Select a dialog and start communication</span> :
+                {
+                    !this.props.match.params.dialogId ?
+                        <span className={ classes.start_text }>Select a dialog and start communication</span> :
 
-                    <div className={ classes.chat_wrapper }>
-                        { this.getUserChat() }
-                        <div className={ classes.end_block } ref={ this.messagesEnd }/>
+                        <div className={ classes.chat_wrapper }>
+                            { this.getUserChat() }
+                            <div className={ classes.end_block } ref={ this.messagesEnd }/>
+                        </div>
+                }
 
-                        { !this.state.lastItemIsVisible ?
-                            <div className={ classes.arrowDown_wrap }>
-                                { this.dialog && this.dialog.unreadMessages ?
-                                    <span className={ classes.sum_unread_messages }>{ this.dialog.unreadMessages }</span> :
-                                    <div/> }
-                                <img src={ arrowDown } className={ classes.arrow_down } onClick={ this.scrollDown }/>
-                            </div> :
-                            <div/> }
-                    </div> }
+                {
+                    !this.state.lastItemIsVisible && this.props.match.params.dialogId ?
+                        <div className={ classes.arrowDown_wrap }>
+                            {
+                                this.dialog && this.dialog.unreadMessages ?
+                                    <span className={ classes.sum_unread_messages }>{ this.dialog.unreadMessages }</span> : <div/>
+                            }
+                            <img src={ arrowDown } className={ classes.arrow_down } onClick={ this.scrollDown } alt=""/>
+                        </div> : <div/>
+                }
             </div>
         )
     }

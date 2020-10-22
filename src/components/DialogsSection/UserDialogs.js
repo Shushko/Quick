@@ -36,7 +36,7 @@ const UserDialogs = (props) => {
                 <div className={ classes.dialogs_container }>
                     <div className={ classes.dialogs }>
                         { props.dialogs.map(dialog => {
-                                return (
+                            return (
                                     <TheDialog
                                         dialog={ dialog }
                                         getLastMessage={ getLastMessage }

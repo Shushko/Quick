@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './ChatSection.module.sass'
 import ChatWindowContainer from "./ChatWindow/ChatWindowContainer";
 import SendMessagePanelContainer from "./SendMessagePanel/SendMessagePanelContainer";
+import { withRouter } from "react-router-dom";
 
 const ChatSection = (props) => {
 
@@ -13,4 +14,4 @@ const ChatSection = (props) => {
     )
 }
 
-export default ChatSection
+export default withRouter(ChatSection)

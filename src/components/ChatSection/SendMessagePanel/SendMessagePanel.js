@@ -1,7 +1,5 @@
 import React from 'react';
 import classes from './SendMessagePanel.module.sass';
-import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
 import ava from '../../../assets/defaultAvatar/ava.jpg'
 
 const SendMessagePanel = (props) => {
@@ -14,19 +12,11 @@ const SendMessagePanel = (props) => {
                 <div className={ classes.send_message_form }>
                     <textarea
                         onChange={ props.onChangeInput }
-                        onKeyUp={ e => {
-                            if (e.key === 'Enter') {
-                                props.addNewMessage(uuidv4(), props.currentDialog, props.currentUser.id, moment().format(), props.inputValue)
-                            }
-                        } }
+                        onKeyDown={ props.sendMessage }
                         value={ props.inputValue }
                         placeholder="Type a message..."
                     />
-                    <button
-                        onClick={ () => props.addNewMessage(uuidv4(), props.currentDialog, props.currentUser.id, moment().format(), props.inputValue) }
-                    >
-                        Send
-                    </button>
+                    <button onClick={ props.sendMessage }>Send</button>
                 </div>
 
                 <img

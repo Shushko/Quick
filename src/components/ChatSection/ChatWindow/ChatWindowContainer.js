@@ -4,6 +4,7 @@ import { Route, withRouter } from "react-router-dom";
 import ChatWindow from "./ChatWindow";
 import Preloader from "../../../common/Preloader/Preloader";
 import { changeMessageStatus, onChangeCurrentDialog } from "../../../redux/dialogsData/dialogsDataActions";
+import { compose } from "redux";
 
 const ChatWindowContainer = (props) => {
     return (
@@ -28,4 +29,4 @@ const mapDispatchToProps = (dispatch) => ({
     changeMessageStatus: (dialogId, message, delivered, read) => { dispatch(changeMessageStatus(dialogId, message, delivered, read)) }
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(ChatWindowContainer))
+export default compose(connect(mapStateToProps,mapDispatchToProps), withRouter)(ChatWindowContainer)

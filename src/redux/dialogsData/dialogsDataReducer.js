@@ -1,5 +1,4 @@
 const init = {
-    inputValue: '',
     currentDialog: null,
     isFetching: true,
     currentUser: null,
@@ -41,12 +40,6 @@ const dialogsDataReducer = (state = init, action) => {
             return {
                 ...state,
                 currentDialog: action.currentDialog
-            }
-
-        case 'CHANGE_INPUT':
-            return {
-                ...state,
-                inputValue: action.value
             }
 
         case 'TOGGLE_IS_FETCHING':

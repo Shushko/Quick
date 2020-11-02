@@ -8,22 +8,19 @@ import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 
 const SendMessagePanelContainer = (props) => {
-    console.log(props);
-
     const findInterlocutor = () => {
         const dialog = props.dialogsData.dialogs.find(dialog => dialog.dialogId === props.dialogsData.currentDialog)
         return dialog ? dialog.members.find(m => m.id !== props.currentUser.id) : {}
     }
 
-    const sendMessage = (e) => {
-        if (e.key === 'Enter' || e.type === 'click') {
-            props.addNewMessage(
-                uuidv4(),
-                props.dialogsData.currentDialog,
-                props.currentUser.id,
-                moment().format(),
-                props.dialogsData.inputValue)
-        }
+    const onSubmit = (formData) => {
+        props.addNewMessage(
+            uuidv4(),
+            props.dialogsData.currentDialog,
+            props.currentUser.id,
+            moment().format(),
+            formData.message
+        )
     }
 
     return (
@@ -33,10 +30,9 @@ const SendMessagePanelContainer = (props) => {
                     <SendMessagePanel
                         currentUser={ props.currentUser }
                         interlocutor={ findInterlocutor() }
-                        inputValue={ props.dialogsData.inputValue }
                         currentDialog={ props.dialogsData.currentDialog }
                         onChangeInput={ props.onChangeInput }
-                        sendMessage={sendMessage}
+                        onSubmit={ onSubmit }
                     />
             }
         </>
@@ -45,15 +41,11 @@ const SendMessagePanelContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     currentUser: state.dialogsDataReducer.currentUser,
-    dialogsData: state.dialogsDataReducer,
-    inputValue: state.dialogsDataReducer.inputValue
+    dialogsData: state.dialogsDataReducer
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    onChangeInput: (e) => { dispatch(onChangeInput(e.currentTarget.value)) },
     addNewMessage: (messageId, dialogId, userId, time, inputValue) => { dispatch(addNewMessage(messageId, dialogId, userId, time, inputValue)) }
 })
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(SendMessagePanelContainer)
-
-// export default connect(mapStateToProps, mapDispatchToProps)(SendMessagePanelContainer)

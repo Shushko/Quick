@@ -33,15 +33,32 @@
   font-size: 1.2em;
 }
 .authorization_wrapper .authorization_content .auth_form_text_grit {
-  width: 80%;
+  display: inline-block;
+  margin-top: 5%;
+}
+.authorization_wrapper .authorization_content .auth_form_text_phone_number {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+}
+.authorization_wrapper .authorization_content .auth_form_text_phone_number .button_edit_number {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #245173;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.7em;
+  outline: none;
+}
+.authorization_wrapper .authorization_content .auth_form_text_phone_number .button_edit_number:hover {
+  text-decoration: underline;
 }
 .authorization_wrapper .authorization_content .auth_form_sign_in {
   margin-top: 5%;
-}
-.authorization_wrapper .authorization_content .auth_form_sign_in span {
-  font-size: 0.8em;
-  font-weight: bold;
-  color: #adadad;
 }
 .authorization_wrapper .authorization_content .auth_form_sign_in .button_sign_in {
   cursor: pointer;

@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './SendMessagePanel.module.sass';
 import ava from '../../../assets/defaultAvatar/ava.jpg'
+import { Field, Form } from 'react-final-form'
 
 const SendMessagePanel = (props) => {
     return (
@@ -10,13 +11,26 @@ const SendMessagePanel = (props) => {
                 <img src={ props.currentUser.avatar } alt="ava"/>
 
                 <div className={ classes.send_message_form }>
-                    <textarea
-                        onChange={ props.onChangeInput }
-                        onKeyDown={ props.sendMessage }
-                        value={ props.inputValue }
-                        placeholder="Type a message..."
-                    />
-                    <button onClick={ props.sendMessage }>Send</button>
+                    <Form onSubmit={ props.onSubmit }>
+                        { ({ handleSubmit, pristine, form }) => (
+                            <form onSubmit={ handleSubmit }>
+                                <Field component={ "textarea" } name={ "message" }
+                                       onKeyDown={ e => {
+                                           if (e.key === 'Enter') {
+                                               e.preventDefault()
+                                               if (!pristine) {
+                                                   handleSubmit()
+                                                   form.reset()
+                                               }
+                                           }
+                                       } }
+                                       placeholder="Type a message..."
+                                />
+
+                                <button type="submit" disabled={ pristine }>Send</button>
+                            </form>
+                        ) }
+                    </Form>
                 </div>
 
                 <img

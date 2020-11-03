@@ -1,7 +1,11 @@
 const TOGGLE_MENU_IS_VISIBLE = 'TOGGLE_MENU_IS_VISIBLE'
+const TOGGLE_FIND_USER_MENU_IS_VISIBLE = 'TOGGLE_FIND_USER_MENU_IS_VISIBLE'
+const DARK_BACKGROUND_IS_VISIBLE = 'DARK_BACKGROUND_IS_VISIBLE'
 
 const init = {
-    menuIsVisible: false
+    menuIsVisible: false,
+    findUserMenuIsVisible: true,
+    darkBackgroundIsVisible: true
 }
 
 const displayMenu = (state = init, action) => {
@@ -13,6 +17,18 @@ const displayMenu = (state = init, action) => {
                 menuIsVisible: action.value
             }
 
+        case 'TOGGLE_FIND_USER_MENU_IS_VISIBLE':
+            return {
+                ...state,
+                findUserMenuIsVisible: action.value
+            }
+
+        case 'DARK_BACKGROUND_IS_VISIBLE':
+            return {
+                ...state,
+                darkBackgroundIsVisible: action.value
+            }
+
         default:
             return state
 
@@ -21,6 +37,16 @@ const displayMenu = (state = init, action) => {
 
 export const toggleMenuIsVisible = (value) => ({
     type: TOGGLE_MENU_IS_VISIBLE,
+    value
+})
+
+export const toggleFindUserMenuIsVisible = (value) => ({
+    type: TOGGLE_FIND_USER_MENU_IS_VISIBLE,
+    value
+})
+
+export const toggleDarkBackgroundIsVisible = (value) => ({
+    type: DARK_BACKGROUND_IS_VISIBLE,
     value
 })
 

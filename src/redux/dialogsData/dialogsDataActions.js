@@ -1,5 +1,5 @@
 import moment from "moment";
-import { getCurrentUser, getDialog, getMember, getMessage } from "../../api/api";
+import { getUser, getDialog, getMember, getMessage } from "../../api/api";
 
 const SET_DIALOGS = 'SET_DIALOGS'
 const UPDATE_DIALOG = 'UPDATE_DIALOG'
@@ -114,7 +114,7 @@ export const setDialogs = () => {
         const userId = localStorage.getItem('userId')
         let userDialogs = null
 
-        getCurrentUser(userId)
+        getUser(userId).once('value')
             .then(item => {
                 const currentDialogs = Object.values(item.val().currentDialogs)
                 const dialogsPromises = []

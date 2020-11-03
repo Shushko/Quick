@@ -10,6 +10,7 @@ import {
     toggleNumberForm, togglePreloader,
     toggleSignIn
 } from "../../redux/authUser/authUserActions";
+import { getUser } from "../../api/api";
 
 const AuthUser = (props) => {
 
@@ -34,20 +35,15 @@ const AuthUser = (props) => {
         try {
             const resultUser = await window.confirmationResult.confirm(props.inputBody)
             props.changeInputValue('')
-            props.togglePreloader(false)
 
-            firebase.database().ref(`/users/${resultUser.user.uid}`).on('value', elem => {
-                if (!elem.val()) {
-                    firebase.database().ref(`/users/${resultUser.user.uid}`).set({
-                        id: resultUser.user.uid,
-                        name: 'TEST',
-                        avatar: null,
-                        currentDialogs: {
-                            test: 'test'
-                        }
-                    })
-                }
-            })
+            if (resultUser.additionalUserInfo.isNewUser) {
+                getUser(resultUser.user.uid).set({
+                    id: resultUser.user.uid,
+                    name: resultUser.user.phoneNumber,
+                    phoneNumber: resultUser.user.phoneNumber,
+                    avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
+                })
+            }
 
             localStorage.setItem('userId', resultUser.user.uid)
             localStorage.setItem('userIsAuthorized', 'true')
@@ -55,6 +51,8 @@ const AuthUser = (props) => {
             props.toggleSignIn(true)
         } catch (error) {
             console.log(error)
+        } finally {
+            props.togglePreloader(false)
         }
     }
 

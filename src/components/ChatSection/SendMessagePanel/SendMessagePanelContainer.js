@@ -8,7 +8,6 @@ import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 
 const SendMessagePanelContainer = (props) => {
-    console.log(props);
 
     const findInterlocutor = () => {
         const dialog = props.dialogsData.dialogs.find(dialog => dialog.dialogId === props.dialogsData.currentDialog)
@@ -55,5 +54,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(SendMessagePanelContainer)
-
-// export default connect(mapStateToProps, mapDispatchToProps)(SendMessagePanelContainer)

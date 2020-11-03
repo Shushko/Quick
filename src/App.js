@@ -6,7 +6,8 @@ import UserDialogsContainer from "./components/DialogsSection/UserDialogsContain
 import AuthUser from "./components/AuthUser/AuthUser";
 import { connect } from "react-redux";
 import { setAuthorizedUser } from "./redux/authUser/authUserActions";
-import { toggleMenuIsVisible } from "./redux/displayMenu";
+import { toggleDarkBackgroundIsVisible, toggleFindUserMenuIsVisible, toggleMenuIsVisible } from "./redux/displayMenu";
+import FindUser from "./components/Header/BurgerMenu/FindUser/FindUser";
 
 class App extends React.Component {
     componentDidMount() {
@@ -17,10 +18,19 @@ class App extends React.Component {
     render() {
         return (
             <div className="app_container">
+                <div
+                    className={ this.props.darkBackgroundIsVisible ? "bg_menu_active" : "bg_menu" }
+                    onClick={ () => {
+                        this.props.toggleMenuIsVisible(false)
+                        this.props.toggleFindUserMenuIsVisible(false)
+                        this.props.toggleDarkBackgroundIsVisible(false)
+                    } }
+                />
+
+                { this.props.findUserMenuIsVisible ? <FindUser /> : <div /> }
+
                 { this.props.userIsAuthorized ?
                     <div className="app_wrapper">
-
-                        <div className={ this.props.menuIsVisible ? "bg_menu_active" : "bg_menu" } onClick={ () => this.props.toggleMenuIsVisible(false) } />
 
                         <TheHeader/>
                         <div className="main_content">
@@ -38,12 +48,16 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
     userIsAuthorized: state.authUserReducer.userIsAuthorized,
-    menuIsVisible: state.displayMenu.menuIsVisible
+    menuIsVisible: state.displayMenu.menuIsVisible,
+    findUserMenuIsVisible: state.displayMenu.findUserMenuIsVisible,
+    darkBackgroundIsVisible: state.displayMenu.darkBackgroundIsVisible
 })
 
 const mapDispatchToProps = (dispatch) => ({
     setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) },
-    toggleMenuIsVisible: (value) => { dispatch(toggleMenuIsVisible(value)) }
+    toggleMenuIsVisible: (value) => { dispatch(toggleMenuIsVisible(value)) },
+    toggleFindUserMenuIsVisible: (value) => { dispatch(toggleFindUserMenuIsVisible(value)) },
+    toggleDarkBackgroundIsVisible: (value) => { dispatch(toggleDarkBackgroundIsVisible(value)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

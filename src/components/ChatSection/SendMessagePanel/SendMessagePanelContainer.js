@@ -1,7 +1,7 @@
 import React from 'react';
 import SendMessagePanel from "./SendMessagePanel";
 import { connect } from "react-redux";
-import { addNewMessage, onChangeInput } from "../../../redux/dialogsData/dialogsDataActions";
+import { addNewMessage } from "../../../redux/dialogsData/dialogsDataActions";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { compose } from "redux";

@@ -14,6 +14,4 @@ const reducers = combineReducers({
 
 const store = createStore(reducers, applyMiddleware(thunkMiddleware))
 
-window.state = store
-
 export default store

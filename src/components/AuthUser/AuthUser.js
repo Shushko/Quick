@@ -4,37 +4,56 @@ import * as firebase from "firebase";
 import { connect } from "react-redux";
 import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
-import {
-    changeInputValue,
-    checkVerificationCode, setAuthorizedUser,
-    toggleNumberForm, togglePreloader,
-    toggleSignIn
-} from "../../redux/authUser/authUserActions";
-import { getUser } from "../../api/api";
+import { setAuthorizedUser } from "../../redux/authUser/authUserActions";
+import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
 
-const AuthUser = (props) => {
-
-    const authorizeUser = async () => {
-        props.togglePreloader(true)
-        props.toggleNumberForm(false)
-        const recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-            size: "invisible"
-        })
-
-        try {
-            window.confirmationResult = await firebase.auth().signInWithPhoneNumber(props.inputBody, recaptcha)
-            props.changeInputValue('')
-            props.togglePreloader(false)
-        } catch (error) {
-            console.log(error)
+class AuthUser extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            preloaderIsVisible: false,
+            numberFormIsVisible: false,
+            verificationCodeFormIsVisible: false,
+            signInIsVisible: true,
+            phoneNumber: '',
+            isInvalidNumber: false,
+            confirmationResult: null,
+            recaptcha: null
         }
     }
 
-    const checkVerificationCode = async () => {
-        props.togglePreloader(true)
+    authorizeUser = async (value) => {
+        this.setState({ preloaderIsVisible: true, isInvalidNumber: false })
+        if (!this.state.recaptcha) {
+            this.state.recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                size: "invisible"
+            })
+        }
+
         try {
-            const resultUser = await window.confirmationResult.confirm(props.inputBody)
-            props.changeInputValue('')
+            const result = await firebase.auth().signInWithPhoneNumber(value.trim(), this.state.recaptcha)
+            this.setState({
+                confirmationResult: result,
+                phoneNumber: value,
+                numberFormIsVisible: false,
+                verificationCodeFormIsVisible: true
+            })
+        } catch (error) {
+            this.setState({
+                isInvalidNumber: true,
+                phoneNumber: '',
+                numberFormIsVisible: true,
+                verificationCodeFormIsVisible: false
+            })
+        } finally {
+            this.setState({ preloaderIsVisible: false })
+        }
+    }
+
+    checkVerificationCode = async (value) => {
+        this.setState({ preloaderIsVisible: true, isInvalidNumber: false })
+        try {
+            const resultUser = await this.state.confirmationResult.confirm(value.trim())
 
             if (resultUser.additionalUserInfo.isNewUser) {
                 getUser(resultUser.user.uid).set({
@@ -47,51 +66,79 @@ const AuthUser = (props) => {
 
             localStorage.setItem('userId', resultUser.user.uid)
             localStorage.setItem('userIsAuthorized', 'true')
-            props.setAuthorizedUser(true)
-            props.toggleSignIn(true)
+            this.props.setAuthorizedUser(true)
+            this.setState({ signInIsVisible: true, verificationCodeFormIsVisible: false })
         } catch (error) {
+            this.setState({ isInvalidNumber: true })
             console.log(error)
         } finally {
-            props.togglePreloader(false)
+            this.setState({ preloaderIsVisible: false })
         }
     }
 
-    return (
-        <div className={ classes.authorization_wrapper }>
-            <div className={ classes.authorization_content }>
-                <div className={ classes.logo }>
-                    <div className={ classes.logo_text }>MyMessenger</div>
-                </div>
-                <div className={ classes.auth_form_text }>
-                    <span className={ classes.auth_form_text_grit }>Hi! It's cool that you are with us. Enjoy comfortable communication!</span>
+    editNumberForm = () => {
+        this.setState({
+            numberFormIsVisible: true,
+            verificationCodeFormIsVisible: false,
+            isInvalidNumber: false
+        })
+    }
 
-                    <div className={ classes.auth_form_sign_in }>
-                        { props.signInIsVisible ?
-                            <button
-                                onClick={ () => {
-                                    props.toggleSignIn(false)
-                                    props.toggleNumberForm(true)
-                                } }
-                                className={ classes.button_sign_in }
-                            >
-                                Sign In
-                            </button> :
-                            <div>
-                                { props.preloaderIsVisible ? <Preloader/> :
-                                    <AuthUserForm
-                                        inputBody={ props.inputBody }
-                                        numberFormIsVisible={ props.numberFormIsVisible }
-                                        authorizeUser={ authorizeUser }
-                                        checkVerificationCode={ checkVerificationCode }
-                                        changeInputValue={ props.changeInputValue }
-                                    /> }
-                            </div> }
+    render() {
+        return (
+            <div className={ classes.authorization_wrapper }>
+                <div className={ classes.authorization_content }>
+                    <div className={ classes.logo }>
+                        <div className={ classes.logo_text }>MyMessenger</div>
                     </div>
-                    <div id='recaptcha-container'/>
+                    <div className={ classes.auth_form_text }>
+                        { this.state.signInIsVisible &&
+                        <span className={ classes.auth_form_text_grit }>
+                            { AUTH_FORM_GRIT }
+                        </span> }
+
+                        { this.state.verificationCodeFormIsVisible &&
+                        <div>
+                            <div className={ classes.auth_form_text_phone_number }>
+                                <span>{ this.state.phoneNumber }</span>
+                                <button
+                                    className={ classes.button_edit_number }
+                                    onClick={ this.editNumberForm }
+                                >
+                                    Edit phone number
+                                </button>
+                            </div>
+
+                            <div>
+                                <span className={ classes.auth_form_text_grit }>{ VERIFICATION_CODE_TEXT }</span>
+                            </div>
+                        </div>
+                        }
+
+                        <div className={ classes.auth_form_sign_in }>
+                            { this.state.signInIsVisible ?
+                                <button
+                                    onClick={ () => this.setState({ signInIsVisible: false, numberFormIsVisible: true }) }
+                                    className={ classes.button_sign_in }
+                                >
+                                    Sign In
+                                </button> :
+                                <div>
+                                    { this.state.preloaderIsVisible ? <Preloader/> :
+                                        <AuthUserForm
+                                            numberFormIsVisible={ this.state.numberFormIsVisible }
+                                            authorizeUser={ this.authorizeUser }
+                                            checkVerificationCode={ this.checkVerificationCode }
+                                            isInvalidNumber={ this.state.isInvalidNumber }
+                                        /> }
+                                </div> }
+                        </div>
+                        <div id='recaptcha-container'/>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 const mapStateToProps = (state) => ({
@@ -111,4 +158,4 @@ const mapDispatchToProps = (dispatch) => ({
     setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthUser)
+export default connect(null, mapDispatchToProps)(AuthUser)

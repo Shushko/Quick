@@ -5,7 +5,6 @@ const SET_DIALOGS = 'SET_DIALOGS'
 const UPDATE_DIALOG = 'UPDATE_DIALOG'
 const SET_CURRENT_USER = 'SET_CURRENT_USER'
 const CHANGE_CURRENT_DIALOG = 'CHANGE_CURRENT_DIALOG'
-const CHANGE_INPUT = 'CHANGE_INPUT'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const CLEAR_DIALOGS = 'CLEAR_DIALOGS'
 
@@ -20,11 +19,6 @@ export const updateDialog = (key, sortedMessages, sumUnreadMessages) => ({
     key,
     sortedMessages,
     sumUnreadMessages
-})
-
-export const onChangeInput = (value) => ({
-    type: CHANGE_INPUT,
-    value
 })
 
 export const onChangeCurrentDialog = (value) => ({
@@ -62,7 +56,7 @@ export const changeMessageStatus = (dialogId, message, delivered, read) => {
 }
 
 export const addNewMessage = (messageId, dialogId, userId, time, inputValue) => {
-    return (dispatch) => {
+    return () => {
         getMessage(dialogId, messageId).set({
             id: messageId,
             time: time,
@@ -71,7 +65,6 @@ export const addNewMessage = (messageId, dialogId, userId, time, inputValue) => 
             isRead: false,
             userId: userId
         })
-            .then(() => dispatch(onChangeInput('')))
             .catch(error => console.log(error))
     }
 }

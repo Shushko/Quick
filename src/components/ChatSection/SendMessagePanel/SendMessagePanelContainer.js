@@ -1,7 +1,7 @@
 import React from 'react';
 import SendMessagePanel from "./SendMessagePanel";
 import { connect } from "react-redux";
-import { addNewMessage, onChangeInput } from "../../../redux/dialogsData/dialogsDataActions";
+import { addNewMessage } from "../../../redux/dialogsData/dialogsDataActions";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { compose } from "redux";
@@ -40,10 +40,9 @@ const SendMessagePanelContainer = (props) => {
                     <SendMessagePanel
                         currentUser={ props.currentUser }
                         interlocutor={ findInterlocutor() }
-                        inputValue={ props.dialogsData.inputValue }
                         currentDialog={ props.dialogsData.currentDialog }
                         onChangeInput={ props.onChangeInput }
-                        sendMessage={sendMessage}
+                        onSubmit={ onSubmit }
                     />
             }
         </>
@@ -52,12 +51,10 @@ const SendMessagePanelContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     currentUser: state.dialogsDataReducer.currentUser,
-    dialogsData: state.dialogsDataReducer,
-    inputValue: state.dialogsDataReducer.inputValue
+    dialogsData: state.dialogsDataReducer
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    onChangeInput: (e) => { dispatch(onChangeInput(e.currentTarget.value)) },
     addNewMessage: (messageId, dialogId, userId, time, inputValue) => { dispatch(addNewMessage(messageId, dialogId, userId, time, inputValue)) }
 })
 

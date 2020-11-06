@@ -4,8 +4,8 @@ const DARK_BACKGROUND_IS_VISIBLE = 'DARK_BACKGROUND_IS_VISIBLE'
 
 const init = {
     menuIsVisible: false,
-    findUserMenuIsVisible: true,
-    darkBackgroundIsVisible: true
+    findUserMenuIsVisible: false,
+    darkBackgroundIsVisible: false
 }
 
 const displayMenu = (state = init, action) => {

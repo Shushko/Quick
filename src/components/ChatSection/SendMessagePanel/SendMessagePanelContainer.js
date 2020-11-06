@@ -9,19 +9,27 @@ import { withRouter } from "react-router-dom";
 
 const SendMessagePanelContainer = (props) => {
 
+    let dialog = []
+
     const findInterlocutor = () => {
-        const dialog = props.dialogsData.dialogs.find(dialog => dialog.dialogId === props.dialogsData.currentDialog)
+        dialog = props.dialogsData.dialogs.find(dialog => dialog.dialogId === props.dialogsData.currentDialog)
         return dialog ? dialog.members.find(m => m.id !== props.currentUser.id) : {}
     }
 
     const sendMessage = (e) => {
         if (e.key === 'Enter' || e.type === 'click') {
+            if (dialog.length < 2) {
+
+            }
+
             props.addNewMessage(
                 uuidv4(),
                 props.dialogsData.currentDialog,
                 props.currentUser.id,
                 moment().format(),
-                props.dialogsData.inputValue)
+                props.dialogsData.inputValue,
+                dialog.length,
+                findInterlocutor().id)
         }
     }
 

@@ -84,6 +84,7 @@ class ChatWindow extends React.Component {
         if (!this.dialog) { return [] }
         const interlocutor = this.dialog.members.find(m => m.id !== this.props.currentUser.id)
         const resultDialog = this.dialog.dialog.map((item, index) => {
+            if (item.id === 'test_c027dd8a7509424b8f064848fa911f2b') { return }
             const chatItem =
                 <div key={ item.id } ref={ ref => {
                     this.arrRefs[index] = {

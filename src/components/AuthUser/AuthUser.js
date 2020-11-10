@@ -6,6 +6,7 @@ import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
 import { setAuthorizedUser } from "../../redux/authUser/authUserActions";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
+import { getUser } from "../../api/api";
 
 class AuthUser extends React.Component {
     constructor (props) {
@@ -60,7 +61,8 @@ class AuthUser extends React.Component {
                     id: resultUser.user.uid,
                     name: resultUser.user.phoneNumber,
                     phoneNumber: resultUser.user.phoneNumber,
-                    avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
+                    avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
+                    currentDialogs: { 'test_82f89263fe5c4ed0ad1990b38f086a77': 'test_82f89263fe5c4ed0ad1990b38f086a77' }
                 })
             }
 
@@ -141,20 +143,7 @@ class AuthUser extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    signInIsVisible: state.authUserReducer.signInIsVisible,
-    numberFormIsVisible: state.authUserReducer.numberFormIsVisible,
-    verificationCodeEntered: state.authUserReducer.verificationCodeEntered,
-    inputBody: state.authUserReducer.inputBody,
-    preloaderIsVisible: state.authUserReducer.preloaderIsVisible
-})
-
 const mapDispatchToProps = (dispatch) => ({
-    toggleSignIn: (value) => { dispatch(toggleSignIn(value)) },
-    toggleNumberForm: (value) => { dispatch(toggleNumberForm(value)) },
-    checkVerificationCode: (value) => { dispatch(checkVerificationCode(value)) },
-    changeInputValue: (value) => { dispatch(changeInputValue(value)) },
-    togglePreloader: (value) => { dispatch(togglePreloader(value)) },
     setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) }
 })
 

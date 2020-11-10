@@ -3,10 +3,17 @@ import classes from "./FindUser.module.sass"
 import { connect } from "react-redux";
 import { toggleDarkBackgroundIsVisible, toggleFindUserMenuIsVisible } from "../../../../redux/displayMenu";
 import { Field, Form } from "react-final-form";
-import { addNewDialog, createDialog, createUserCurrentDialogs, searchByPhoneNumber } from "../../../../api/api";
+import {
+    createDialog,
+    getRefCurrentDialogs,
+    searchByPhoneNumber
+} from "../../../../api/api";
 import FoundUser from "./FoundUser/FoundUser";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import { onChangeCurrentDialog } from "../../../../redux/dialogsData/dialogsDataActions";
+import { withRouter } from "react-router-dom";
+import { composeValidators, mustBeFormat, mustBePhoneNumber } from "../../../../common/Validators";
 
 class FindUser extends React.Component {
     constructor (props) {
@@ -23,19 +30,24 @@ class FindUser extends React.Component {
 
     addNewDialog = (interlocutorId) => {
         this.hideModalWindow()
-        const dialogId = uuidv4()
-        createDialog(dialogId, this.props.currentUser.id, interlocutorId, moment().format())
-            .then(() => {
-                if (this.props.dialogs.length < 1) {
-                    createUserCurrentDialogs(this.props.currentUser.id, dialogId)
-                        .catch(error => console.log(error))
-                } else {
-                    addNewDialog(this.props.currentUser.id)
+        const hasDialog = this.props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null)
+        if (hasDialog) {
+            this.props.onChangeCurrentDialog(hasDialog.dialogId)
+            this.props.history.push(`/${ hasDialog.dialogId }`)
+        } else {
+            const dialogId = uuidv4()
+            createDialog(dialogId, this.props.currentUser.id, interlocutorId, moment().format())
+                .then(() => {
+                    getRefCurrentDialogs(this.props.currentUser.id)
                         .update({ [dialogId]: dialogId })
                         .catch(error => console.log(error))
-                }
-            })
-            .catch(error => console.log(error))
+                })
+                .then(() => {
+                    this.props.onChangeCurrentDialog(dialogId)
+                    this.props.history.push(`/${ dialogId }`)
+                })
+                .catch(error => console.log(error))
+        }
     }
 
     searchUsers = (value) => {
@@ -51,14 +63,12 @@ class FindUser extends React.Component {
             })
     }
 
-    onSubmit = (data) => !data.search && data.length < 9 ? this.setState({ arrUsers: [] }) : this.searchUsers(data.search)
-
-    onChangeField = (value) => !value && value.length < 9 ? this.setState({ arrUsers: [] }) : this.searchUsers(value)
+    onChangeField = (value) => value && value.length > 7 ? this.searchUsers(value) : this.setState({ arrUsers: [] })
 
     getFoundUsers = () => {
-        if (this.state.arrUsers.length > 0) {
-            return this.state.arrUsers.map(item => item.id === this.props.currentUser.id ? <div /> :
-                <FoundUser user={ item } addNewDialog={ this.addNewDialog } />)
+        if (this.state.arrUsers.length) {
+            return this.state.arrUsers.map(item => item.id === this.props.currentUser.id ? <div key={ item.id } /> :
+                <FoundUser user={ item } addNewDialog={ this.addNewDialog } key={ item.id } />)
         }
     }
 
@@ -73,16 +83,17 @@ class FindUser extends React.Component {
         return (
             <div className={ classes.find_user_menu_container }>
                 <div className={ classes.find_user_header }>
-                    <span>Create dialog</span>
+                    <span>Find user</span>
                     <button className={ classes.close_button } onClick={ () => this.hideModalWindow() }>
                         Close
                     </button>
                 </div>
                 <div className={ classes.search_form }>
-                    <Form onSubmit={ this.onSubmit }>
+                    <Form onSubmit={ (data) => this.onChangeField(data.search) }>
                         { ({ handleSubmit }) => (
                             <form onSubmit={ handleSubmit } >
                                 <Field component={ this.Textarea } name={ "search" }
+                                       validate={ composeValidators(mustBeFormat, mustBePhoneNumber) }
                                        onKeyDown={ e => {
                                            if (e.key === 'Enter') {
                                                e.preventDefault()
@@ -109,8 +120,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
     toggleFindUserMenuIsVisible: (value) => { dispatch(toggleFindUserMenuIsVisible(value)) },
     toggleDarkBackgroundIsVisible: (value) => { dispatch(toggleDarkBackgroundIsVisible(value)) }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FindUser)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FindUser))

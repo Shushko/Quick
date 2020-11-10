@@ -5,8 +5,10 @@ export const required = value => value && value.trim() !== '' ? undefined : 'Req
 export const mustBeFormat = value => value && value.trim()[0] !== '+' ? 'Must be format: +380XXXXXXXXX' : undefined;
 
 export const mustBePhoneNumber = value => {
-    const val = value.trim()
-    return val.length > 1 && !numberRegExp.test(val.slice(1)) ? 'Must be a phone number' : undefined
+    if (value) {
+        const val = value.trim()
+        return val.length > 1 && !numberRegExp.test(val.slice(1)) ? 'Must be a phone number' : undefined
+    }
 }
 
 export const mustBeNumber = value => !numberRegExp.test(value.trim()) ? 'Must be a number' : undefined;

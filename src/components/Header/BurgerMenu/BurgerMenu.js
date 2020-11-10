@@ -12,7 +12,7 @@ import {
 } from "../../../redux/displayMenu";
 import { clearDialogs, setCurrentUser } from "../../../redux/dialogsData/dialogsDataActions";
 import { setAuthorizedUser } from "../../../redux/authUser/authUserActions";
-import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class BurgerMenu extends React.Component {
 
@@ -23,7 +23,7 @@ class BurgerMenu extends React.Component {
         this.props.toggleMenuIsVisible(false)
         this.props.clearDialogs()
         this.props.setCurrentUser(null)
-        return <Redirect to='/' />
+        this.props.history.push(`/`)
     }
 
     render() {
@@ -58,9 +58,12 @@ class BurgerMenu extends React.Component {
                             this.props.toggleFindUserMenuIsVisible(true)
                         } }>
                             <img src={ create }/>
-                            <span>Create chat</span>
+                            <span>Find User</span>
                         </div>
-                        <div className={ classes.menu_item } onClick={ this.logOutUser }>
+                        <div className={ classes.menu_item } onClick={ () => {
+                            this.logOutUser()
+                            this.props.toggleDarkBackgroundIsVisible(false)
+                        } }>
                             <img src={ exit }/>
                             <span>Log Out</span>
                         </div>
@@ -86,4 +89,4 @@ const mapDispatchToProps = (dispatch) => ({
     setCurrentUser: (data) => { dispatch(setCurrentUser(data)) }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(BurgerMenu)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BurgerMenu))

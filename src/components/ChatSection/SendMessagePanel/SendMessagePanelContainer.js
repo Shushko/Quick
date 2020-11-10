@@ -6,47 +6,50 @@ import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
+import { getRefCurrentDialogs } from "../../../api/api";
 
-const SendMessagePanelContainer = (props) => {
-
-    let dialog = []
-
-    const findInterlocutor = () => {
-        dialog = props.dialogsData.dialogs.find(dialog => dialog.dialogId === props.dialogsData.currentDialog)
-        return dialog ? dialog.members.find(m => m.id !== props.currentUser.id) : {}
+class SendMessagePanelContainer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.dialog = null
     }
 
-    const sendMessage = (e) => {
-        if (e.key === 'Enter' || e.type === 'click') {
-            if (dialog.length < 2) {
+    findInterlocutor = () => {
+        this.dialog = this.props.dialogsData.dialogs.find(dialog => dialog.dialogId === this.props.dialogsData.currentDialog)
+        return this.dialog ? this.dialog.members.find(m => m.id !== this.props.currentUser.id) : {}
+    }
 
-            }
-
-            props.addNewMessage(
-                uuidv4(),
-                props.dialogsData.currentDialog,
-                props.currentUser.id,
-                moment().format(),
-                props.dialogsData.inputValue,
-                dialog.length,
-                findInterlocutor().id)
+    onSubmit = (formData) => {
+        if (this.dialog.dialog.length < 1) {
+            getRefCurrentDialogs(this.findInterlocutor().id)
+                .update({ [this.dialog.dialogId]: this.dialog.dialogId })
+                .catch(error => console.log(error))
         }
+
+        this.props.addNewMessage(
+            uuidv4(),
+            this.props.dialogsData.currentDialog,
+            this.props.currentUser.id,
+            moment().format(),
+            formData.message
+        )
     }
 
-    return (
-        <>
-            {
-                !props.dialogsData.currentDialog ? <div/> :
-                    <SendMessagePanel
-                        currentUser={ props.currentUser }
-                        interlocutor={ findInterlocutor() }
-                        currentDialog={ props.dialogsData.currentDialog }
-                        onChangeInput={ props.onChangeInput }
-                        onSubmit={ onSubmit }
-                    />
-            }
-        </>
-    )
+    render() {
+        return (
+            <>
+                {
+                    !this.props.dialogsData.currentDialog ? <div/> :
+                        <SendMessagePanel
+                            currentUser={ this.props.currentUser }
+                            interlocutor={ this.findInterlocutor() }
+                            currentDialog={ this.props.dialogsData.currentDialog }
+                            onSubmit={ this.onSubmit }
+                        />
+                }
+            </>
+        )
+    }
 }
 
 const mapStateToProps = (state) => ({

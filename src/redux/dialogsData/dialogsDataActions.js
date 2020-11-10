@@ -1,5 +1,5 @@
 import moment from "moment";
-import { getUser, getDialog, getMember, getMessage, addNewDialog } from "../../api/api";
+import { getUser, getDialog, getMember, getMessage, getRefCurrentDialogs } from "../../api/api";
 
 const SET_DIALOGS = 'SET_DIALOGS'
 const UPDATE_DIALOG = 'UPDATE_DIALOG'
@@ -42,17 +42,17 @@ export const clearDialogs = () => ({
 
 
 export const changeMessageStatus = (dialogId, message, delivered, read) => {
-   return () => {
-       getMessage(dialogId, message.id).set({
-           id: message.id,
-           time: message.time,
-           message: message.message,
-           isDelivered: delivered,
-           isRead: read,
-           userId: message.userId
-       })
-           .catch(error => console.log(error))
-   }
+    return () => {
+        getMessage(dialogId, message.id).set({
+            id: message.id,
+            time: message.time,
+            message: message.message,
+            isDelivered: delivered,
+            isRead: read,
+            userId: message.userId
+        })
+            .catch(error => console.log(error))
+    }
 }
 
 export const addNewMessage = (messageId, dialogId, userId, time, inputValue) => {
@@ -70,9 +70,8 @@ export const addNewMessage = (messageId, dialogId, userId, time, inputValue) => 
 }
 
 const calculateUnreadMessages = (dialog, userId) => {
-    const dialogArr = Object.values(dialog)
     let sumUnreadMessages = 0
-    dialogArr.forEach(i => {
+    dialog.forEach(i => {
         if (!i.isRead && i.userId !== userId) {
             sumUnreadMessages++
         }
@@ -81,7 +80,7 @@ const calculateUnreadMessages = (dialog, userId) => {
 }
 
 const sortMessages = (dialog) => {
-    const dialogArr = Object.values(dialog)
+    const dialogArr = Object.values(dialog).filter(i => i.id !== 'test_c027dd8a7509424b8f064848fa911f2b')
     dialogArr.sort((a, b) => {
         if (moment(a.time).valueOf() > moment(b.time).valueOf()) return 1
         if (moment(a.time).valueOf() < moment(b.time).valueOf()) return -1
@@ -90,65 +89,105 @@ const sortMessages = (dialog) => {
     return dialogArr
 }
 
+
 const setUpdatedDialog = (data, userDialogs, userId) => {
-    const updDialog = Object.values(data.content)
-    const oldDialog = Object.values(userDialogs.find(i => i.id === data.id).content)
+    const updDialog = Object.values(data.content).filter(i => i.id !== 'test_c027dd8a7509424b8f064848fa911f2b')
+    const oldDialog = userDialogs.find(i => i.dialogId === data.id).dialog
     const updMessage = updDialog.find(i => !oldDialog.find(n => i.id === n.id))
     if (updMessage && !updMessage.isDelivered && updMessage.userId !== userId) {
         changeMessageStatus(data.id, updMessage, true, updMessage.isRead)()
     }
     const sortedMessages = sortMessages(data.content)
-    const sumUnreadMessages = calculateUnreadMessages(data.content, userId)
+    const sumUnreadMessages = calculateUnreadMessages(updDialog, userId)
     return { sortedMessages, sumUnreadMessages }
 }
 
+
+const getMembers = (dialog) => {
+        const dialogMembers = Object.values(dialog.members)
+        const membersPromise = []
+        for (let n = 0; n < dialogMembers.length; n++) {
+            const member = getMember(dialogMembers[n])
+            membersPromise.push(member)
+        }
+
+        return Promise.all(membersPromise)
+}
+
+
+const setDialogObserver = (dispatch, getState, dialogKey, userId) => {
+    getDialog(dialogKey).on('value', (dataSnapshot) => {
+        const userDialogs = getState().dialogsDataReducer.dialogs
+        if (userDialogs.length) {
+            const { sortedMessages, sumUnreadMessages } = setUpdatedDialog(dataSnapshot.val(), userDialogs, userId)
+            dispatch(updateDialog(dataSnapshot.val().id, sortedMessages, sumUnreadMessages))
+        }
+    })
+}
+
+
+const setCurrentDialogsObserver = (dispatch, getState, userId) => {
+    getRefCurrentDialogs(userId).on('value', (dataSnapshot) => {
+        const currentDialogsKeys = []
+        getState().dialogsDataReducer.dialogs.forEach(i => currentDialogsKeys.push(i.dialogId))
+        const userIsConfigured = !!getState().currentUser.currentUser
+        const newDialogsKeys = Object.values(dataSnapshot.val()).filter(i => i !== 'test_82f89263fe5c4ed0ad1990b38f086a77')
+        const newDialogKey = newDialogsKeys.find(i => i !== currentDialogsKeys.find(n => n === i))
+        if (newDialogKey && userIsConfigured) {
+            setDialogObserver(dispatch, getState, newDialogKey, userId)
+            getDialog(newDialogKey)
+                .once('value')
+                .then(newDialog => {
+                    getMembers(newDialog.val())
+                        .then(members => {
+                            const sortedMessages = sortMessages(newDialog.val().content)
+                            dispatch(setDialogsAction({
+                                dialogId: newDialog.val().id,
+                                dialog: sortedMessages,
+                                members: members,
+                                unreadMessages: calculateUnreadMessages(sortedMessages, userId)
+                            }))
+                        })
+                })
+        }
+    })
+}
+
+
 export const setDialogs = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         const userId = localStorage.getItem('userId')
-        let userDialogs = null
+        setCurrentDialogsObserver(dispatch, getState, userId)
 
         getUser(userId).once('value')
             .then(item => {
-                if (item.val().currentDialogs) {
-                    const currentDialogs = Object.values(item.val().currentDialogs)
-                    const dialogsPromises = []
-                    for (let i = 0; i < currentDialogs.length; i++) {
+                const currentDialogs = Object.values(item.val().currentDialogs)
+                const dialogsPromises = []
+                for (let i = 0; i < currentDialogs.length; i++) {
+                    setDialogObserver(dispatch, getState, currentDialogs[i], userId)
+                    if (currentDialogs[i] !== 'test_82f89263fe5c4ed0ad1990b38f086a77') {
                         const dialog = getDialog(currentDialogs[i]).once("value").then(item => item.val())
-
-                        getDialog(currentDialogs[i]).on("value", (dataSnapshot) => {
-                            if (userDialogs) {
-                                const { sortedMessages, sumUnreadMessages } = setUpdatedDialog(dataSnapshot.val(), userDialogs, userId)
-                                dispatch(updateDialog(dataSnapshot.val().id, sortedMessages, sumUnreadMessages))
-                            }
-                        })
                         dialogsPromises.push(dialog)
                     }
-
-                    Promise.all(dialogsPromises)
-                        .then(dialogs => {
-                            userDialogs = dialogs
-                            for (let i = 0; i < dialogs.length; i++) {
-                                const dialogMembers = Object.values(dialogs[i].members)
-                                const membersPromise = []
-                                for (let n = 0; n < dialogMembers.length; n++) {
-                                    const member = getMember(dialogMembers[n])
-                                    membersPromise.push(member)
-                                }
-
-                                Promise.all(membersPromise)
-                                    .then(members => {
-                                        dispatch(setDialogsAction({
-                                            dialogId: dialogs[i].id,
-                                            dialog: sortMessages(dialogs[i].content),
-                                            members: members,
-                                            unreadMessages: calculateUnreadMessages(dialogs[i].content, userId)
-                                        }))
-                                    })
-                                    .catch(error => console.log(error))
-                            }
-                        })
-                        .catch(error => console.log(error))
                 }
+
+                Promise.all(dialogsPromises)
+                    .then(dialogs => {
+                        for (let i = 0; i < dialogs.length; i++) {
+                             getMembers(dialogs[i])
+                                .then(members => {
+                                    const sortedMessages = sortMessages(dialogs[i].content)
+                                    dispatch(setDialogsAction({
+                                        dialogId: dialogs[i].id,
+                                        dialog: sortedMessages,
+                                        members: members,
+                                        unreadMessages: calculateUnreadMessages(sortedMessages, userId)
+                                    }))
+                                })
+                        }
+                    })
+                    .catch(error => console.log(error))
+
                 return item.val()
             })
             .then(user => dispatch(setCurrentUser(user)))

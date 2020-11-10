@@ -29,4 +29,4 @@ const mapDispatchToProps = (dispatch) => ({
     changeMessageStatus: (dialogId, message, delivered, read) => { dispatch(changeMessageStatus(dialogId, message, delivered, read)) }
 })
 
-export default compose(connect(mapStateToProps,mapDispatchToProps), withRouter)(ChatWindowContainer)
+export default compose(withRouter, connect(mapStateToProps,mapDispatchToProps))(ChatWindowContainer)

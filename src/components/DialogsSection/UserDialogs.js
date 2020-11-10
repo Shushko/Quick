@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './UserDialogs.module.sass';
 import TheDialog from "./TheDialog/TheDialog";
+import moment from "moment";
 
 const UserDialogs = (props) => {
     const modifyMessage = (message) => {
@@ -19,7 +20,7 @@ const UserDialogs = (props) => {
             const lastDialogItem = dialog[dialog.length - 1]
             return {
                 message: modifyMessage(lastDialogItem.message),
-                time: lastDialogItem.time
+                time: moment(lastDialogItem.time).format('LT')
             }
         }
         return {

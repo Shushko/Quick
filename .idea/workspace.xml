@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7f92c269-e049-4f16-b9ac-853aa4142377" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css.map" afterDir="false" />
+    <list default="true" id="0f9a0aa7-a46d-490f-96fb-1108e8d6995b" name="Default Changelist" comment="[QC-2] - commit for merge">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +41,7 @@
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac22b888-5f02-4b77-9a9b-55b7832762e0" name="Default Changelist" comment="[QC-2] - commit for merge">
+    <list default="true" id="7f92c269-e049-4f16-b9ac-853aa4142377" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/Validators.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Validators.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.sass" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.sass" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatWindow.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatWindow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatWindowContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatWindowContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/SendMessagePanel/SendMessagePanelContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/SendMessagePanel/SendMessagePanelContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DialogsSection/TheDialog/TheDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DialogsSection/TheDialog/TheDialog.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DialogsSection/UserDialogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DialogsSection/UserDialogs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/BurgerMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/BurgerMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/dialogsData/dialogsDataActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/dialogsData/dialogsDataActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,10 +29,17 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1jms8cgDFaPnr1h8j4nL5jSdEtx" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />

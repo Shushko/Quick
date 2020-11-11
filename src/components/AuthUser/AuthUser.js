@@ -33,6 +33,7 @@ class AuthUser extends React.Component {
 
         try {
             const result = await firebase.auth().signInWithPhoneNumber(value.trim(), this.state.recaptcha)
+
             this.setState({
                 confirmationResult: result,
                 phoneNumber: value,

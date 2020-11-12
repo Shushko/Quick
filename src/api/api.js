@@ -1,5 +1,7 @@
 import firebase from "firebase";
 
+export const getUser = (userId) => firebase.database().ref(`/users/${ userId }`)
+
 export const getCurrentUser = (userId) => firebase.database().ref(`/users/${ userId }`).once('value')
 
 export const getDialog = (key) => firebase.database().ref(`/dialogs/${ key }`)

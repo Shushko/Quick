@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0f9a0aa7-a46d-490f-96fb-1108e8d6995b" name="Default Changelist" comment="">
+    <list default="true" id="4f57da46-f61d-429f-8f5f-2960d49aba46" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/BurgerMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/BurgerMenu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.sass" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.sass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -103,8 +101,8 @@
     <option name="LAST_COMMIT_MESSAGE" value="[QC-2] - commit for merge" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="193" height="350" key="Git.Branch.Popup" />
-    <state width="193" height="350" key="Git.Branch.Popup/1366.768" />
-    <state width="193" height="350" key="Git.Branch.Popup@1366.768" />
+    <state width="197" height="354" key="Git.Branch.Popup" />
+    <state width="197" height="354" key="Git.Branch.Popup/1366.768" />
+    <state width="197" height="354" key="Git.Branch.Popup@1366.768" />
   </component>
 </project>

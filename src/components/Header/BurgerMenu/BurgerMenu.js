@@ -21,49 +21,43 @@ class BurgerMenu extends React.Component {
         localStorage.removeItem('userId')
         this.props.setAuthorizedUser(false)
         this.props.toggleMenuIsVisible(false)
+        this.props.toggleDarkBackgroundIsVisible(false)
         this.props.clearDialogs()
         this.props.setCurrentUser(null)
         this.props.history.push(`/`)
     }
 
+    toggleMenu = (value) => {
+        this.props.toggleDarkBackgroundIsVisible(value)
+        this.props.toggleMenuIsVisible(value)
+    }
+
+    showFindMenu = () => {
+        this.props.toggleMenuIsVisible(false)
+        this.props.toggleFindUserMenuIsVisible(true)
+    }
+
     render() {
         return (
             <div className={ classes.menu_container }>
-                <div onClick={ this.props.menuIsVisible === false ?
-                    () => {
-                    this.props.toggleDarkBackgroundIsVisible(true)
-                    this.props.toggleMenuIsVisible(true)
-                } :
-                    () => {
-                    this.props.toggleDarkBackgroundIsVisible(false)
-                    this.props.toggleMenuIsVisible(false)
-                } }
-                     className={ classes.menu_button }
-                >
-                    <img src={ button }/>
+                <div onClick={ this.toggleMenu(!this.props.menuIsVisible) } className={ classes.menu_button }>
+                    <img src={ button } alt="Menu" />
                 </div>
 
-                { !this.props.currentUser ? null :
+                { this.props.currentUser &&
                     <div className={ this.props.menuIsVisible ? classes.menu_active : classes.menu }>
                         <div className={ classes.header }>
-                            <img src={ this.props.currentUser.avatar ? this.props.currentUser.avatar : ava }
-                                 alt="avatar"/>
+                            <img src={ this.props.currentUser.avatar || ava } alt="avatar"/>
                             <div className={ classes.profileInfo }>
                                 <span className={ classes.user_name }>{ this.props.currentUser.name }</span>
                             </div>
                         </div>
 
-                        <div className={ classes.menu_item } onClick={ () => {
-                            this.props.toggleMenuIsVisible(false)
-                            this.props.toggleFindUserMenuIsVisible(true)
-                        } }>
+                        <div className={ classes.menu_item } onClick={ this.showFindMenu }>
                             <img src={ create }/>
                             <span>Find User</span>
                         </div>
-                        <div className={ classes.menu_item } onClick={ () => {
-                            this.logOutUser()
-                            this.props.toggleDarkBackgroundIsVisible(false)
-                        } }>
+                        <div className={ classes.menu_item } onClick={ this.logOutUser }>
                             <img src={ exit }/>
                             <span>Log Out</span>
                         </div>

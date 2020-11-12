@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4f57da46-f61d-429f-8f5f-2960d49aba46" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/BurgerMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/BurgerMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" afterDir="false" />
-    </list>
+    <list default="true" id="4f57da46-f61d-429f-8f5f-2960d49aba46" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

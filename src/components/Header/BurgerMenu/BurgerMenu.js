@@ -40,7 +40,7 @@ class BurgerMenu extends React.Component {
     render() {
         return (
             <div className={ classes.menu_container }>
-                <div onClick={ this.toggleMenu(!this.props.menuIsVisible) } className={ classes.menu_button }>
+                <div onClick={ () => this.toggleMenu(!this.props.menuIsVisible) } className={ classes.menu_button }>
                     <img src={ button } alt="Menu" />
                 </div>
 

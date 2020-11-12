@@ -73,10 +73,17 @@ class FindUser extends React.Component {
     }
 
     Textarea = ({ input, meta, ...rest }) => {
-        return <textarea { ...input } { ...rest } onChange={(e) => {
-            input.onChange(e);
-            this.onChangeField(e.currentTarget.value)
-        }} />
+        return (
+            <div>
+                <textarea { ...input } { ...rest } onChange={(e) => {
+                    input.onChange(e);
+                    this.onChangeField(e.currentTarget.value)
+                }} />
+                <div className={ classes.error_message }>
+                    { meta.error && <span>{ meta.error }</span> }
+                </div>
+            </div>
+        )
     }
 
     render() {

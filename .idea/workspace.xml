@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0f9a0aa7-a46d-490f-96fb-1108e8d6995b" name="Default Changelist" comment="[QC-2] - commit for merge">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="0f9a0aa7-a46d-490f-96fb-1108e8d6995b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUser.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthUser/AuthUserForm/AuthUserForm.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ChatSection/ChatWindow/ChatItem/ChatItem.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.sass" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FindUser.module.sass" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/BurgerMenu/FindUser/FoundUser/FoundUser.module.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feature/QC-2-Create-query-search-and-adding-a-new-dialog" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -60,13 +63,14 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ac22b888-5f02-4b77-9a9b-55b7832762e0" name="Default Changelist" comment="" />
+      <changelist id="0f9a0aa7-a46d-490f-96fb-1108e8d6995b" name="Default Changelist" comment="" />
       <created>1604420442892</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604420442892</updated>
       <workItem from="1604420447939" duration="35464000" />
       <workItem from="1604658761137" duration="61710000" />
+      <workItem from="1605163902547" duration="3873000" />
     </task>
     <task id="LOCAL-00001" summary="[QC-2] - commit for merge">
       <created>1604660152512</created>
@@ -97,5 +101,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="[QC-2] - commit for merge" />
     <option name="LAST_COMMIT_MESSAGE" value="[QC-2] - commit for merge" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="193" height="350" key="Git.Branch.Popup" />
+    <state width="193" height="350" key="Git.Branch.Popup/1366.768" />
+    <state width="193" height="350" key="Git.Branch.Popup@1366.768" />
   </component>
 </project>

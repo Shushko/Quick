@@ -19,7 +19,7 @@ class App extends React.Component {
         return (
             <div className="app_container">
                 <div
-                    className={ this.props.darkBackgroundIsVisible ? "bg_menu_active" : "bg_menu" }
+                    className={ this.props.displayMenu.darkBackgroundIsVisible ? "bg_menu_active" : "bg_menu" }
                     onClick={ () => {
                         this.props.toggleMenuIsVisible(false)
                         this.props.toggleFindUserMenuIsVisible(false)
@@ -27,7 +27,7 @@ class App extends React.Component {
                     } }
                 />
 
-                { this.props.findUserMenuIsVisible ? <FindUser /> : <div /> }
+                { this.props.displayMenu.findUserMenuIsVisible ? <FindUser /> : '' }
 
                 { this.props.userIsAuthorized ?
                     <div className="app_wrapper">
@@ -48,9 +48,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
     userIsAuthorized: state.authUserReducer.userIsAuthorized,
-    menuIsVisible: state.displayMenu.menuIsVisible,
-    findUserMenuIsVisible: state.displayMenu.findUserMenuIsVisible,
-    darkBackgroundIsVisible: state.displayMenu.darkBackgroundIsVisible
+    displayMenu: state.displayMenu
 })
 
 const mapDispatchToProps = (dispatch) => ({

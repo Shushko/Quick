@@ -2,7 +2,11 @@ import firebase from "firebase";
 
 export const getUser = (userId) => firebase.database().ref(`/users/${ userId }`)
 
-export const searchByPhoneNumber = () => firebase.database().ref(`/users`).orderByChild('phoneNumber')
+export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
+    .orderByChild('phoneNumber')
+    .startAt(value)
+    .endAt(value + "\uf8ff")
+    .once('value')
 
 export const getDialog = (key) => firebase.database().ref(`/dialogs/${ key }`)
 
@@ -12,13 +16,7 @@ export const getMessage = (dialogId, messageId) => firebase.database().ref(`dial
 
 export const getRefCurrentDialogs = (userId) => firebase.database().ref(`/users/${ userId }/currentDialogs`)
 
-export const createDialog = (key, currentUserId, interlocutorId, time) => firebase.database().ref(`/dialogs/${ key }`).set({
-    content: {
-        test_c027dd8a7509424b8f064848fa911f2b: {
-            id: "test_c027dd8a7509424b8f064848fa911f2b",
-            time: time
-        }
-},
+export const createDialog = (key, currentUserId, interlocutorId) => firebase.database().ref(`/dialogs/${ key }`).set({
     id: key,
     members: { [currentUserId]: currentUserId, [interlocutorId]: interlocutorId }
 })

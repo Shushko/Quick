@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from './ChatWindow.module.sass';
 import ChatItem from "./ChatItem/ChatItem";
-import { withRouter } from "react-router-dom";
 import arrowDown from '../../../assets/arrow.png'
 
 class ChatWindow extends React.Component {
@@ -21,7 +20,6 @@ class ChatWindow extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onChangeCurrentDialog(this.props.match.params.dialogId)
         if (this.dialog) { this.scrollToEnd() }
     }
 
@@ -35,7 +33,10 @@ class ChatWindow extends React.Component {
     }
 
     scrollToEnd = () => {
-        const isNewDialog = !this.dialog.dialog.length || this.dialog.dialog.every(i => i.userId !== this.props.currentUser.id)
+        let isNewDialog = null
+        if (this.dialog.dialog) {
+            isNewDialog = !this.dialog.dialog.length || this.dialog.dialog.every(i => i.userId !== this.props.currentUser.id)
+        }
 
         if (this.currentVisibleChat === this.props.match.params.dialogId || isNewDialog) {
             if (this.state.lastItemIsVisible) { this.messagesEnd.current.scrollIntoView({ block: 'end' }) }
@@ -137,4 +138,4 @@ class ChatWindow extends React.Component {
     }
 }
 
-export default withRouter(ChatWindow)
+export default ChatWindow

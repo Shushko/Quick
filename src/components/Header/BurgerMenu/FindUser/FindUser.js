@@ -1,73 +1,41 @@
 import React from "react";
 import classes from "./FindUser.module.sass"
 import { connect } from "react-redux";
-import { toggleDarkBackgroundIsVisible, toggleFindUserMenuIsVisible } from "../../../../redux/displayMenu";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { createNewDialog, onChangeCurrentDialog } from "../../../../redux/dialogsData/dialogsDataActions";
+import { toggleElementVisibility } from "../../../../redux/displayMenu";
+import { addFoundUsers, searchUsers } from "../../../../redux/findUsers";
 import { Field, Form } from "react-final-form";
-import {
-    createDialog,
-    getRefCurrentDialogs,
-    searchByPhoneNumber
-} from "../../../../api/api";
 import FoundUser from "./FoundUser/FoundUser";
 import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
-import { onChangeCurrentDialog } from "../../../../redux/dialogsData/dialogsDataActions";
-import { withRouter } from "react-router-dom";
-import { composeValidators, mustBeFormat, mustBePhoneNumber } from "../../../../common/Validators";
+import { composeValidators, mustBePhoneNumber } from "../../../../common/Validators";
 
 class FindUser extends React.Component {
-    constructor (props) {
-        super(props)
-        this.state = {
-            arrUsers: []
-        }
-    }
-
-    hideModalWindow = () => {
-        this.props.toggleFindUserMenuIsVisible(false)
-        this.props.toggleDarkBackgroundIsVisible(false)
-    }
-
     addNewDialog = (interlocutorId) => {
-        this.hideModalWindow()
+        this.props.toggleElementVisibility(false, false, false)
         const hasDialog = this.props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null)
         if (hasDialog) {
             this.props.onChangeCurrentDialog(hasDialog.dialogId)
             this.props.history.push(`/${ hasDialog.dialogId }`)
         } else {
             const dialogId = uuidv4()
-            createDialog(dialogId, this.props.currentUser.id, interlocutorId, moment().format())
-                .then(() => {
-                    getRefCurrentDialogs(this.props.currentUser.id)
-                        .update({ [dialogId]: dialogId })
-                        .catch(error => console.log(error))
-                })
-                .then(() => {
-                    this.props.onChangeCurrentDialog(dialogId)
-                    this.props.history.push(`/${ dialogId }`)
-                })
-                .catch(error => console.log(error))
+            this.props.createNewDialog(dialogId, this.props.currentUser.id, interlocutorId)
         }
     }
 
-    searchUsers = (value) => {
-        searchByPhoneNumber()
-            .startAt(value)
-            .endAt(value + "\uf8ff")
-            .once('value')
-            .then(data =>  {
-                if (data.val()) {
-                    const foundUsers = Object.values(data.val())
-                    this.setState({ arrUsers: foundUsers })
-                } else { this.setState({ arrUsers: [] }) }
-            })
+    onChangeField = (value) => {
+        const validLength = 7
+        if (value && value.length > validLength) {
+            this.props.searchUsers(value)
+        } else {
+            this.props.foundUsers.length && this.props.addFoundUsers([])
+        }
     }
 
-    onChangeField = (value) => value && value.length > 7 ? this.searchUsers(value) : this.setState({ arrUsers: [] })
-
     getFoundUsers = () => {
-        if (this.state.arrUsers.length) {
-            return this.state.arrUsers.map(item => item.id === this.props.currentUser.id ? <div key={ item.id } /> :
+        if (this.props.foundUsers.length) {
+            return this.props.foundUsers.map(item => item.id === this.props.currentUser.id ? '' :
                 <FoundUser user={ item } addNewDialog={ this.addNewDialog } key={ item.id } />)
         }
     }
@@ -91,7 +59,7 @@ class FindUser extends React.Component {
             <div className={ classes.find_user_menu_container }>
                 <div className={ classes.find_user_header }>
                     <span>Find user</span>
-                    <button className={ classes.close_button } onClick={ () => this.hideModalWindow() }>
+                    <button className={ classes.close_button } onClick={ () => this.props.toggleElementVisibility(false, false, false) }>
                         Close
                     </button>
                 </div>
@@ -100,7 +68,7 @@ class FindUser extends React.Component {
                         { ({ handleSubmit }) => (
                             <form onSubmit={ handleSubmit } >
                                 <Field component={ this.Textarea } name={ "search" }
-                                       validate={ composeValidators(mustBeFormat, mustBePhoneNumber) }
+                                       validate={ composeValidators(mustBePhoneNumber) }
                                        onKeyDown={ e => {
                                            if (e.key === 'Enter') {
                                                e.preventDefault()
@@ -123,13 +91,18 @@ class FindUser extends React.Component {
 
 const mapStateToProps = (state) => ({
     dialogs: state.dialogsDataReducer.dialogs,
+    foundUsers: state.findUsers.foundUsers,
     currentUser: state.currentUser.currentUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    addFoundUsers: (value) => { dispatch(addFoundUsers(value)) },
+    searchUsers: (value) => { dispatch(searchUsers(value)) },
     onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
-    toggleFindUserMenuIsVisible: (value) => { dispatch(toggleFindUserMenuIsVisible(value)) },
-    toggleDarkBackgroundIsVisible: (value) => { dispatch(toggleDarkBackgroundIsVisible(value)) }
+    toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
+        dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
+    },
+    createNewDialog: (dialogId, currentUserId, interlocutorId) => dispatch(createNewDialog(dialogId, currentUserId, interlocutorId))
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FindUser))
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(FindUser)

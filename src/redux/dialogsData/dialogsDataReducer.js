@@ -1,19 +1,30 @@
 const init = {
+    appIsInitialized: false,
     currentDialog: null,
-    isFetching: true,
     currentUser: null,
     dialogs: []
 }
 
 const dialogsDataReducer = (state = init, action) => {
     switch (action.type) {
-        case 'SET_DIALOGS':
+        case 'APP_IS_INITIALIZED':
             return {
                 ...state,
-                dialogs: [
-                    ...state.dialogs,
-                    action.dialog
-                ]
+                appIsInitialized: action.value
+            }
+
+        case 'SET_DIALOGS':
+            const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId)
+            if (dialogAlreadyInstalled) {
+                return state
+            } else {
+                return {
+                    ...state,
+                    dialogs: [
+                        ...state.dialogs,
+                        action.dialog
+                    ]
+                }
             }
 
         case 'UPDATE_DIALOG':
@@ -40,12 +51,6 @@ const dialogsDataReducer = (state = init, action) => {
             return {
                 ...state,
                 currentDialog: action.currentDialog
-            }
-
-        case 'TOGGLE_IS_FETCHING':
-            return {
-                ...state,
-                isFetching: action.value
             }
 
         case 'CLEAR_DIALOGS':

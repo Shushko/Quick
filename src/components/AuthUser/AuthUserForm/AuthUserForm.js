@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./AuthUserForm.module.sass";
 import { Field, Form } from 'react-final-form';
-import { composeValidators, mustBeFormat, mustBeNumber, mustBePhoneNumber, required } from "../../../common/Validators";
+import { composeValidators, mustBeNumber, mustBePhoneNumber, required } from "../../../common/Validators";
 import { CODE_FORM_TEXT, NUMBER_PHONE_FORM_TEXT } from "../../../common/Messages";
 
 const AuthUserForm = (props) => {
@@ -36,7 +36,7 @@ const AuthUserForm = (props) => {
                         <Field component={ Textarea } name={ "value" }
                                validate={
                                    props.numberFormIsVisible ?
-                                   composeValidators(required, mustBeFormat, mustBePhoneNumber) :
+                                   composeValidators(required, mustBePhoneNumber) :
                                    composeValidators(required, mustBeNumber)
                                }
                                isInvalidNumber={ props.isInvalidNumber }

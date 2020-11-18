@@ -7,7 +7,7 @@ const TheHeader = () => {
         <header className={ classes.header }>
             <BurgerMenu/>
             <div className={ classes.logo }>
-                <div className={ classes.logo_text }>MyMessenger</div>
+                <div className={ classes.logo_text }>Quick</div>
             </div>
         </header>
     )

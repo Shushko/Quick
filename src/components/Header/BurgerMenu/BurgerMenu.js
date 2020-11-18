@@ -5,42 +5,32 @@ import ava from '../../../assets/defaultAvatar/ava.jpg'
 import button from '../../../assets/menu_button.png'
 import exit from '../../../assets/exit.png'
 import create from '../../../assets/create.png'
-import {
-    toggleDarkBackgroundIsVisible,
-    toggleFindUserMenuIsVisible,
-    toggleMenuIsVisible
-} from "../../../redux/displayMenu";
-import { clearDialogs, setCurrentUser } from "../../../redux/dialogsData/dialogsDataActions";
+import { toggleElementVisibility } from "../../../redux/displayMenu";
+import { clearDialogs, onChangeCurrentDialog, setCurrentUser } from "../../../redux/dialogsData/dialogsDataActions";
 import { setAuthorizedUser } from "../../../redux/authUser/authUserActions";
 import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 class BurgerMenu extends React.Component {
 
     logOutUser = () => {
         localStorage.removeItem('userIsAuthorized')
         localStorage.removeItem('userId')
-        this.props.setAuthorizedUser(false)
-        this.props.toggleMenuIsVisible(false)
-        this.props.toggleDarkBackgroundIsVisible(false)
+        this.props.toggleElementVisibility(false, false, false)
         this.props.clearDialogs()
         this.props.setCurrentUser(null)
+        this.props.onChangeCurrentDialog(null)
+        this.props.setAuthorizedUser(false)
         this.props.history.push(`/`)
-    }
-
-    toggleMenu = (value) => {
-        this.props.toggleDarkBackgroundIsVisible(value)
-        this.props.toggleMenuIsVisible(value)
-    }
-
-    showFindMenu = () => {
-        this.props.toggleMenuIsVisible(false)
-        this.props.toggleFindUserMenuIsVisible(true)
     }
 
     render() {
         return (
             <div className={ classes.menu_container }>
-                <div onClick={ () => this.toggleMenu(!this.props.menuIsVisible) } className={ classes.menu_button }>
+                <div
+                    onClick={ () => this.props.toggleElementVisibility(!this.props.menuIsVisible, false, !this.props.menuIsVisible) }
+                    className={ classes.menu_button }
+                >
                     <img src={ button } alt="Menu" />
                 </div>
 
@@ -53,7 +43,7 @@ class BurgerMenu extends React.Component {
                             </div>
                         </div>
 
-                        <div className={ classes.menu_item } onClick={ this.showFindMenu }>
+                        <div className={ classes.menu_item } onClick={ () => this.props.toggleElementVisibility(false, true, true) }>
                             <img src={ create }/>
                             <span>Find User</span>
                         </div>
@@ -75,12 +65,13 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
+        dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
+    },
     setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) },
-    toggleMenuIsVisible: (value) => { dispatch(toggleMenuIsVisible(value)) },
-    toggleFindUserMenuIsVisible: (value) => { dispatch(toggleFindUserMenuIsVisible(value)) },
-    toggleDarkBackgroundIsVisible: (value) => { dispatch(toggleDarkBackgroundIsVisible(value)) },
     clearDialogs: () => { dispatch(clearDialogs()) },
-    setCurrentUser: (data) => { dispatch(setCurrentUser(data)) }
+    setCurrentUser: (data) => { dispatch(setCurrentUser(data)) },
+    onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BurgerMenu))
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(BurgerMenu)

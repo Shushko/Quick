@@ -60,22 +60,18 @@ class AuthUser extends React.Component {
             if (resultUser.additionalUserInfo.isNewUser) {
                 getUser(resultUser.user.uid).set({
                     id: resultUser.user.uid,
-                    name: resultUser.user.phoneNumber,
+                    name: '',
                     phoneNumber: resultUser.user.phoneNumber,
-                    avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
-                    currentDialogs: { 'test_82f89263fe5c4ed0ad1990b38f086a77': 'test_82f89263fe5c4ed0ad1990b38f086a77' }
+                    avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
                 })
             }
 
             localStorage.setItem('userId', resultUser.user.uid)
             localStorage.setItem('userIsAuthorized', 'true')
-            this.props.setAuthorizedUser(true)
             this.setState({ signInIsVisible: true, verificationCodeFormIsVisible: false })
+            this.props.setAuthorizedUser(true)
         } catch (error) {
             this.setState({ isInvalidNumber: true })
-            console.log(error)
-        } finally {
-            this.setState({ preloaderIsVisible: false })
         }
     }
 
@@ -92,7 +88,7 @@ class AuthUser extends React.Component {
             <div className={ classes.authorization_wrapper }>
                 <div className={ classes.authorization_content }>
                     <div className={ classes.logo }>
-                        <div className={ classes.logo_text }>MyMessenger</div>
+                        <div className={ classes.logo_text }>Quick</div>
                     </div>
                     <div className={ classes.auth_form_text }>
                         { this.state.signInIsVisible &&

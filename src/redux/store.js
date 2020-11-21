@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
 import dialogsDataReducer from "./dialogsData/dialogsDataReducer";
 import currentUser from "./currentUser";
@@ -14,6 +14,8 @@ const reducers = combineReducers({
     findUsers
 })
 
-const store = createStore(reducers, applyMiddleware(thunkMiddleware))
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)))
 
 export default store

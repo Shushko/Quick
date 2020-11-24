@@ -1,7 +1,7 @@
 import React from "react";
-import classes from './FoundUser.module.sass'
+import classes from './UserItem.module.sass'
 
-const FoundUser = (props) => {
+const UserItem = (props) => {
     const user = props.user
     return (
         <div className={ classes.user_container } onClick={ () => props.addNewDialog(user.id) }>
@@ -20,4 +20,4 @@ const FoundUser = (props) => {
     )
 }
 
-export default FoundUser
+export default UserItem

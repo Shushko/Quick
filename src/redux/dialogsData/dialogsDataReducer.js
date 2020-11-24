@@ -31,7 +31,7 @@ const dialogsDataReducer = (state = init, action) => {
             if (state.dialogs.length > 0) {
                 const copyCurrentDialogs = [...state.dialogs]
                 const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key)
-                dialogForUpdate.dialog = action.sortedMessages
+                dialogForUpdate.messages = action.sortedMessages
                 dialogForUpdate.unreadMessages = action.sumUnreadMessages
                 return {
                     ...state,

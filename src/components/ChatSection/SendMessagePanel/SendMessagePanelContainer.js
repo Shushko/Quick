@@ -20,13 +20,13 @@ class SendMessagePanelContainer extends React.Component {
         }
     }
 
-    findInterlocutor = (dialog) => dialog.members.find(m => m.id !== this.props.currentUser.id)
+    findInterlocutor = (dialog) => dialog.members.find(m => m.id !== this.props.dialogsData.currentUser.id)
 
     onSubmit = (formData) => this.props.addNewMessage(
         this.state.interlocutor.id,
         uuidv4(),
         this.props.dialogsData.currentDialog,
-        this.props.currentUser.id,
+        this.props.dialogsData.currentUser.id,
         moment().format(),
         formData.message
     )
@@ -34,7 +34,7 @@ class SendMessagePanelContainer extends React.Component {
     render() {
         return (
             <SendMessagePanel
-                currentUser={ this.props.currentUser }
+                currentUser={ this.props.dialogsData.currentUser }
                 interlocutor={ this.state.interlocutor }
                 currentDialog={ this.props.dialogsData.currentDialog }
                 onSubmit={ this.onSubmit }

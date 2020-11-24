@@ -14,11 +14,11 @@ const TheDialog = (props) => {
                             { props.getInterlocutor(props.dialog.members).name }
                         </span>
                         <span className={ classes.dialog_description_last_time }>
-                            {  props.getLastMessage(props.dialog.dialog).time }
+                            {  props.getLastMessage(props.dialog.messages).time }
                         </span>
                         <div className={ classes.dialog_description_message }>
                             <span className={ classes.last_message }>
-                                { props.getLastMessage(props.dialog.dialog).message }
+                                { props.getLastMessage(props.dialog.messages).message }
                             </span>
                             { props.dialog.unreadMessages > 0 ?
                                     <div className={ classes.unread_messages }>{ props.dialog.unreadMessages }</div> :

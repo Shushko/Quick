@@ -6,7 +6,7 @@ import button from '../../../assets/menu_button.png'
 import exit from '../../../assets/exit.png'
 import create from '../../../assets/create.png'
 import { toggleElementVisibility } from "../../../redux/displayMenu";
-import { clearDialogs, onChangeCurrentDialog, setCurrentUser } from "../../../redux/dialogsData/dialogsDataActions";
+import { logOutUser } from "../../../redux/dialogsData/dialogsDataActions";
 import { setAuthorizedUser } from "../../../redux/authUser/authUserActions";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
@@ -17,9 +17,7 @@ class BurgerMenu extends React.Component {
         localStorage.removeItem('userIsAuthorized')
         localStorage.removeItem('userId')
         this.props.toggleElementVisibility(false, false, false)
-        this.props.clearDialogs()
-        this.props.setCurrentUser(null)
-        this.props.onChangeCurrentDialog(null)
+        this.props.logOutUser()
         this.props.setAuthorizedUser(false)
         this.props.history.push(`/`)
     }
@@ -69,9 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
     },
     setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) },
-    clearDialogs: () => { dispatch(clearDialogs()) },
-    setCurrentUser: (data) => { dispatch(setCurrentUser(data)) },
-    onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
+    logOutUser: () => dispatch(logOutUser())
 })
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(BurgerMenu)

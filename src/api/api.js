@@ -1,6 +1,14 @@
 import firebase from "firebase";
 
-export const getUser = (userId) => firebase.database().ref(`/users/${ userId }`)
+export const getUser = (userId) => firebase.database().ref(`/users/${ userId }`).once("value")
+
+export const setUser = (userId, userPhoneNumber) => firebase.database().ref(`/users/${ userId }`)
+    .set({
+        id: userId,
+        name: '',
+        phoneNumber: userPhoneNumber,
+        avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
+    })
 
 export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
     .orderByChild('phoneNumber')

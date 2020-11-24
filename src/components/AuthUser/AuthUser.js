@@ -6,7 +6,7 @@ import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
 import { setAuthorizedUser } from "../../redux/authUser/authUserActions";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
-import { getUser } from "../../api/api";
+import { setUser } from "../../api/api";
 
 class AuthUser extends React.Component {
     constructor (props) {
@@ -58,12 +58,7 @@ class AuthUser extends React.Component {
             const resultUser = await this.state.confirmationResult.confirm(value.trim())
 
             if (resultUser.additionalUserInfo.isNewUser) {
-                getUser(resultUser.user.uid).set({
-                    id: resultUser.user.uid,
-                    name: '',
-                    phoneNumber: resultUser.user.phoneNumber,
-                    avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
-                })
+                setUser(resultUser.user.uid, resultUser.user.phoneNumber)
             }
 
             localStorage.setItem('userId', resultUser.user.uid)

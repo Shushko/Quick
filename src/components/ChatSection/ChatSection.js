@@ -17,7 +17,6 @@ const ChatSection = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    currentUser: state.dialogsDataReducer.currentUser,
     dialogsData: state.dialogsDataReducer
 })
 

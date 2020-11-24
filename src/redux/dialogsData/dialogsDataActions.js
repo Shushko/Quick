@@ -41,6 +41,7 @@ export const clearDialogs = () => ({
 })
 
 
+
 export const changeMessageStatus = (dialogId, message, delivered, read) => {
     return () => {
         getMessage(dialogId, message.id).update({
@@ -53,7 +54,7 @@ export const changeMessageStatus = (dialogId, message, delivered, read) => {
 
 export const addNewMessage = (interlocutorId,  messageId, dialogId, userId, time, inputValue) => {
     return () => {
-        getUser(interlocutorId).once("value")
+        getUser(interlocutorId)
             .then(user => {
                 if (!user.val().hasOwnProperty('currentDialogs')) {
                     getRefCurrentDialogs(interlocutorId)
@@ -116,7 +117,7 @@ const sortMessages = (dialog) => {
 
 const setUpdatedDialog = (data, userDialogs, userId) => {
     const updDialog = Object.values(data.content)
-    const oldDialog = userDialogs.find(i => i.dialogId === data.id).dialog
+    const oldDialog = userDialogs.find(i => i.dialogId === data.id).messages
     const updMessage = updDialog.find(i => !oldDialog.find(n => i.id === n.id))
     if (updMessage && !updMessage.isDelivered && updMessage.userId !== userId) {
         changeMessageStatus(data.id, updMessage, true, updMessage.isRead)()
@@ -177,7 +178,7 @@ const setCurrentDialogsObserver = (dispatch, getState, userId, routeHistory) => 
                                 const messages = newDialog.val().hasOwnProperty('content') ? sortMessages(newDialog.val().content) : []
                                 dispatch(setDialogsAction({
                                     dialogId: newDialog.val().id,
-                                    dialog: messages,
+                                    messages: messages,
                                     members: members,
                                     unreadMessages: calculateUnreadMessages(messages, userId)
                                 }))
@@ -217,7 +218,7 @@ export const setDialogs = (routeHistory) => {
         const userId = localStorage.getItem('userId')
         setCurrentDialogsObserver(dispatch, getState, userId, routeHistory)
 
-        getUser(userId).once('value')
+        getUser(userId)
             .then(item => {
                 dispatch(setCurrentUser(item.val()))
                 if (item.val().hasOwnProperty('currentDialogs')) {
@@ -236,7 +237,7 @@ export const setDialogs = (routeHistory) => {
                                 setDialogObserver(dispatch, getState, dialogs[i].id, userId)
                                 dispatch(setDialogsAction({
                                     dialogId: dialogs[i].id,
-                                    dialog: messages,
+                                    messages: messages,
                                     members: members,
                                     unreadMessages: calculateUnreadMessages(messages, userId)
                                 }))
@@ -247,6 +248,14 @@ export const setDialogs = (routeHistory) => {
                 } else { dispatch(toggleAppIsInit(true)) }
             })
             .catch(error => console.log(error))
+    }
+}
+
+export const logOutUser = () => {
+    return (dispatch) => {
+        dispatch(clearDialogs())
+        dispatch(setCurrentUser(null))
+        dispatch(onChangeCurrentDialog(null))
     }
 }
 

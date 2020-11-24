@@ -7,16 +7,13 @@ import AuthUser from "./components/AuthUser/AuthUser";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { setAuthorizedUser } from "./redux/authUser/authUserActions";
 import { toggleElementVisibility } from "./redux/displayMenu";
-import FindUser from "./components/Header/BurgerMenu/FindUser/FindUser";
 import Preloader from "./common/Preloader/Preloader";
 import { onChangeCurrentDialog, setDialogs } from "./redux/dialogsData/dialogsDataActions";
+import FindUser from "./components/FindUser/FindUser";
 
 class App extends React.Component {
     componentDidMount() {
-        const userIsAuthorized = !!localStorage.getItem('userIsAuthorized')
-        this.props.setAuthorizedUser(userIsAuthorized)
         this.props.onChangeCurrentDialog(this.props.match.params.dialogId)
     }
 
@@ -61,7 +58,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) },
     setDialogs: (routeHistory) => { dispatch(setDialogs(routeHistory)) },
     onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
     toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {

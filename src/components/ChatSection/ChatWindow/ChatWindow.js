@@ -34,8 +34,8 @@ class ChatWindow extends React.Component {
 
     scrollToEnd = () => {
         let isNewDialog = null
-        if (this.dialog.dialog) {
-            isNewDialog = !this.dialog.dialog.length || this.dialog.dialog.every(i => i.userId !== this.props.currentUser.id)
+        if (this.dialog.messages) {
+            isNewDialog = !this.dialog.messages.length || this.dialog.messages.every(i => i.userId !== this.props.currentUser.id)
         }
 
         if (this.currentVisibleChat === this.props.match.params.dialogId || isNewDialog) {
@@ -84,7 +84,7 @@ class ChatWindow extends React.Component {
         this.dialog = this.props.dialogsState.dialogs.find(dialog => dialog.dialogId === this.props.match.params.dialogId)
         if (!this.dialog) { return [] }
         const interlocutor = this.dialog.members.find(m => m.id !== this.props.currentUser.id)
-        const resultDialog = this.dialog.dialog.map((item, index) => {
+        const resultDialog = this.dialog.messages.map((item, index) => {
             const chatItem =
                 <div key={ item.id } ref={ ref => {
                     this.arrRefs[index] = {

@@ -3,13 +3,13 @@ import classes from "./FindUser.module.sass"
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { createNewDialog, onChangeCurrentDialog } from "../../../../redux/dialogsData/dialogsDataActions";
-import { toggleElementVisibility } from "../../../../redux/displayMenu";
-import { addFoundUsers, searchUsers } from "../../../../redux/findUsers";
 import { Field, Form } from "react-final-form";
-import FoundUser from "./FoundUser/FoundUser";
+import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
-import { composeValidators, mustBePhoneNumber } from "../../../../common/Validators";
+import { addFoundUsers, searchUsers } from "../../redux/findUsers";
+import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
+import { toggleElementVisibility } from "../../redux/displayMenu";
+import { composeValidators, mustBePhoneNumber } from "../../common/Validators";
 
 class FindUser extends React.Component {
     addNewDialog = (interlocutorId) => {
@@ -25,18 +25,18 @@ class FindUser extends React.Component {
     }
 
     onChangeField = (value) => {
-        const validLength = 7
-        if (value && value.length > validLength) {
+        const VALIDLENGTH = 7
+        if (value && value.length > VALIDLENGTH) {
             this.props.searchUsers(value)
         } else {
             this.props.foundUsers.length && this.props.addFoundUsers([])
         }
     }
 
-    getFoundUsers = () => {
+    getUserItems = () => {
         if (this.props.foundUsers.length) {
             return this.props.foundUsers.map(item => item.id === this.props.currentUser.id ? '' :
-                <FoundUser user={ item } addNewDialog={ this.addNewDialog } key={ item.id } />)
+                <UserItem user={ item } addNewDialog={ this.addNewDialog } key={ item.id } />)
         }
     }
 
@@ -82,7 +82,7 @@ class FindUser extends React.Component {
                     </Form>
                 </div>
                 <div className={ classes.found_users_container }>
-                    { this.getFoundUsers() }
+                    { this.getUserItems() }
                 </div>
             </div>
         )
@@ -96,9 +96,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addFoundUsers: (value) => { dispatch(addFoundUsers(value)) },
+    addFoundUsers: (foundUsers) => { dispatch(addFoundUsers(foundUsers)) },
     searchUsers: (value) => { dispatch(searchUsers(value)) },
-    onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
+    onChangeCurrentDialog: (dialogId) => { dispatch(onChangeCurrentDialog(dialogId)) },
     toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
         dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
     },

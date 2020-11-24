@@ -6,7 +6,8 @@ import moment from "moment";
 const UserDialogs = (props) => {
     const modifyMessage = (message) => {
         if (typeof (message) === 'string') {
-            if (message.length > 18) {
+            const VALIDLENGTH = 18
+            if (message.length > VALIDLENGTH) {
                 const result = message.slice(0, 17) + '...'
                 return result
             }

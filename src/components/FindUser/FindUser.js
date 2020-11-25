@@ -92,7 +92,7 @@ class FindUser extends React.Component {
 const mapStateToProps = (state) => ({
     dialogs: state.dialogsDataReducer.dialogs,
     foundUsers: state.findUsers.foundUsers,
-    currentUser: state.currentUser.currentUser
+    currentUser: state.dialogsDataReducer.currentUser
 })
 
 const mapDispatchToProps = (dispatch) => ({

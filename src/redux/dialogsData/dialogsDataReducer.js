@@ -5,6 +5,40 @@ const init = {
     dialogs: []
 }
 
+
+
+const setDialogs = (state, action) => {
+    const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId)
+    if (dialogAlreadyInstalled) {
+        return state
+    } else {
+        return {
+            ...state,
+            dialogs: [
+                ...state.dialogs,
+                action.dialog
+            ]
+        }
+    }
+}
+
+const updateDialog  = (state, action) => {
+    if (state.dialogs.length > 0) {
+        const copyCurrentDialogs = [...state.dialogs];
+        const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key)
+        dialogForUpdate.messages = action.sortedMessages;
+        dialogForUpdate.unreadMessages = action.sumUnreadMessages;
+        return {
+            ...state,
+            dialogs: copyCurrentDialogs
+        }
+    } else {
+        return state
+    }
+}
+
+
+
 const dialogsDataReducer = (state = init, action) => {
     switch (action.type) {
         case 'APP_IS_INITIALIZED':
@@ -14,32 +48,10 @@ const dialogsDataReducer = (state = init, action) => {
             }
 
         case 'SET_DIALOGS':
-            const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId)
-            if (dialogAlreadyInstalled) {
-                return state
-            } else {
-                return {
-                    ...state,
-                    dialogs: [
-                        ...state.dialogs,
-                        action.dialog
-                    ]
-                }
-            }
+            return setDialogs(state, action);
 
         case 'UPDATE_DIALOG':
-            if (state.dialogs.length > 0) {
-                const copyCurrentDialogs = [...state.dialogs]
-                const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key)
-                dialogForUpdate.messages = action.sortedMessages
-                dialogForUpdate.unreadMessages = action.sumUnreadMessages
-                return {
-                    ...state,
-                    dialogs: copyCurrentDialogs
-                }
-            } else {
-                return state
-            }
+            return updateDialog(state, action);
 
         case 'SET_CURRENT_USER':
             return {

@@ -1,5 +1,15 @@
 import moment from "moment";
-import { getUser, getDialog, getMember, getMessage, getRefCurrentDialogs, createDialog } from "../../api/api";
+import {
+    getUser,
+    getDialog,
+    getMember,
+    getRefCurrentDialogs,
+    createDialog,
+    updateMessage,
+    addMessage,
+    createCurrentDialogs,
+    getRefDialog
+} from "../../api/api";
 
 const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED'
 const SET_DIALOGS = 'SET_DIALOGS'
@@ -42,53 +52,25 @@ export const clearDialogs = () => ({
 
 
 
-export const changeMessageStatus = (dialogId, message, delivered, read) => {
-    return () => {
-        getMessage(dialogId, message.id).update({
-            isDelivered: delivered,
-            isRead: read
-        })
-            .catch(error => console.log(error))
-    }
-}
+export const changeMessageStatus = (dialogId, message, delivered, read) => () => updateMessage(dialogId, message.id, delivered, read)
 
 export const addNewMessage = (interlocutorId,  messageId, dialogId, userId, time, inputValue) => {
     return () => {
         getUser(interlocutorId)
             .then(user => {
                 if (!user.val().hasOwnProperty('currentDialogs')) {
-                    getRefCurrentDialogs(interlocutorId)
-                        .set({ [dialogId]: dialogId })
-                        .catch(error => console.log(error))
+                    createCurrentDialogs(userId, dialogId, true)
                 } else {
-                    getRefCurrentDialogs(interlocutorId)
-                        .update({ [dialogId]: dialogId })
-                        .catch(error => console.log(error))
+                    createCurrentDialogs(userId, dialogId, false)
                 }
             })
 
-        getDialog(dialogId).once("value")
+        getDialog(dialogId)
             .then(dialog => {
                 if (!dialog.val().hasOwnProperty('content')) {
-                    getMessage(dialogId, messageId).set({
-                        id: messageId,
-                        time: time,
-                        message: inputValue,
-                        isDelivered: false,
-                        isRead: false,
-                        userId: userId
-                    })
-                        .catch(error => console.log(error))
+                    addMessage(dialogId, messageId, time, inputValue, userId, true)
                 } else {
-                    getMessage(dialogId, messageId).update({
-                        id: messageId,
-                        time: time,
-                        message: inputValue,
-                        isDelivered: false,
-                        isRead: false,
-                        userId: userId
-                    })
-                        .catch(error => console.log(error))
+                    addMessage(dialogId, messageId, time, inputValue, userId, false)
                 }
             })
     }
@@ -146,7 +128,7 @@ const checkForDialog = (getState, dialogId) => !!getState().dialogsDataReducer.d
 const setDialogObserver = (dispatch, getState, dialogKey, userId) => {
     const hasDialog = checkForDialog(getState, dialogKey)
     if (!hasDialog) {
-        getDialog(dialogKey).on('value', (dataSnapshot) => {
+        getRefDialog(dialogKey).on('value', (dataSnapshot) => {
             const appIsInitialized = getState().dialogsDataReducer.appIsInitialized
             const data = dataSnapshot.val()
             const userDialogs = getState().dialogsDataReducer.dialogs
@@ -171,7 +153,7 @@ const setCurrentDialogsObserver = (dispatch, getState, userId, routeHistory) => 
             const newDialogKey = newDialogsKeys.find(i => i !== currentDialogsKeys.find(n => n === i))
             if (newDialogKey) {
                 setDialogObserver(dispatch, getState, newDialogKey, userId)
-                getDialog(newDialogKey).once('value')
+                getDialog(newDialogKey)
                     .then(newDialog => {
                         getMembers(newDialog.val())
                             .then(members => {
@@ -200,13 +182,9 @@ export const createNewDialog = (dialogId, currentUserId, interlocutorId) => {
         createDialog(dialogId, currentUserId, interlocutorId)
             .then(() => {
                 if (!getState().dialogsDataReducer.dialogs.length) {
-                    getRefCurrentDialogs(currentUserId)
-                        .set({ [dialogId]: dialogId })
-                        .catch(error => console.log(error))
+                    createCurrentDialogs(currentUserId, dialogId, true)
                 } else {
-                    getRefCurrentDialogs(currentUserId)
-                        .update({ [dialogId]: dialogId })
-                        .catch(error => console.log(error))
+                    createCurrentDialogs(currentUserId, dialogId, false)
                 }
             })
     }
@@ -225,7 +203,7 @@ export const setDialogs = (routeHistory) => {
                     const currentDialogs = Object.values(item.val().currentDialogs)
                     const dialogsPromises = []
                     for (let i = 0; i < currentDialogs.length; i++) {
-                        const dialog = getDialog(currentDialogs[i]).once("value").then(item => item.val())
+                        const dialog = getDialog(currentDialogs[i]).then(item => item.val())
                         dialogsPromises.push(dialog)
                     }
 

@@ -1,46 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SendMessagePanel from "./SendMessagePanel";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-class SendMessagePanelContainer extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            dialog: null,
-            interlocutor: null
+const SendMessagePanelContainer = ({ dialogsData, addNewMessage }) => {
+    const [dialog, setDialog] = useState(null);
+    const [interlocutor, setInterlocutor] = useState(null);
+    useEffect(() => {
+        if (!dialog || dialog.dialogId !== dialogsData.currentDialog) {
+            const dialog = dialogsData.dialogs.find(d => d.dialogId === dialogsData.currentDialog);
+            const interlocutor = dialog && findInterlocutor(dialog);
+            setDialog(dialog);
+            setInterlocutor(interlocutor);
         }
-    }
+    });
 
-    componentDidUpdate() {
-        if (!this.state.dialog || this.state.dialog.dialogId !== this.props.dialogsData.currentDialog) {
-            const dialog = this.props.dialogsData.dialogs.find(d => d.dialogId === this.props.dialogsData.currentDialog)
-            const interlocutor = dialog && this.findInterlocutor(dialog)
-            this.setState({ dialog, interlocutor })
-        }
-    }
+    const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== dialogsData.currentUser.id);
 
-    findInterlocutor = (dialog) => dialog.members.find(m => m.id !== this.props.dialogsData.currentUser.id)
-
-    onSubmit = (formData) => this.props.addNewMessage(
-        this.state.interlocutor.id,
+    const onSubmit = (formData) => addNewMessage(
+        interlocutor.id,
         uuidv4(),
-        this.props.dialogsData.currentDialog,
-        this.props.dialogsData.currentUser.id,
+        dialogsData.currentDialog,
+        dialogsData.currentUser.id,
         moment().format(),
         formData.message
     )
 
-    render() {
-        return (
-            <SendMessagePanel
-                currentUser={ this.props.dialogsData.currentUser }
-                interlocutor={ this.state.interlocutor }
-                currentDialog={ this.props.dialogsData.currentDialog }
-                onSubmit={ this.onSubmit }
-            />
-        )
-    }
+    return (
+        <SendMessagePanel
+            currentUser={ dialogsData.currentUser }
+            interlocutor={ interlocutor }
+            currentDialog={ dialogsData.currentDialog }
+            onSubmit={ onSubmit }
+        />
+    )
 }
 
 export default SendMessagePanelContainer

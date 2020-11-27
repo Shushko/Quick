@@ -3,15 +3,15 @@ import classes from './SendMessagePanel.module.sass';
 import ava from '../../../assets/defaultAvatar/ava.jpg'
 import { Field, Form } from 'react-final-form'
 
-const SendMessagePanel = (props) => {
+const SendMessagePanel = ({ currentUser, interlocutor, currentDialog, onSubmit }) => {
     return (
         <div
-            className={ props.currentDialog ? classes.send_message_panel_wrap : classes.send_message_panel_wrap_disable }>
+            className={ currentDialog ? classes.send_message_panel_wrap : classes.send_message_panel_wrap_disable }>
             <div className={ classes.send_message_panel }>
-                <img src={ props.currentUser.avatar } alt="ava"/>
+                <img src={ currentUser.avatar } alt="ava"/>
 
                 <div className={ classes.send_message_form }>
-                    <Form onSubmit={ props.onSubmit }>
+                    <Form onSubmit={ onSubmit }>
                         { ({ handleSubmit, pristine, form }) => (
                             <form onSubmit={ handleSubmit }>
                                 <Field component={ "textarea" } name={ "message" }
@@ -34,7 +34,7 @@ const SendMessagePanel = (props) => {
                 </div>
 
                 <img
-                    src={ props.interlocutor ? props.interlocutor.avatar : ava }
+                    src={ interlocutor ? interlocutor.avatar : ava }
                     alt="ava"
                 />
             </div>

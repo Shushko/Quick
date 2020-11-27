@@ -25,10 +25,12 @@ class AuthUser extends React.Component {
 
     authorizeUser = async (value) => {
         this.setState({ preloaderIsVisible: true, isInvalidNumber: false })
+        let recaptcha = null
         if (!this.state.recaptcha) {
-            this.state.recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            recaptcha = await new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                 size: "invisible"
             })
+            this.setState({ recaptcha: recaptcha })
         }
 
         try {
@@ -66,7 +68,7 @@ class AuthUser extends React.Component {
             this.setState({ signInIsVisible: true, verificationCodeFormIsVisible: false })
             this.props.setAuthorizedUser(true)
         } catch (error) {
-            this.setState({ isInvalidNumber: true })
+            this.setState({ isInvalidNumber: true }
         }
     }
 

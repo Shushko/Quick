@@ -12,7 +12,7 @@ import Preloader from "./common/Preloader/Preloader";
 import { onChangeCurrentDialog, setDialogs } from "./redux/dialogsData/dialogsDataActions";
 import FindUser from "./components/FindUser/FindUser";
 
-class App extends React.Component {
+class App extends React.PureComponent {
     componentDidMount() {
         this.props.onChangeCurrentDialog(this.props.match.params.dialogId)
     }

@@ -1,34 +1,57 @@
 const init = {
+    appIsInitialized: false,
     currentDialog: null,
-    isFetching: true,
     currentUser: null,
     dialogs: []
 }
 
+
+
+const setDialogs = (state, action) => {
+    const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId)
+    if (dialogAlreadyInstalled) {
+        return state
+    } else {
+        return {
+            ...state,
+            dialogs: [
+                ...state.dialogs,
+                action.dialog
+            ]
+        }
+    }
+}
+
+const updateDialog  = (state, action) => {
+    if (state.dialogs.length > 0) {
+        const copyCurrentDialogs = [...state.dialogs];
+        const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key)
+        dialogForUpdate.messages = action.sortedMessages;
+        dialogForUpdate.unreadMessages = action.sumUnreadMessages;
+        return {
+            ...state,
+            dialogs: copyCurrentDialogs
+        }
+    } else {
+        return state
+    }
+}
+
+
+
 const dialogsDataReducer = (state = init, action) => {
     switch (action.type) {
-        case 'SET_DIALOGS':
+        case 'APP_IS_INITIALIZED':
             return {
                 ...state,
-                dialogs: [
-                    ...state.dialogs,
-                    action.dialog
-                ]
+                appIsInitialized: action.value
             }
 
+        case 'SET_DIALOGS':
+            return setDialogs(state, action);
+
         case 'UPDATE_DIALOG':
-            if (state.dialogs.length > 0) {
-                const copyCurrentDialogs = [...state.dialogs]
-                const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key)
-                dialogForUpdate.dialog = action.sortedMessages
-                dialogForUpdate.unreadMessages = action.sumUnreadMessages
-                return {
-                    ...state,
-                    dialogs: copyCurrentDialogs
-                }
-            } else {
-                return state
-            }
+            return updateDialog(state, action);
 
         case 'SET_CURRENT_USER':
             return {
@@ -40,12 +63,6 @@ const dialogsDataReducer = (state = init, action) => {
             return {
                 ...state,
                 currentDialog: action.currentDialog
-            }
-
-        case 'TOGGLE_IS_FETCHING':
-            return {
-                ...state,
-                isFetching: action.value
             }
 
         case 'CLEAR_DIALOGS':

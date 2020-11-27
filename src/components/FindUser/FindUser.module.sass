@@ -1,0 +1,60 @@
+.find_user_menu_container
+  box-sizing: border-box
+  position: absolute
+  margin-top: 4%
+  width: 450px
+  height: 500px
+  border-radius: 2px
+  background: #fff
+  z-index: 300
+  .find_user_header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    height: 50px
+    border-radius: 2px 2px 0 0
+    background: #3a6d99
+    span
+      margin-left: 4%
+      font-weight: bold
+      font-size: 1.1em
+      color: #fff
+    .close_button
+      margin-right: 3%
+      border: none
+      background: none
+      float: right
+      color: #dde8f1
+      cursor: pointer
+      font-weight: bold
+      font-size: 0.9em
+      outline: none
+      &:hover
+        color: #fff
+  .search_form
+    padding: 0px 30px 0px
+    height: 30px
+    border-bottom: 1px solid #dde8f1
+    textarea
+      box-sizing: border-box
+      padding-top: 7px
+      height: 30px
+      width: 100%
+      outline: none
+      resize: none
+      border: none
+    .error_message
+      color: red
+      font-size: 0.8em
+      font-weight: bold
+  .found_users_container
+    box-sizing: border-box
+    height: 418px
+    overflow: auto
+    overflow-y: scroll
+    overflow-x: hidden
+    &::-webkit-scrollbar
+      background: rgba(216, 223, 225, 0.45)
+      width: 4px
+    &::-webkit-scrollbar-thumb
+      background: rgba(137, 160, 179, 0.5)

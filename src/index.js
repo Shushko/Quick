@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from "react-router-dom";
+import { Route } from "react-router-dom";
 import {Provider} from "react-redux";
 
 firebase.initializeApp({
@@ -23,7 +24,9 @@ firebase.initializeApp({
         <React.StrictMode>
             <BrowserRouter>
                 <Provider store={store}>
-                    <App />
+                    <Route path="/:dialogId?">
+                        <App />
+                    </Route>
                 </Provider>
             </BrowserRouter>
         </React.StrictMode>,

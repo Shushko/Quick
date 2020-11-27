@@ -2,20 +2,14 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Route, withRouter } from "react-router-dom";
 import ChatWindow from "./ChatWindow";
-import Preloader from "../../../common/Preloader/Preloader";
 import { changeMessageStatus, onChangeCurrentDialog } from "../../../redux/dialogsData/dialogsDataActions";
 import { compose } from "redux";
 
 const ChatWindowContainer = (props) => {
     return (
-        <>
-            {
-                !props.currentUser ? <Preloader/> :
-                        <Route path="/:dialogId?"
-                               render={ () => <ChatWindow {...props} /> }
-                        />
-            }
-        </>
+        <Route path="/:dialogId?"
+               render={ () => <ChatWindow { ...props } /> }
+        />
     )
 }
 

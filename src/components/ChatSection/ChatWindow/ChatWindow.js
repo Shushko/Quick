@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from './ChatWindow.module.sass';
 import ChatItem from "./ChatItem/ChatItem";
-import { withRouter } from "react-router-dom";
 import arrowDown from '../../../assets/arrow.png'
 
 class ChatWindow extends React.Component {
@@ -21,7 +20,6 @@ class ChatWindow extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onChangeCurrentDialog(this.props.match.params.dialogId)
         if (this.dialog) { this.scrollToEnd() }
     }
 
@@ -35,10 +33,13 @@ class ChatWindow extends React.Component {
     }
 
     scrollToEnd = () => {
-        if (this.currentVisibleChat === this.props.match.params.dialogId) {
-            if (this.state.lastItemIsVisible) {
-                this.messagesEnd.current.scrollIntoView({ block: 'end' })
-            }
+        let isNewDialog = null
+        if (this.dialog.messages) {
+            isNewDialog = !this.dialog.messages.length || this.dialog.messages.every(i => i.userId !== this.props.currentUser.id)
+        }
+
+        if (this.currentVisibleChat === this.props.match.params.dialogId || isNewDialog) {
+            if (this.state.lastItemIsVisible) { this.messagesEnd.current.scrollIntoView({ block: 'end' }) }
         }  else {
             const arr = this.arrRefs.filter(i => i.message.isRead || (!i.message.isRead && i.message.userId === this.props.currentUser.id))
             arr[arr.length - 1].ref.scrollIntoView({ block: 'end' })
@@ -83,7 +84,7 @@ class ChatWindow extends React.Component {
         this.dialog = this.props.dialogsState.dialogs.find(dialog => dialog.dialogId === this.props.match.params.dialogId)
         if (!this.dialog) { return [] }
         const interlocutor = this.dialog.members.find(m => m.id !== this.props.currentUser.id)
-        const resultDialog = this.dialog.dialog.map((item, index) => {
+        const resultDialog = this.dialog.messages.map((item, index) => {
             const chatItem =
                 <div key={ item.id } ref={ ref => {
                     this.arrRefs[index] = {
@@ -137,4 +138,4 @@ class ChatWindow extends React.Component {
     }
 }
 
-export default withRouter(ChatWindow)
+export default ChatWindow

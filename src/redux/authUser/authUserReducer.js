@@ -1,5 +1,5 @@
 const init = {
-    userIsAuthorized: false
+    userIsAuthorized: localStorage.getItem('userIsAuthorized')
 }
 
 const authUserReducer = (state = init, action) => {

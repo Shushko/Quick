@@ -1,16 +1,20 @@
-const TOGGLE_MENU_IS_VISIBLE = 'TOGGLE_MENU_IS_VISIBLE'
+const TOGGLE_ELEMENT_VISIBILITY = 'TOGGLE_ELEMENT_VISIBILITY'
 
 const init = {
-    menuIsVisible: false
+    menuIsVisible: false,
+    findUserMenuIsVisible: false,
+    darkBackgroundIsVisible: false
 }
 
 const displayMenu = (state = init, action) => {
     switch (action.type) {
 
-        case 'TOGGLE_MENU_IS_VISIBLE':
+        case 'TOGGLE_ELEMENT_VISIBILITY':
             return {
                 ...state,
-                menuIsVisible: action.value
+                menuIsVisible: action.menuIsVisible,
+                findUserMenuIsVisible: action.findUserMenuIsVisible,
+                darkBackgroundIsVisible: action.darkBackgroundIsVisible
             }
 
         default:
@@ -19,9 +23,11 @@ const displayMenu = (state = init, action) => {
     }
 }
 
-export const toggleMenuIsVisible = (value) => ({
-    type: TOGGLE_MENU_IS_VISIBLE,
-    value
+export const toggleElementVisibility = (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => ({
+    type: TOGGLE_ELEMENT_VISIBILITY,
+    menuIsVisible,
+    findUserMenuIsVisible,
+    darkBackgroundIsVisible
 })
 
 export default displayMenu

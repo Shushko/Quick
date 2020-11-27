@@ -6,6 +6,7 @@ import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
 import { setAuthorizedUser } from "../../redux/authUser/authUserActions";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
+import { setUser } from "../../api/api";
 
 class AuthUser extends React.Component {
     constructor (props) {
@@ -34,6 +35,7 @@ class AuthUser extends React.Component {
 
         try {
             const result = await firebase.auth().signInWithPhoneNumber(value.trim(), this.state.recaptcha)
+
             this.setState({
                 confirmationResult: result,
                 phoneNumber: value,
@@ -57,26 +59,16 @@ class AuthUser extends React.Component {
         try {
             const resultUser = await this.state.confirmationResult.confirm(value.trim())
 
-            firebase.database().ref(`/users/${resultUser.user.uid}`).on('value', elem => {
-                if (!elem.val()) {
-                    firebase.database().ref(`/users/${resultUser.user.uid}`).set({
-                        id: resultUser.user.uid,
-                        name: 'TEST',
-                        avatar: null,
-                        currentDialogs: {
-                            test: 'test'
-                        }
-                    })
-                }
-            })
+            if (resultUser.additionalUserInfo.isNewUser) {
+                setUser(resultUser.user.uid, resultUser.user.phoneNumber)
+            }
 
             localStorage.setItem('userId', resultUser.user.uid)
             localStorage.setItem('userIsAuthorized', 'true')
             this.setState({ signInIsVisible: true, verificationCodeFormIsVisible: false })
             this.props.setAuthorizedUser(true)
         } catch (error) {
-            this.setState({ preloaderIsVisible: false })
-            this.setState({ isInvalidNumber: true })
+            this.setState({ isInvalidNumber: true }
         }
     }
 
@@ -93,7 +85,7 @@ class AuthUser extends React.Component {
             <div className={ classes.authorization_wrapper }>
                 <div className={ classes.authorization_content }>
                     <div className={ classes.logo }>
-                        <div className={ classes.logo_text }>MyMessenger</div>
+                        <div className={ classes.logo_text }>Quick</div>
                     </div>
                     <div className={ classes.auth_form_text }>
                         { this.state.signInIsVisible &&

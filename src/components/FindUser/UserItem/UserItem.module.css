@@ -1,0 +1,29 @@
+.user_container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  cursor: pointer;
+}
+.user_container > div {
+  margin-left: 20px;
+}
+.user_container:hover {
+  background-color: #e6fffa;
+}
+.user_container .user_avatar {
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.user_container .user_name {
+  margin-top: 13px;
+  font-weight: bold;
+}
+.user_container .user_phone_number {
+  margin-top: 10px;
+  font-size: 0.8em;
+}
+
+/*# sourceMappingURL=UserItem.module.cssmap */

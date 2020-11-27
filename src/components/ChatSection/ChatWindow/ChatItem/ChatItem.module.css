@@ -8,6 +8,7 @@
 }
 
 .user_photo {
+  border-radius: 50%;
   height: 42px;
   width: 42px;
 }

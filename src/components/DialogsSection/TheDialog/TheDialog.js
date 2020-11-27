@@ -3,7 +3,6 @@ import classes from "./TheDialog.module.sass";
 import { NavLink } from "react-router-dom";
 
 const TheDialog = ({ dialog, getLastMessage, onChangeCurrentDialog, currentDialog, getInterlocutor }) => {
-    console.log('RENDER');
     return (
         <NavLink to={`/${ dialog.dialogId }`}>
             <div onClick={ () => { onChangeCurrentDialog(dialog.dialogId) } } className={ classes.dialog_item }>

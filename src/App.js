@@ -2,7 +2,7 @@ import React from 'react';
 import './App.sass';
 import TheHeader from "./components/Header/TheHeader";
 import ChatSection from "./components/ChatSection/ChatSection";
-import UserDialogsContainer from "./components/DialogsSection/UserDialogsContainer";
+import UserDialogs from "./components/DialogsSection/UserDialogs";
 import AuthUser from "./components/AuthUser/AuthUser";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -37,8 +37,8 @@ class App extends React.Component {
                                         <div className="app_wrapper">
                                             <TheHeader/>
                                             <div className="main_content">
-                                                <UserDialogsContainer/>
-                                                <ChatSection/>
+                                                <UserDialogs />
+                                                <ChatSection />
                                             </div>
                                         </div>
                                 }

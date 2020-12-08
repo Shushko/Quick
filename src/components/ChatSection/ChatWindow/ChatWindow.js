@@ -1,141 +1,124 @@
-import React from 'react';
+import React, { useState, useEffect, useRef} from 'react';
+import { InView } from 'react-intersection-observer';
 import classes from './ChatWindow.module.sass';
 import ChatItem from "./ChatItem/ChatItem";
 import arrowDown from '../../../assets/arrow.png'
+import { togglePreloader } from "../../../redux/preloader";
+import { changeMessageStatus } from "../../../redux/dialogsData/dialogsDataActions";
+import { setIsNewUserMessage } from "../../../redux/sendNewMessage";
+import { connect } from "react-redux";
+import DialogPreloader from "../../../common/DialogPreloader/DialogPreloader";
 
-class ChatWindow extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            lastItemIsVisible: false
+
+const ChatWindow = ({ dialogsState, currentUser, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage }) => {
+    const LIMIT_UNREAD_MESSAGES = 5;
+    const chatStart = useRef();
+    const chatEnd = useRef();
+    const prevMessageUserId = useRef(null);
+    const lastReadMessageRef = useRef(null);
+    const prevCurrentChatId = useRef(null);
+    const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog));
+    const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
+
+    const scrollToEnd = (target) => target.current.scrollIntoView({ block: 'end' });
+    const smoothScrollDown = () => chatEnd.current.scrollIntoView({ block: "end", behavior: "smooth" });
+
+    useEffect(() => {
+        if (prevCurrentChatId.current !== currentChat.current.dialogId && lastReadMessageRef.current) {
+            currentChat.current.unreadMessages > LIMIT_UNREAD_MESSAGES ? scrollToEnd(lastReadMessageRef) : scrollToEnd(chatEnd);
+            prevCurrentChatId.current = currentChat.current.dialogId;
+            togglePreloader(false);
         }
-        this.currentVisibleChat = null
-        this.dialog = null
-        this.messageUserId = null
-        this.lastItem = null
-        this.messagesEnd = React.createRef()
-        this.observer = null
-        this.visibleElement = null
-        this.arrRefs = [];
-    }
+    }, [lastReadMessageRef.current]);
 
-    componentDidMount() {
-        if (this.dialog) { this.scrollToEnd() }
-    }
+    useEffect(() => {
+        isNewUserMessage && scrollToEnd(chatEnd);
+        setIsNewUserMessage(false);
+        const isNotNewChat = prevCurrentChatId.current === currentChat.current.dialogId;
+        isNotNewChat && lastMessageIsVisible && scrollToEnd(chatEnd);
+    }, [currentChat.current.messages]);
 
-    componentDidUpdate() {
-        this.arrRefs = this.arrRefs.filter(i => i.ref)
-        if (this.dialog && this.arrRefs.length > 0) {
-            this.observer = new IntersectionObserver(this.observerCbFn, { threshold: 1 })
-            this.setObserver()
-            this.scrollToEnd()
+    const getLastReadMessage = () => {
+        const reversedMessages = [...currentChat.current.messages].reverse();
+        return reversedMessages.find(message => !message.isRead ? message.userId === currentUser.id && message : message);
+    };
+
+    const observeChat = (inView, entry, messageItem, lastReadMessage, lastMessage) => {
+        if (lastReadMessage && messageItem.id === lastReadMessage.id) {
+            lastReadMessageRef.current = entry.target;
         }
-    }
+        if (messageItem.id === lastMessage.id) {
+            setLastMessageIsVisible(entry.isIntersecting);
+        }
+        if (entry.isIntersecting && !messageItem.isRead && messageItem.userId !== currentUser.id) {
+            changeMessageStatus(dialogsState.currentDialog, messageItem, true, true)
+        }
+    };
 
-    scrollToEnd = () => {
-        let isNewDialog = null
-        if (this.dialog.messages) {
-            isNewDialog = !this.dialog.messages.length || this.dialog.messages.every(i => i.userId !== this.props.currentUser.id)
+    const getUserChat = () => {
+        currentChat.current = dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog);
+        prevMessageUserId.current = null;
+        const chatMessages = currentChat.current.messages;
+        const chatMembers = currentChat.current.members;
+        const lastReadMessage = getLastReadMessage();
+        const lastMessage = chatMessages[chatMessages.length - 1];
+        const interlocutor = chatMembers.find(member => member.id !== currentUser.id);
+        if (!lastReadMessage) {
+            lastReadMessageRef.current = chatStart.current;
         }
 
-        if (this.currentVisibleChat === this.props.match.params.dialogId || isNewDialog) {
-            if (this.state.lastItemIsVisible) { this.messagesEnd.current.scrollIntoView({ block: 'end' }) }
-        }  else {
-            const arr = this.arrRefs.filter(i => i.message.isRead || (!i.message.isRead && i.message.userId === this.props.currentUser.id))
-            arr[arr.length - 1].ref.scrollIntoView({ block: 'end' })
-        }
-        this.currentVisibleChat = this.props.match.params.dialogId
-    }
+        return chatMessages.map(messageItem => {
+            const isSameMessageOwner = prevMessageUserId.current === messageItem.userId;
+            prevMessageUserId.current = messageItem.userId;
+            return (
+                <InView as="div" onChange={ (inView, entry) => observeChat(inView, entry, messageItem, lastReadMessage, lastMessage) } key={ messageItem.id }>
+                    <div>
+                        <ChatItem
+                            isSameMessageOwner={ isSameMessageOwner }
+                            avatar={ currentUser.id === messageItem.userId ? currentUser.avatar : interlocutor.avatar }
+                            name={ currentUser.id === messageItem.userId ? currentUser.name : interlocutor.name }
+                            messageItem={ messageItem }
+                            currentUserId={ currentUser.id }
+                        />
+                    </div>
+                </InView>
+            )
+        });
+    };
 
-    scrollDown = () => {
-        this.messagesEnd.current.scrollIntoView({ block: "end", behavior: "smooth" })
-    }
-
-    observerCbFn = entries => {
-        entries.forEach(entry => {
-            if (entry.target === this.lastItem.ref) {
-                if (entry.isIntersecting) {
-                    if (!this.state.lastItemIsVisible) { this.setState({ lastItemIsVisible: true }) }
-                } else {
-                    if (this.state.lastItemIsVisible) { this.setState({ lastItemIsVisible: false }) }
-                }
-            }
-            if (entry.isIntersecting) {
-                if (this.visibleElement !== entry.target) { this.visibleElement = entry.target } else { return }
-                const visibleMessage = this.arrRefs.find(item => item.ref === entry.target)
-                if (!visibleMessage.message.isRead && visibleMessage.message.userId !== this.props.currentUser.id) {
-                    this.observer.unobserve(entry.target)
-                    this.props.changeMessageStatus(visibleMessage.dialogId, visibleMessage.message, true, true)
-                }
-            }
-        })
-    }
-
-    setObserver = () => {
-        for (let item of this.arrRefs) {
-            if (item === this.arrRefs[this.arrRefs.length - 1]) {
-                this.lastItem = item
-            }
-            this.observer.observe(item.ref)
-        }
-    }
-
-    getUserChat = () => {
-        this.dialog = this.props.dialogsState.dialogs.find(dialog => dialog.dialogId === this.props.match.params.dialogId)
-        if (!this.dialog) { return [] }
-        const interlocutor = this.dialog.members.find(m => m.id !== this.props.currentUser.id)
-        const resultDialog = this.dialog.messages.map((item, index) => {
-            const chatItem =
-                <div key={ item.id } ref={ ref => {
-                    this.arrRefs[index] = {
-                        ref: ref,
-                        message: item,
-                        dialogId: this.dialog.dialogId
-                    }
-                } }>
-                    <ChatItem
-                        messageUserId={ this.messageUserId }
-                        item={ item }
-                        interlocutor={ interlocutor }
-                        currentUser={ this.props.currentUser }
-                        modifyTime={ this.modifyTime }
-                    />
-                </div>
-
-            this.messageUserId = item.userId
-            return chatItem
-        })
-
-        this.messageUserId = null
-        return resultDialog
-    }
-
-    render() {
-        return (
-            <div className={ classes.chats_window }>
-                {
-                    !this.props.match.params.dialogId ?
-                        <span className={ classes.start_text }>Select a dialog and start communication</span> :
-
-                        <div className={ classes.chat_wrapper }>
-                            { this.getUserChat() }
-                            <div className={ classes.end_block } ref={ this.messagesEnd }/>
-                        </div>
-                }
-
-                {
-                    !this.state.lastItemIsVisible && this.props.match.params.dialogId ?
-                        <div className={ classes.arrowDown_wrap }>
-                            {
-                                this.dialog && this.dialog.unreadMessages ?
-                                    <span className={ classes.sum_unread_messages }>{ this.dialog.unreadMessages }</span> : <div/>
-                            }
-                            <img src={ arrowDown } className={ classes.arrow_down } onClick={ this.scrollDown } alt=""/>
-                        </div> : <div/>
-                }
+    return (
+        <div className={ classes.chats_window }>
+            { preloader && <DialogPreloader/> }
+            <div className={ classes.chat_wrapper }>
+                <div ref={ chatStart }/>
+                { getUserChat() }
+                <div ref={ chatEnd }/>
             </div>
-        )
-    }
-}
 
-export default ChatWindow
+            {
+                !lastMessageIsVisible && !!currentChat.current.messages.length &&
+                <div className={ classes.arrowDown_wrap }>
+                    { !!currentChat.current.unreadMessages &&
+                    <span className={ classes.sum_unread_messages }>{ currentChat.current.unreadMessages }</span> }
+                    <img src={ arrowDown } className={ classes.arrow_down } onClick={ smoothScrollDown } alt=""/>
+                </div>
+            }
+        </div>
+    )
+};
+
+const mapStateToProps = (state) => ({
+    dialogsState: state.dialogsDataReducer,
+    currentUser: state.dialogsDataReducer.currentUser,
+    preloader: state.preloader.preloaderIsVisible,
+    isNewUserMessage: state.sendNewMessage.isNewUserMessage
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    changeMessageStatus: (dialogId, message, delivered, read) => dispatch(changeMessageStatus(dialogId, message, delivered, read)),
+    togglePreloader: value => dispatch(togglePreloader(value)),
+    setIsNewUserMessage: value => dispatch(setIsNewUserMessage(value))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow)

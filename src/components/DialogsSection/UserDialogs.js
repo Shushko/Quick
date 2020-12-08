@@ -4,8 +4,9 @@ import TheDialog from "./TheDialog/TheDialog";
 import moment from "moment";
 import { connect } from "react-redux";
 import { onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
+import { togglePreloader } from "../../redux/preloader";
 
-const UserDialogs = ({ dialogsData, onChangeCurrentDialog }) => {
+const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) => {
     const modifyMessage = (message) => {
         if (typeof (message) === 'string') {
             const VALIDLENGTH = 18;
@@ -32,6 +33,13 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog }) => {
         }
     };
 
+    const changeDialog = (dialog) => {
+        if (dialogsData.currentDialog !== dialog.dialogId) {
+            dialog.messages.length && togglePreloader(true);
+            onChangeCurrentDialog(dialog.dialogId);
+        }
+    };
+
     const getInterlocutor = (members) => members.find(m => m.id !== dialogsData.currentUser.id);
 
     return (
@@ -44,9 +52,9 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog }) => {
                                     <TheDialog
                                         dialog={ dialog }
                                         getLastMessage={ getLastMessage }
-                                        onChangeCurrentDialog={ onChangeCurrentDialog }
                                         currentDialog={ dialogsData.currentDialog }
                                         getInterlocutor={ getInterlocutor }
+                                        changeDialog={ changeDialog }
                                         key={ dialog.dialogId }
                                     />
                                 )
@@ -63,7 +71,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
+    onChangeCurrentDialog: (value) => dispatch(onChangeCurrentDialog(value)),
+    togglePreloader: (value) => dispatch(togglePreloader(value))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserDialogs)

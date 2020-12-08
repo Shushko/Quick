@@ -3,7 +3,7 @@ import SendMessagePanel from "./SendMessagePanel";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-const SendMessagePanelContainer = ({ dialogsData, addNewMessage }) => {
+const SendMessagePanelContainer = ({ dialogsData, addNewMessage, setIsNewUserMessage }) => {
     const [dialog, setDialog] = useState(null);
     const [interlocutor, setInterlocutor] = useState(null);
     useEffect(() => {
@@ -13,18 +13,21 @@ const SendMessagePanelContainer = ({ dialogsData, addNewMessage }) => {
             setDialog(dialog);
             setInterlocutor(interlocutor);
         }
-    });
+    } );
 
     const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== dialogsData.currentUser.id);
 
-    const onSubmit = (formData) => addNewMessage(
-        interlocutor.id,
-        uuidv4(),
-        dialogsData.currentDialog,
-        dialogsData.currentUser.id,
-        moment().format(),
-        formData.message
-    )
+    const onSubmit = (formData) => {
+        addNewMessage(
+            interlocutor.id,
+            uuidv4(),
+            dialogsData.currentDialog,
+            dialogsData.currentUser.id,
+            moment().format(),
+            formData.message
+        );
+        setIsNewUserMessage(true);
+    };
 
     return (
         <SendMessagePanel

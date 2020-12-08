@@ -5,7 +5,7 @@ import classes from './Preloader.module.sass'
 const Preloader = (props) => {
     return (
         <div className={classes.preloader_wrapper}>
-            <img src={preloader}/>
+            <img src={preloader} alt="loading..." />
         </div>
     )
 }

@@ -2,11 +2,10 @@ import React from "react";
 import classes from "./TheDialog.module.sass";
 import { NavLink } from "react-router-dom";
 
-const TheDialog = ({ dialog, getLastMessage, onChangeCurrentDialog, currentDialog, getInterlocutor }) => {
+const TheDialog = ({ dialog, getLastMessage, changeDialog, currentDialog, getInterlocutor }) => {
     return (
-        <NavLink to={`/${ dialog.dialogId }`}>
-            <div onClick={ () => { onChangeCurrentDialog(dialog.dialogId) } } className={ classes.dialog_item }>
-
+        <NavLink to={ `/${ dialog.dialogId }` }>
+            <div onClick={ () => changeDialog(dialog)} className={ classes.dialog_item }>
                 <div className={ dialog.dialogId === currentDialog ? classes.active_item : classes.item }>
                     <img src={ getInterlocutor(dialog.members).avatar } alt="avatar" />
                     <div className={ classes.dialog_description }>
@@ -26,7 +25,6 @@ const TheDialog = ({ dialog, getLastMessage, onChangeCurrentDialog, currentDialo
                         </div>
                     </div>
                 </div>
-
             </div>
         </NavLink>
     )

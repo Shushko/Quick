@@ -3,27 +3,27 @@ import classes from "./FindUser.module.sass"
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { Field, Form } from "react-final-form";
 import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
 import { addFoundUsers, searchUsers } from "../../redux/findUsers";
 import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
 import { toggleElementVisibility } from "../../redux/displayMenu";
-import { composeValidators, mustBePhoneNumber } from "../../common/Validators";
+import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
 
 const FindUser = (props) => {
+
     const addNewDialog = (interlocutorId) => {
-        props.toggleElementVisibility(false, false, false)
-        const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null)
+        props.toggleElementVisibility(false, false, false);
+        const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null);
         if (hasDialog) {
-            props.onChangeCurrentDialog(hasDialog.dialogId)
+            props.onChangeCurrentDialog(hasDialog.dialogId);
             props.history.push(`/${ hasDialog.dialogId }`)
         } else {
-            const dialogId = uuidv4()
+            const dialogId = uuidv4();
             props.createNewDialog(dialogId, props.currentUser.id, interlocutorId)
         }
-    }
+    };
 
     const onChangeField = (value) => {
         const VALID_LENGTH = 7;
@@ -39,21 +39,7 @@ const FindUser = (props) => {
             return props.foundUsers.map(item => item.id === props.currentUser.id ? '' :
                 <UserItem user={ item } addNewDialog={ addNewDialog } key={ item.id } />)
         }
-    }
-
-    // const Textarea = ({ input, meta, ...rest }) => {
-    //     return (
-    //         <div>
-    //             <textarea { ...input } { ...rest } onChange={(e) => {
-    //                 input.onChange(e);
-    //                 onChangeField(e.currentTarget.value)
-    //             }} />
-    //             <div className={ classes.error_message }>
-    //                 { meta.error && <span>{ meta.error }</span> }
-    //             </div>
-    //         </div>
-    //     )
-    // }
+    };
 
     return (
         <div className={ classes.find_user_menu_container }>
@@ -65,24 +51,13 @@ const FindUser = (props) => {
             </div>
             <div className={ classes.search_form }>
 
-                <InputForm onChangeField={ onChangeField } placeholder={ "Search by phone number..." }/>
-
-                {/*<Form onSubmit={ (data) => onChangeField(data.search) }>*/}
-                {/*    { ({ handleSubmit }) => (*/}
-                {/*        <form onSubmit={ handleSubmit } >*/}
-                {/*            <Field component={ Textarea } name={ "search" }*/}
-                {/*                   validate={ composeValidators(mustBePhoneNumber) }*/}
-                {/*                   onKeyDown={ e => {*/}
-                {/*                       if (e.key === 'Enter') {*/}
-                {/*                           e.preventDefault()*/}
-                {/*                           handleSubmit()*/}
-                {/*                       }*/}
-                {/*                   } }*/}
-                {/*                   placeholder="Search by phone number..."*/}
-                {/*            />*/}
-                {/*        </form>*/}
-                {/*    ) }*/}
-                {/*</Form>*/}
+                <InputForm
+                    formType={ 'find_user' }
+                    inputName={ 'search' }
+                    onSubmit={ onChangeField }
+                    validators={ [mustBePhoneNumber] }
+                    placeholder={ "Search by phone number..." }
+                />
             </div>
             <div className={ classes.found_users_container }>
                 { getUserItems() }

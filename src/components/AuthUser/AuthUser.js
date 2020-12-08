@@ -68,7 +68,7 @@ class AuthUser extends React.Component {
             this.setState({ signInIsVisible: true, verificationCodeFormIsVisible: false })
             this.props.setAuthorizedUser(true)
         } catch (error) {
-            this.setState({ isInvalidNumber: true }
+            this.setState({ isInvalidNumber: true })
         }
     }
 

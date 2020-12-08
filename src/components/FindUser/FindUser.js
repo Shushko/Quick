@@ -10,83 +10,85 @@ import { addFoundUsers, searchUsers } from "../../redux/findUsers";
 import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
 import { toggleElementVisibility } from "../../redux/displayMenu";
 import { composeValidators, mustBePhoneNumber } from "../../common/Validators";
+import InputForm from "../../common/InputForm/InputForm";
 
-class FindUser extends React.Component {
-    addNewDialog = (interlocutorId) => {
-        this.props.toggleElementVisibility(false, false, false)
-        const hasDialog = this.props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null)
+const FindUser = (props) => {
+    const addNewDialog = (interlocutorId) => {
+        props.toggleElementVisibility(false, false, false)
+        const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null)
         if (hasDialog) {
-            this.props.onChangeCurrentDialog(hasDialog.dialogId)
-            this.props.history.push(`/${ hasDialog.dialogId }`)
+            props.onChangeCurrentDialog(hasDialog.dialogId)
+            props.history.push(`/${ hasDialog.dialogId }`)
         } else {
             const dialogId = uuidv4()
-            this.props.createNewDialog(dialogId, this.props.currentUser.id, interlocutorId)
+            props.createNewDialog(dialogId, props.currentUser.id, interlocutorId)
         }
     }
 
-    onChangeField = (value) => {
-        const VALIDLENGTH = 7
-        if (value && value.length > VALIDLENGTH) {
-            this.props.searchUsers(value)
+    const onChangeField = (value) => {
+        const VALID_LENGTH = 7;
+        if (value && value.length > VALID_LENGTH) {
+            props.searchUsers(value)
         } else {
-            this.props.foundUsers.length && this.props.addFoundUsers([])
+            props.foundUsers.length && props.addFoundUsers([])
+        }
+    };
+
+    const getUserItems = () => {
+        if (props.foundUsers.length) {
+            return props.foundUsers.map(item => item.id === props.currentUser.id ? '' :
+                <UserItem user={ item } addNewDialog={ addNewDialog } key={ item.id } />)
         }
     }
 
-    getUserItems = () => {
-        if (this.props.foundUsers.length) {
-            return this.props.foundUsers.map(item => item.id === this.props.currentUser.id ? '' :
-                <UserItem user={ item } addNewDialog={ this.addNewDialog } key={ item.id } />)
-        }
-    }
+    // const Textarea = ({ input, meta, ...rest }) => {
+    //     return (
+    //         <div>
+    //             <textarea { ...input } { ...rest } onChange={(e) => {
+    //                 input.onChange(e);
+    //                 onChangeField(e.currentTarget.value)
+    //             }} />
+    //             <div className={ classes.error_message }>
+    //                 { meta.error && <span>{ meta.error }</span> }
+    //             </div>
+    //         </div>
+    //     )
+    // }
 
-    Textarea = ({ input, meta, ...rest }) => {
-        return (
-            <div>
-                <textarea { ...input } { ...rest } onChange={(e) => {
-                    input.onChange(e);
-                    this.onChangeField(e.currentTarget.value)
-                }} />
-                <div className={ classes.error_message }>
-                    { meta.error && <span>{ meta.error }</span> }
-                </div>
+    return (
+        <div className={ classes.find_user_menu_container }>
+            <div className={ classes.find_user_header }>
+                <span>Find user</span>
+                <button className={ classes.close_button } onClick={ () => props.toggleElementVisibility(false, false, false) }>
+                    Close
+                </button>
             </div>
-        )
-    }
+            <div className={ classes.search_form }>
 
-    render() {
-        return (
-            <div className={ classes.find_user_menu_container }>
-                <div className={ classes.find_user_header }>
-                    <span>Find user</span>
-                    <button className={ classes.close_button } onClick={ () => this.props.toggleElementVisibility(false, false, false) }>
-                        Close
-                    </button>
-                </div>
-                <div className={ classes.search_form }>
-                    <Form onSubmit={ (data) => this.onChangeField(data.search) }>
-                        { ({ handleSubmit }) => (
-                            <form onSubmit={ handleSubmit } >
-                                <Field component={ this.Textarea } name={ "search" }
-                                       validate={ composeValidators(mustBePhoneNumber) }
-                                       onKeyDown={ e => {
-                                           if (e.key === 'Enter') {
-                                               e.preventDefault()
-                                               handleSubmit()
-                                           }
-                                       } }
-                                       placeholder="Search by phone number..."
-                                />
-                            </form>
-                        ) }
-                    </Form>
-                </div>
-                <div className={ classes.found_users_container }>
-                    { this.getUserItems() }
-                </div>
+                <InputForm onChangeField={ onChangeField } placeholder={ "Search by phone number..." }/>
+
+                {/*<Form onSubmit={ (data) => onChangeField(data.search) }>*/}
+                {/*    { ({ handleSubmit }) => (*/}
+                {/*        <form onSubmit={ handleSubmit } >*/}
+                {/*            <Field component={ Textarea } name={ "search" }*/}
+                {/*                   validate={ composeValidators(mustBePhoneNumber) }*/}
+                {/*                   onKeyDown={ e => {*/}
+                {/*                       if (e.key === 'Enter') {*/}
+                {/*                           e.preventDefault()*/}
+                {/*                           handleSubmit()*/}
+                {/*                       }*/}
+                {/*                   } }*/}
+                {/*                   placeholder="Search by phone number..."*/}
+                {/*            />*/}
+                {/*        </form>*/}
+                {/*    ) }*/}
+                {/*</Form>*/}
             </div>
-        )
-    }
+            <div className={ classes.found_users_container }>
+                { getUserItems() }
+            </div>
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => ({

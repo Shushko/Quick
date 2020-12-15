@@ -7,10 +7,11 @@ import { togglePreloader } from "../../../redux/preloader";
 import { changeMessageStatus } from "../../../redux/dialogsData/dialogsDataActions";
 import { setIsNewUserMessage } from "../../../redux/sendNewMessage";
 import { connect } from "react-redux";
-import DialogPreloader from "../../../common/DialogPreloader/DialogPreloader";
+import Preloader from "../../../common/Preloader/Preloader";
 
 
-const ChatWindow = ({ dialogsState, currentUser, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage }) => {
+const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage }) => {
+    const currentUser = dialogsState.currentUser;
     const LIMIT_UNREAD_MESSAGES = 5;
     const chatStart = useRef();
     const chatEnd = useRef();
@@ -88,7 +89,7 @@ const ChatWindow = ({ dialogsState, currentUser, changeMessageStatus, preloader,
 
     return (
         <div className={ classes.chats_window }>
-            { preloader && <DialogPreloader/> }
+            { preloader && <Preloader isChatWindow={ true }/> }
             <div className={ classes.chat_wrapper }>
                 <div ref={ chatStart }/>
                 { getUserChat() }
@@ -109,7 +110,6 @@ const ChatWindow = ({ dialogsState, currentUser, changeMessageStatus, preloader,
 
 const mapStateToProps = (state) => ({
     dialogsState: state.dialogsDataReducer,
-    currentUser: state.dialogsDataReducer.currentUser,
     preloader: state.preloader.preloaderIsVisible,
     isNewUserMessage: state.sendNewMessage.isNewUserMessage
 });

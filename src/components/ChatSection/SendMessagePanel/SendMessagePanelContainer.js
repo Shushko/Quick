@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import SendMessagePanel from "./SendMessagePanel";
-import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
 
 const SendMessagePanelContainer = ({ dialogsData, addNewMessage, setIsNewUserMessage }) => {
     const [dialog, setDialog] = useState(null);
@@ -17,24 +15,13 @@ const SendMessagePanelContainer = ({ dialogsData, addNewMessage, setIsNewUserMes
 
     const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== dialogsData.currentUser.id);
 
-    const onSubmit = (formData) => {
-        addNewMessage(
-            interlocutor.id,
-            uuidv4(),
-            dialogsData.currentDialog,
-            dialogsData.currentUser.id,
-            moment().format(),
-            formData.message
-        );
-        setIsNewUserMessage(true);
-    };
-
     return (
         <SendMessagePanel
             currentUser={ dialogsData.currentUser }
             interlocutor={ interlocutor }
             currentDialog={ dialogsData.currentDialog }
-            onSubmit={ onSubmit }
+            setIsNewUserMessage={ setIsNewUserMessage }
+            addNewMessage={ addNewMessage }
         />
     )
 }

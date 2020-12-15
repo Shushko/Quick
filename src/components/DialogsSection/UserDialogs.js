@@ -43,26 +43,23 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) =>
     const getInterlocutor = (members) => members.find(m => m.id !== dialogsData.currentUser.id);
 
     return (
-        <>
-            { !dialogsData.currentUser ? <div/> :
-                <div className={ classes.dialogs_container }>
-                    <div className={ classes.dialogs }>
-                        { dialogsData.dialogs.map(dialog => {
-                                return (
-                                    <TheDialog
-                                        dialog={ dialog }
-                                        getLastMessage={ getLastMessage }
-                                        currentDialog={ dialogsData.currentDialog }
-                                        getInterlocutor={ getInterlocutor }
-                                        changeDialog={ changeDialog }
-                                        key={ dialog.dialogId }
-                                    />
-                                )
-                            }
-                        ) }
-                    </div>
-                </div> }
-        </>
+        <div className={ classes.dialogs_container }>
+            <div className={ classes.dialogs }>
+                { dialogsData.dialogs.map(dialog => {
+                        return (
+                            <TheDialog
+                                dialog={ dialog }
+                                getLastMessage={ getLastMessage }
+                                currentDialog={ dialogsData.currentDialog }
+                                getInterlocutor={ getInterlocutor }
+                                changeDialog={ changeDialog }
+                                key={ dialog.dialogId }
+                            />
+                        )
+                    }
+                ) }
+            </div>
+        </div>
     )
 }
 

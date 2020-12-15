@@ -14,7 +14,7 @@ import FindUser from "./components/FindUser/FindUser";
 
 const App = (props) => {
 
-    useEffect(() => props.onChangeCurrentDialog(props.match.params.dialogId), []);
+    useEffect(() => props.onChangeCurrentDialog(props.match.params.dialogId));
 
     return (
         <div className="app_container">
@@ -23,29 +23,25 @@ const App = (props) => {
                 onClick={ () => props.toggleElementVisibility(false, false, false) }
             />
             { props.displayMenu.findUserMenuIsVisible && <FindUser/> }
-            <>
-                {
-                    !props.userIsAuthorized ? <AuthUser/> :
-                        <>
-                            { props.setDialogs(props.history) }
-                            { !props.appIsInitialized ? <Preloader/> :
-                                <div className="app_wrapper">
-                                    <TheHeader/>
-                                    <div className="main_content">
-                                        <UserDialogs/>
-                                        <ChatSection/>
-                                    </div>
-                                </div> }
-                        </>
-                }
-            </>
+            { props.userIsAuthorized ?
+                    <>
+                        { props.setDialogs(props.history) }
+                        { !props.appIsInitialized ? <Preloader/> :
+                            <div className="app_wrapper">
+                                <TheHeader/>
+                                <div className="main_content">
+                                    <UserDialogs/>
+                                    <ChatSection/>
+                                </div>
+                            </div> }
+                    </> : <AuthUser/> }
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
     appIsInitialized: state.dialogsDataReducer.appIsInitialized,
-    userIsAuthorized: state.authUserReducer.userIsAuthorized,
+    userIsAuthorized: state.authUser.userIsAuthorized,
     displayMenu: state.displayMenu
 })
 

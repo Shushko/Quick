@@ -7,12 +7,15 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { addNewMessage } from "../../redux/dialogsData/dialogsDataActions";
 import { setIsNewUserMessage } from "../../redux/sendNewMessage";
-import StartText from "../../common/StartText";
 
 const ChatSection = (props) => {
     return (
         <div className={ classes.chat_container }>
-            { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ? <ChatWindow/> : <StartText />}
+            { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ? <ChatWindow/> :
+                <div className={ classes.startTextWrap }>
+                    <span className={ classes.startTextStyle }>Select a dialog and start communication</span>
+                </div> }
+
             { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ? <SendMessagePanelContainer { ...props } /> : ''}
         </div>
     )

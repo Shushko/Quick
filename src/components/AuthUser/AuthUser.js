@@ -4,9 +4,9 @@ import * as firebase from "firebase";
 import { connect } from "react-redux";
 import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
-import { setAuthorizedUser } from "../../redux/authUser/authUserActions";
+import { setAuthorizedUser } from "../../redux/authUser";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
-import { setUser } from "../../api/api";
+
 
 const AuthUser = (props) => {
     const [preloaderIsVisible, setPreloaderIsVisible] = useState(false);
@@ -43,31 +43,27 @@ const AuthUser = (props) => {
         } finally {
             setPreloaderIsVisible(false);
         }
-    }
+    };
 
     const checkVerificationCode = async (value) => {
         setPreloaderIsVisible(true);
         setIsInvalidNumber(false);
         try {
             const resultUser = await confirmationResult.confirm(value.trim());
-            resultUser.additionalUserInfo.isNewUser && setUser(resultUser.user.uid, resultUser.user.phoneNumber);
-
-            localStorage.setItem('userId', resultUser.user.uid);
-            localStorage.setItem('userIsAuthorized', 'true');
             setSignInIsVisible(true);
             setVerificationCodeFormIsVisible(false);
-            props.setAuthorizedUser(true)
+            props.setAuthorizedUser(resultUser.additionalUserInfo.isNewUser, resultUser.user.uid, resultUser.user.phoneNumber)
         } catch (e) {
             setIsInvalidNumber(true);
             setPreloaderIsVisible(false);
         }
-    }
+    };
 
     const editNumberForm = () => {
         setNumberFormIsVisible(true);
         setVerificationCodeFormIsVisible(false);
         setIsInvalidNumber(false);
-    }
+    };
 
         return (
             <div className={ classes.authorization_wrapper }>
@@ -125,10 +121,10 @@ const AuthUser = (props) => {
                 </div>
             </div>
         )
-    }
+    };
 
 const mapDispatchToProps = (dispatch) => ({
-    setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) }
-})
+    setAuthorizedUser: (isNewUser, userId, userPhoneNumber) => dispatch(setAuthorizedUser(isNewUser, userId, userPhoneNumber))
+});
 
 export default connect(null, mapDispatchToProps)(AuthUser)

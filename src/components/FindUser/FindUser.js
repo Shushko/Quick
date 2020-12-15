@@ -35,8 +35,8 @@ const FindUser = (props) => {
 
     const getUserItems = () => {
         if (props.foundUsers.length) {
-            return props.foundUsers.map(item => item.id === props.currentUser.id ? '' :
-                <UserItem user={ item } addNewDialog={ addNewDialog } key={ item.id } />)
+            const filteredFoundUsers = props.foundUsers.filter(item => item.id !== props.currentUser.id);
+            return filteredFoundUsers.map(item => <UserItem user={ item } addNewDialog={ addNewDialog } key={ item.id } />)
         }
     }
 

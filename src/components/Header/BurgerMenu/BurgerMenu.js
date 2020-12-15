@@ -7,7 +7,7 @@ import exit from '../../../assets/exit.png'
 import create from '../../../assets/create.png'
 import { toggleElementVisibility } from "../../../redux/displayMenu";
 import { logOutUser } from "../../../redux/dialogsData/dialogsDataActions";
-import { setAuthorizedUser } from "../../../redux/authUser/authUserActions";
+import { setUserIsAuthorized } from "../../../redux/authUser";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 
@@ -18,7 +18,7 @@ const BurgerMenu = (props) => {
         localStorage.removeItem('userId')
         props.toggleElementVisibility(false, false, false)
         props.logOutUser()
-        props.setAuthorizedUser(false)
+        props.setUserIsAuthorized(false)
         props.history.push(`/`)
     }
 
@@ -64,7 +64,7 @@ const mapDispatchToProps = (dispatch) => ({
     toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
         dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
     },
-    setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) },
+    setUserIsAuthorized: (value) => { dispatch(setUserIsAuthorized(value)) },
     logOutUser: () => dispatch(logOutUser())
 })
 

@@ -7,53 +7,51 @@ import exit from '../../../assets/exit.png'
 import create from '../../../assets/create.png'
 import { toggleElementVisibility } from "../../../redux/displayMenu";
 import { logOutUser } from "../../../redux/dialogsData/dialogsDataActions";
-import { setAuthorizedUser } from "../../../redux/authUser/authUserActions";
+import { setUserIsAuthorized } from "../../../redux/authUser";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 
-class BurgerMenu extends React.Component {
+const BurgerMenu = (props) => {
 
-    logOutUser = () => {
+    const logOutUser = () => {
         localStorage.removeItem('userIsAuthorized')
         localStorage.removeItem('userId')
-        this.props.toggleElementVisibility(false, false, false)
-        this.props.logOutUser()
-        this.props.setAuthorizedUser(false)
-        this.props.history.push(`/`)
+        props.toggleElementVisibility(false, false, false)
+        props.logOutUser()
+        props.setUserIsAuthorized(false)
+        props.history.push(`/`)
     }
 
-    render() {
-        return (
-            <div className={ classes.menu_container }>
-                <div
-                    onClick={ () => this.props.toggleElementVisibility(!this.props.menuIsVisible, false, !this.props.menuIsVisible) }
-                    className={ classes.menu_button }
-                >
-                    <img src={ button } alt="Menu" />
+    return (
+        <div className={ classes.menu_container }>
+            <div
+                onClick={ () => props.toggleElementVisibility(!props.menuIsVisible, false, !props.menuIsVisible) }
+                className={ classes.menu_button }
+            >
+                <img src={ button } alt="Menu" />
+            </div>
+
+            { props.currentUser &&
+            <div className={ props.menuIsVisible ? classes.menu_active : classes.menu }>
+                <div className={ classes.header }>
+                    <img src={ props.currentUser.avatar || ava } alt="avatar"/>
+                    <div className={ classes.profileInfo }>
+                        <span className={ classes.user_name }>{ props.currentUser.name }</span>
+                    </div>
                 </div>
 
-                { this.props.currentUser &&
-                    <div className={ this.props.menuIsVisible ? classes.menu_active : classes.menu }>
-                        <div className={ classes.header }>
-                            <img src={ this.props.currentUser.avatar || ava } alt="avatar"/>
-                            <div className={ classes.profileInfo }>
-                                <span className={ classes.user_name }>{ this.props.currentUser.name }</span>
-                            </div>
-                        </div>
-
-                        <div className={ classes.menu_item } onClick={ () => this.props.toggleElementVisibility(false, true, true) }>
-                            <img src={ create }/>
-                            <span>Find User</span>
-                        </div>
-                        <div className={ classes.menu_item } onClick={ this.logOutUser }>
-                            <img src={ exit }/>
-                            <span>Log Out</span>
-                        </div>
-                    </div>
-                }
+                <div className={ classes.menu_item } onClick={ () => props.toggleElementVisibility(false, true, true) }>
+                    <img src={ create }/>
+                    <span>Find User</span>
+                </div>
+                <div className={ classes.menu_item } onClick={ logOutUser }>
+                    <img src={ exit }/>
+                    <span>Log Out</span>
+                </div>
             </div>
-        )
-    }
+            }
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => ({
@@ -66,7 +64,7 @@ const mapDispatchToProps = (dispatch) => ({
     toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
         dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
     },
-    setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) },
+    setUserIsAuthorized: (value) => { dispatch(setUserIsAuthorized(value)) },
     logOutUser: () => dispatch(logOutUser())
 })
 

@@ -6,9 +6,9 @@ import store from "./redux/store";
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Route } from "react-router-dom";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 
 firebase.initializeApp({
     apiKey: "AIzaSyAmHQmxeKcqcreCehBBXMtQdcc755ciDBs",
@@ -18,19 +18,19 @@ firebase.initializeApp({
     storageBucket: "mymessenger-50d8e.appspot.com",
     messagingSenderId: "495625166359",
     appId: "1:495625166359:web:2569d80a5efaf76774c652"
-})
+});
 
-    ReactDOM.render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <Provider store={store}>
-                    <Route path="/:dialogId?">
-                        <App />
-                    </Route>
+ReactDOM.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <Route path="/:dialogId?">
+                <Provider store={ store }>
+                    <App/>
                 </Provider>
-            </BrowserRouter>
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
+            </Route>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
 serviceWorker.unregister();

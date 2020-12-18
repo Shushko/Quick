@@ -2,10 +2,10 @@ import React from "react";
 import preloader from '../../assets/preloader/Spinner-1s-200px.svg';
 import classes from './Preloader.module.sass'
 
-const Preloader = (props) => {
+const Preloader = ({ isChatWindow }) => {
     return (
-        <div className={classes.preloader_wrapper}>
-            <img src={preloader}/>
+        <div className={ isChatWindow ? classes.chat_window_preloader_wrapper : classes.preloader_wrapper }>
+            <img className={ classes.spinner } src={ preloader } alt="loading..." />
         </div>
     )
 }

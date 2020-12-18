@@ -16,8 +16,7 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     const chatStart = useRef();
     const chatEnd = useRef();
     const prevMessageUserId = useRef(null);
-    const [lastReadMessageRef, setLastReadMessageRef] = useState(null)
-    // const lastReadMessageRef = useRef(null);
+    const [lastReadMessageRef, setLastReadMessageRef] = useState(null);
     const prevCurrentChatId = useRef(null);
     const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog));
     const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
@@ -48,7 +47,6 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     const observeChat = (inView, entry, messageItem, lastReadMessage, lastMessage) => {
         if (lastReadMessage && messageItem.id === lastReadMessage.id) {
             lastReadMessageRef !== entry.target && setLastReadMessageRef(entry.target)
-            // lastReadMessageRef.current = entry.target;
         }
         if (messageItem.id === lastMessage.id) {
             setLastMessageIsVisible(entry.isIntersecting);
@@ -68,7 +66,6 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
         const interlocutor = chatMembers.find(member => member.id !== currentUser.id);
         if (!lastReadMessage) {
             lastReadMessageRef !== chatStart.current && setLastReadMessageRef(chatStart.current)
-            // lastReadMessageRef.current = chatStart.current;
         }
 
         return chatMessages.map(messageItem => {

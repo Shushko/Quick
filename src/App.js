@@ -26,14 +26,14 @@ const App = (props) => {
             { props.userIsAuthorized ?
                     <>
                         { !props.appIsInitialized && props.setDialogs(props.history) }
-                        { !props.appIsInitialized ? <Preloader/> :
+                        { props.appIsInitialized ?
                             <div className="app_wrapper">
                                 <TheHeader/>
                                 <div className="main_content">
                                     <UserDialogs/>
                                     <ChatSection/>
                                 </div>
-                            </div> }
+                            </div> : <Preloader/> }
                     </> : <AuthUser/> }
         </div>
     )

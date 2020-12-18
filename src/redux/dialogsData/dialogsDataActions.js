@@ -9,6 +9,7 @@ import {
     updateMessage,
     addMessage
 } from "../../api/api";
+import { setUserIsAuthorized } from "../authUser";
 
 const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED'
 const SET_DIALOGS = 'SET_DIALOGS'
@@ -203,6 +204,8 @@ export const logOutUser = () => {
         dispatch(clearDialogs())
         dispatch(setCurrentUser(null))
         dispatch(onChangeCurrentDialog(null))
+        dispatch(setUserIsAuthorized(false))
+        dispatch(toggleAppIsInit(false))
     }
 }
 

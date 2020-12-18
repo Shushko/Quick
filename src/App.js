@@ -25,7 +25,7 @@ const App = (props) => {
             { props.displayMenu.findUserMenuIsVisible && <FindUser/> }
             { props.userIsAuthorized ?
                     <>
-                        { props.setDialogs(props.history) }
+                        { !props.appIsInitialized && props.setDialogs(props.history) }
                         { !props.appIsInitialized ? <Preloader/> :
                             <div className="app_wrapper">
                                 <TheHeader/>

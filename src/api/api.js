@@ -1,14 +1,66 @@
 import firebase from "firebase";
+import axios from 'axios'
 
-export const getUser = (userId) => firebase.database().ref(`/users/${ userId }`).once("value")
+const getUrl = (endPoint, params = '') => {
+    const URL = 'https://mymessenger-50d8e.firebaseio.com';
+    const SECRET_CODE = 'rHbFJhNmq7pgFtEaBz1yR6DwOyGOTVIjNRAr8hjM';
+    return `${ URL }/${ endPoint }/${ params }.json?auth=${ SECRET_CODE }`
+};
 
-export const setUser = (userId, userPhoneNumber) => firebase.database().ref(`/users/${ userId }`)
-    .set({
-        id: userId,
-        name: '',
-        phoneNumber: userPhoneNumber,
-        avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
+export const getDialog = (dialogId) => axios.get(getUrl('dialogs', dialogId)).then(response => response.data);
+
+export const getUser = (userId) => axios.get(getUrl('users', userId)).then(response => response.data);
+
+export const createCurrentDialogs = (userId, dialogId, userHasCurrentDialogs) => {
+    const url = getUrl('users', `${ userId }/currentDialogs`);
+    const objTemp = { [dialogId]: dialogId };
+    userHasCurrentDialogs ?
+        axios.patch(url, objTemp).catch(e => console.log(e)) :
+        axios.put(url, objTemp).catch(e => console.log(e))
+};
+
+export const createDialog = async (key, currentUserId, interlocutorId) => {
+    return await axios.put(getUrl('dialogs', key), {
+        id: key,
+        members: { [currentUserId]: currentUserId, [interlocutorId]: interlocutorId }
     })
+        .catch(e => console.log(e))
+};
+
+export const addMessage = (dialogId, messageId, time, inputValue, userId, dialogHasContent) => {
+    const url = getUrl('dialogs', `${ dialogId }/content`);
+    const messTemp = {
+        [messageId]:{
+            id: messageId,
+            time: time,
+            message: inputValue,
+            isDelivered: false,
+            isRead: false,
+            userId: userId
+        }
+    };
+    dialogHasContent ?
+        axios.patch(url, messTemp).catch(e => console.log(e)) :
+        axios.put(url, messTemp).catch(e => console.log(e))
+};
+
+export const updateMessage = (dialogId, messageId, delivered, read) => {
+    axios.patch(getUrl('dialogs', `${ dialogId }/content/${ messageId }`), {
+        isDelivered: delivered,
+        isRead: read
+    })
+        .catch(e => console.log(e));
+};
+
+export const setUser = (userId, userPhoneNumber) => {
+    firebase.database().ref(`/users/${ userId }`)
+        .set({
+            id: userId,
+            name: '',
+            phoneNumber: userPhoneNumber,
+            avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
+        })
+};
 
 export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
     .orderByChild('phoneNumber')
@@ -16,43 +68,11 @@ export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
     .endAt(value + "\uf8ff")
     .once('value')
 
-export const getDialog = (key) => firebase.database().ref(`/dialogs/${ key }`).once("value")
+export const getRefCurrentDialogs = (userId) => firebase.database().ref(`/users/${ userId }/currentDialogs`);
 
-export const getRefDialog = (key) => firebase.database().ref(`/dialogs/${ key }`)
+export const getRefDialog = (key) => firebase.database().ref(`/dialogs/${ key }`);
 
-export const getMember = (key) => firebase.database().ref(`/users/${ key }`).once("value").then(item => item.val())
 
-export const addMessage = (dialogId, messageId, time, inputValue, userId, isSet) => {
-    const refTemp = firebase.database().ref(`dialogs/${ dialogId }/content/${ messageId }`)
-    const messTemp = {
-        id: messageId,
-        time: time,
-        message: inputValue,
-        isDelivered: false,
-        isRead: false,
-        userId: userId
-    }
 
-    isSet ? refTemp.set(messTemp).catch(error => console.log(error)) : refTemp.update(messTemp).catch(error => console.log(error))
-}
 
-export const updateMessage = (dialogId, messageId, delivered, read) => firebase.database().ref(`dialogs/${ dialogId }/content/${ messageId }`)
-    .update({
-        isDelivered: delivered,
-        isRead: read
-    })
-    .catch(error => console.log(error))
-
-export const getRefCurrentDialogs = (userId) => firebase.database().ref(`/users/${ userId }/currentDialogs`)
-
-export const createCurrentDialogs = (userId, dialogId, isSet) => {
-    const refTemp = firebase.database().ref(`/users/${ userId }/currentDialogs`)
-    const objTemp = { [dialogId]: dialogId }
-    isSet ? refTemp.set(objTemp).catch(error => console.log(error)) : refTemp.update(objTemp).catch(error => console.log(error))
-}
-
-export const createDialog = (key, currentUserId, interlocutorId) => firebase.database().ref(`/dialogs/${ key }`).set({
-    id: key,
-    members: { [currentUserId]: currentUserId, [interlocutorId]: interlocutorId }
-})
 

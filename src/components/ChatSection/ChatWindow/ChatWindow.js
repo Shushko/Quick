@@ -16,7 +16,8 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     const chatStart = useRef();
     const chatEnd = useRef();
     const prevMessageUserId = useRef(null);
-    const lastReadMessageRef = useRef(null);
+    const [lastReadMessageRef, setLastReadMessageRef] = useState(null)
+    // const lastReadMessageRef = useRef(null);
     const prevCurrentChatId = useRef(null);
     const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog));
     const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
@@ -25,12 +26,12 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     const smoothScrollDown = () => chatEnd.current.scrollIntoView({ block: "end", behavior: "smooth" });
 
     useEffect(() => {
-        if (prevCurrentChatId.current !== currentChat.current.dialogId && lastReadMessageRef.current) {
+        if (prevCurrentChatId.current !== currentChat.current.dialogId && lastReadMessageRef) {
             currentChat.current.unreadMessages > LIMIT_UNREAD_MESSAGES ? scrollToEnd(lastReadMessageRef) : scrollToEnd(chatEnd);
             prevCurrentChatId.current = currentChat.current.dialogId;
             togglePreloader(false);
         }
-    }, [lastReadMessageRef.current]);
+    }, [lastReadMessageRef]);
 
     useEffect(() => {
         isNewUserMessage && scrollToEnd(chatEnd);
@@ -46,7 +47,8 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
 
     const observeChat = (inView, entry, messageItem, lastReadMessage, lastMessage) => {
         if (lastReadMessage && messageItem.id === lastReadMessage.id) {
-            lastReadMessageRef.current = entry.target;
+            lastReadMessageRef !== entry.target && setLastReadMessageRef(entry.target)
+            // lastReadMessageRef.current = entry.target;
         }
         if (messageItem.id === lastMessage.id) {
             setLastMessageIsVisible(entry.isIntersecting);
@@ -65,7 +67,8 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
         const lastMessage = chatMessages[chatMessages.length - 1];
         const interlocutor = chatMembers.find(member => member.id !== currentUser.id);
         if (!lastReadMessage) {
-            lastReadMessageRef.current = chatStart.current;
+            lastReadMessageRef !== chatStart.current && setLastReadMessageRef(chatStart.current)
+            // lastReadMessageRef.current = chatStart.current;
         }
 
         return chatMessages.map(messageItem => {

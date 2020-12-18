@@ -4,6 +4,7 @@ import ava from '../../../assets/defaultAvatar/ava.jpg'
 import InputForm from "../../../common/InputForm/InputForm";
 
 const SendMessagePanel = (props) => {
+
     return (
         <div className={ classes.send_message_panel_wrap }>
             <div className={ classes.send_message_panel }>
@@ -12,9 +13,10 @@ const SendMessagePanel = (props) => {
                 <div className={ classes.send_message_form }>
                     <InputForm
                         formType={ 'send_message_panel' }
-                        inputName={ 'message' }
+                        inputName={ props.currentDialog }
                         onSubmit={ props.onSubmit }
                         placeholder={ "Type a message..." }
+                        currentDialogId={ props.currentDialog }
                     />
                 </div>
 

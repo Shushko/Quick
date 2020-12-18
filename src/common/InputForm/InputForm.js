@@ -3,7 +3,7 @@ import { Field, Form } from "react-final-form";
 import classes from "./InputForm.module.sass";
 import { composeValidators } from "../Validators";
 
-const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormIsVisible, validators,  placeholder }) => {
+const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormIsVisible, validators,  placeholder, currentDialogId }) => {
     const moveCaretToEnd = (e) => {
         const temp_value = e.target.value;
         e.target.value = '';
@@ -11,12 +11,13 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
     };
 
     const hasError = useRef(false);
+    const prevCurrentDialogId = useRef(currentDialogId);
 
     const Textarea = ({ input, meta, isInvalidNumber, numberFormIsVisible, ...rest }) => {
         if (formType === 'send_message_panel') {
             return (
                 <div className={ classes.send_message_panel }>
-                    <textarea { ...input } { ...rest } className={ classes.send_message_panel_textarea } />
+                    <textarea { ...input } { ...rest } className={ classes.send_message_panel_textarea }/>
                     <button type="submit" className={ classes.send_message_panel_button }>Send</button>
                 </div>
             )
@@ -66,10 +67,19 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
         }
     };
 
+    const setCurrentInputValue = (form) => {
+        if (prevCurrentDialogId.current !== currentDialogId) {
+            prevCurrentDialogId.current = currentDialogId;
+            const currentInputValue = form.getState().values[currentDialogId];
+            form.change(currentDialogId, currentInputValue)
+        }
+    };
+
     return (
         <Form onSubmit={ onSubmit }>
-            { ({ handleSubmit, pristine, form }) => (
-                <form onSubmit={ handleSubmit }>
+            { ({ handleSubmit, pristine, form }) => {
+                setCurrentInputValue(form);
+                return <form onSubmit={ handleSubmit }>
                     <Field component={ Textarea }
                            name={ inputName }
                            validate={ validators && composeValidators(...validators) }
@@ -79,7 +89,7 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
                            placeholder={ placeholder }
                     />
                 </form>
-            ) }
+            } }
         </Form>
     )
 };

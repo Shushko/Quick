@@ -3,12 +3,12 @@ const init = {
     currentDialog: null,
     currentUser: null,
     dialogs: []
-}
+};
 
 
 
 const setDialogs = (state, action) => {
-    const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId)
+    const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId);
     if (dialogAlreadyInstalled) {
         return state
     } else {
@@ -25,7 +25,7 @@ const setDialogs = (state, action) => {
 const updateDialog  = (state, action) => {
     if (state.dialogs.length > 0) {
         const copyCurrentDialogs = [...state.dialogs];
-        const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key)
+        const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key);
         dialogForUpdate.messages = action.sortedMessages;
         dialogForUpdate.unreadMessages = action.sumUnreadMessages;
         return {
@@ -57,19 +57,19 @@ const dialogsDataReducer = (state = init, action) => {
             return {
                 ...state,
                 currentUser: action.currentUser
-            }
+            };
 
         case 'CHANGE_CURRENT_DIALOG':
             return {
                 ...state,
                 currentDialog: action.currentDialog
-            }
+            };
 
         case 'CLEAR_DIALOGS':
             return {
                 ...state,
                 dialogs: []
-            }
+            };
 
         default:
             return state

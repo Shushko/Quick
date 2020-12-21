@@ -1,86 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from './AuthUser.module.sass'
 import * as firebase from "firebase";
 import { connect } from "react-redux";
 import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
-import { setAuthorizedUser } from "../../redux/authUser/authUserActions";
+import { setAuthorizedUser } from "../../redux/authUser";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
-import { setUser } from "../../api/api";
 
-class AuthUser extends React.Component {
-    constructor (props) {
-        super(props)
-        this.state = {
-            preloaderIsVisible: false,
-            numberFormIsVisible: false,
-            verificationCodeFormIsVisible: false,
-            signInIsVisible: true,
-            phoneNumber: '',
-            isInvalidNumber: false,
-            confirmationResult: null,
-            recaptcha: null
-        }
-    }
 
-    authorizeUser = async (value) => {
-        this.setState({ preloaderIsVisible: true, isInvalidNumber: false })
-        let recaptcha = null
-        if (!this.state.recaptcha) {
-            recaptcha = await new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                size: "invisible"
-            })
-            this.setState({ recaptcha: recaptcha })
+const AuthUser = (props) => {
+    const [preloaderIsVisible, setPreloaderIsVisible] = useState(false);
+    const [numberFormIsVisible, setNumberFormIsVisible] = useState(false);
+    const [verificationCodeFormIsVisible, setVerificationCodeFormIsVisible] = useState(false);
+    const [signInIsVisible, setSignInIsVisible] = useState(true);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [isInvalidNumber, setIsInvalidNumber] = useState(false);
+    const [confirmationResult, setConfirmationResult] = useState(null);
+    const [recaptcha, setRecaptcha] = useState(null);
+
+    const authorizeUser = async (value) => {
+        setPreloaderIsVisible(true);
+        setIsInvalidNumber(false);
+        let rec = null;
+        if (!recaptcha) {
+            rec = await new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: "invisible" });
+            setRecaptcha(rec);
         }
 
         try {
-            const result = await firebase.auth().signInWithPhoneNumber(value.trim(), this.state.recaptcha)
+            const result = await firebase.auth().signInWithPhoneNumber(value.trim(), rec || recaptcha);
 
-            this.setState({
-                confirmationResult: result,
-                phoneNumber: value,
-                numberFormIsVisible: false,
-                verificationCodeFormIsVisible: true
-            })
-        } catch (error) {
-            this.setState({
-                isInvalidNumber: true,
-                phoneNumber: '',
-                numberFormIsVisible: true,
-                verificationCodeFormIsVisible: false
-            })
+            setConfirmationResult(result);
+            setPhoneNumber(value);
+            setNumberFormIsVisible(false);
+            setVerificationCodeFormIsVisible(true);
+
+        } catch (e) {
+            setIsInvalidNumber(true);
+            setPhoneNumber('');
+            setNumberFormIsVisible(true);
+            setVerificationCodeFormIsVisible(false)
         } finally {
-            this.setState({ preloaderIsVisible: false })
+            setPreloaderIsVisible(false);
         }
-    }
+    };
 
-    checkVerificationCode = async (value) => {
-        this.setState({ preloaderIsVisible: true, isInvalidNumber: false })
+    const checkVerificationCode = async (value) => {
+        setPreloaderIsVisible(true);
+        setIsInvalidNumber(false);
         try {
-            const resultUser = await this.state.confirmationResult.confirm(value.trim())
-
-            if (resultUser.additionalUserInfo.isNewUser) {
-                setUser(resultUser.user.uid, resultUser.user.phoneNumber)
-            }
-
-            localStorage.setItem('userId', resultUser.user.uid)
-            localStorage.setItem('userIsAuthorized', 'true')
-            this.setState({ signInIsVisible: true, verificationCodeFormIsVisible: false })
-            this.props.setAuthorizedUser(true)
-        } catch (error) {
-            this.setState({ isInvalidNumber: true })
+            const resultUser = await confirmationResult.confirm(value.trim());
+            setSignInIsVisible(true);
+            setVerificationCodeFormIsVisible(false);
+            props.setAuthorizedUser(resultUser.additionalUserInfo.isNewUser, resultUser.user.uid, resultUser.user.phoneNumber)
+        } catch (e) {
+            setIsInvalidNumber(true);
+            setPreloaderIsVisible(false);
         }
-    }
+    };
 
-    editNumberForm = () => {
-        this.setState({
-            numberFormIsVisible: true,
-            verificationCodeFormIsVisible: false,
-            isInvalidNumber: false
-        })
-    }
+    const editNumberForm = () => {
+        setNumberFormIsVisible(true);
+        setVerificationCodeFormIsVisible(false);
+        setIsInvalidNumber(false);
+    };
 
-    render() {
         return (
             <div className={ classes.authorization_wrapper }>
                 <div className={ classes.authorization_content }>
@@ -88,18 +72,18 @@ class AuthUser extends React.Component {
                         <div className={ classes.logo_text }>Quick</div>
                     </div>
                     <div className={ classes.auth_form_text }>
-                        { this.state.signInIsVisible &&
+                        { signInIsVisible &&
                         <span className={ classes.auth_form_text_grit }>
                             { AUTH_FORM_GRIT }
                         </span> }
 
-                        { this.state.verificationCodeFormIsVisible &&
+                        { verificationCodeFormIsVisible &&
                         <div>
                             <div className={ classes.auth_form_text_phone_number }>
-                                <span>{ this.state.phoneNumber }</span>
+                                <span>{ phoneNumber }</span>
                                 <button
                                     className={ classes.button_edit_number }
-                                    onClick={ this.editNumberForm }
+                                    onClick={ editNumberForm }
                                 >
                                     Edit phone number
                                 </button>
@@ -112,20 +96,23 @@ class AuthUser extends React.Component {
                         }
 
                         <div className={ classes.auth_form_sign_in }>
-                            { this.state.signInIsVisible ?
+                            { signInIsVisible ?
                                 <button
-                                    onClick={ () => this.setState({ signInIsVisible: false, numberFormIsVisible: true }) }
+                                    onClick={ () => {
+                                        setSignInIsVisible(false);
+                                        setNumberFormIsVisible(true);
+                                    } }
                                     className={ classes.button_sign_in }
                                 >
                                     Sign In
                                 </button> :
                                 <div>
-                                    { this.state.preloaderIsVisible ? <Preloader/> :
+                                    { preloaderIsVisible ? <Preloader/> :
                                         <AuthUserForm
-                                            numberFormIsVisible={ this.state.numberFormIsVisible }
-                                            authorizeUser={ this.authorizeUser }
-                                            checkVerificationCode={ this.checkVerificationCode }
-                                            isInvalidNumber={ this.state.isInvalidNumber }
+                                            numberFormIsVisible={ numberFormIsVisible }
+                                            authorizeUser={ authorizeUser }
+                                            checkVerificationCode={ checkVerificationCode }
+                                            isInvalidNumber={ isInvalidNumber }
                                         /> }
                                 </div> }
                         </div>
@@ -134,11 +121,10 @@ class AuthUser extends React.Component {
                 </div>
             </div>
         )
-    }
-}
+    };
 
 const mapDispatchToProps = (dispatch) => ({
-    setAuthorizedUser: (value) => { dispatch(setAuthorizedUser(value)) }
-})
+    setAuthorizedUser: (isNewUser, userId, userPhoneNumber) => dispatch(setAuthorizedUser(isNewUser, userId, userPhoneNumber))
+});
 
 export default connect(null, mapDispatchToProps)(AuthUser)

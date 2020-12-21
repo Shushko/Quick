@@ -2,14 +2,14 @@ import moment from "moment";
 import {
     getUser,
     getDialog,
-    getMember,
     getRefCurrentDialogs,
+    getRefDialog,
+    createCurrentDialogs,
     createDialog,
     updateMessage,
-    addMessage,
-    createCurrentDialogs,
-    getRefDialog
+    addMessage
 } from "../../api/api";
+import { setUserIsAuthorized } from "../authUser";
 
 const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED'
 const SET_DIALOGS = 'SET_DIALOGS'
@@ -54,27 +54,15 @@ export const clearDialogs = () => ({
 
 export const changeMessageStatus = (dialogId, message, delivered, read) => () => updateMessage(dialogId, message.id, delivered, read)
 
-export const addNewMessage = (interlocutorId,  messageId, dialogId, userId, time, inputValue) => {
-    return () => {
-        getUser(interlocutorId)
-            .then(user => {
-                if (!user.val().hasOwnProperty('currentDialogs')) {
-                    createCurrentDialogs(userId, dialogId, true)
-                } else {
-                    createCurrentDialogs(userId, dialogId, false)
-                }
-            })
+export const addNewMessage = (interlocutorId,  messageId, dialogId, userId, time, inputValue) => async () => {
+    const interlocutor = await getUser(interlocutorId);
+    const userHasCurrentDialogs = interlocutor.hasOwnProperty('currentDialogs');
+    createCurrentDialogs(interlocutorId, dialogId, userHasCurrentDialogs);
 
-        getDialog(dialogId)
-            .then(dialog => {
-                if (!dialog.val().hasOwnProperty('content')) {
-                    addMessage(dialogId, messageId, time, inputValue, userId, true)
-                } else {
-                    addMessage(dialogId, messageId, time, inputValue, userId, false)
-                }
-            })
-    }
-}
+    const dialog = await getDialog(dialogId);
+    const dialogHasContent = dialog.hasOwnProperty('content');
+    addMessage(dialogId, messageId, time, inputValue, userId, dialogHasContent)
+};
 
 const calculateUnreadMessages = (dialog, userId) => {
     let sumUnreadMessages = 0
@@ -110,15 +98,14 @@ const setUpdatedDialog = (data, userDialogs, userId) => {
 }
 
 
-const getMembers = (dialog) => {
+const getMembers = async (dialog) => {
         const dialogMembers = Object.values(dialog.members)
-        const membersPromise = []
+        const members = []
         for (let n = 0; n < dialogMembers.length; n++) {
-            const member = getMember(dialogMembers[n])
-            membersPromise.push(member)
+            const member = await getUser(dialogMembers[n])
+            members.push(member)
         }
-
-        return Promise.all(membersPromise)
+    return members
 }
 
 
@@ -145,31 +132,27 @@ const setDialogObserver = (dispatch, getState, dialogKey, userId) => {
 
 const setCurrentDialogsObserver = (dispatch, getState, userId, routeHistory) => {
     let appIsInit = false
-    getRefCurrentDialogs(userId).on('value', (dataSnapshot) => {
+    getRefCurrentDialogs(userId).on('value', async (dataSnapshot) => {
         if (appIsInit) {
             const currentDialogsKeys = []
             getState().dialogsDataReducer.dialogs.forEach(i => currentDialogsKeys.push(i.dialogId))
-            const newDialogsKeys = Object.values(dataSnapshot.val())
-            const newDialogKey = newDialogsKeys.find(i => i !== currentDialogsKeys.find(n => n === i))
+            const dialogsKeys = Object.values(dataSnapshot.val())
+            const newDialogKey = dialogsKeys.find(i => i !== currentDialogsKeys.find(n => n === i))
             if (newDialogKey) {
                 setDialogObserver(dispatch, getState, newDialogKey, userId)
-                getDialog(newDialogKey)
-                    .then(newDialog => {
-                        getMembers(newDialog.val())
-                            .then(members => {
-                                const messages = newDialog.val().hasOwnProperty('content') ? sortMessages(newDialog.val().content) : []
-                                dispatch(setDialogsAction({
-                                    dialogId: newDialog.val().id,
-                                    messages: messages,
-                                    members: members,
-                                    unreadMessages: calculateUnreadMessages(messages, userId)
-                                }))
-                                if (!messages.length) {
-                                    dispatch(onChangeCurrentDialog(newDialog.val().id))
-                                    routeHistory.push(`/${ newDialog.val().id }`)
-                                }
-                            })
-                    })
+                const newDialog = await getDialog(newDialogKey)
+                const members = await getMembers(newDialog)
+                const messages = newDialog.hasOwnProperty('content') ? sortMessages(newDialog.content) : []
+                dispatch(setDialogsAction({
+                    dialogId: newDialog.id,
+                    messages: messages,
+                    members: members,
+                    unreadMessages: calculateUnreadMessages(messages, userId)
+                }))
+                if (!messages.length) {
+                    dispatch(onChangeCurrentDialog(newDialog.id))
+                    routeHistory.push(`/${ newDialog.id }`)
+                }
             }
         }
         appIsInit = true
@@ -178,55 +161,42 @@ const setCurrentDialogsObserver = (dispatch, getState, userId, routeHistory) => 
 
 
 export const createNewDialog = (dialogId, currentUserId, interlocutorId) => {
-    return (dispatch, getState) => {
-        createDialog(dialogId, currentUserId, interlocutorId)
-            .then(() => {
-                if (!getState().dialogsDataReducer.dialogs.length) {
-                    createCurrentDialogs(currentUserId, dialogId, true)
-                } else {
-                    createCurrentDialogs(currentUserId, dialogId, false)
-                }
-            })
+    return async (dispatch, getState) => {
+        const result = await createDialog(dialogId, currentUserId, interlocutorId);
+        const resultIsSuccessful = result.statusText === 'OK';
+        const currentUserHasDialogs = getState().dialogsDataReducer.dialogs.length;
+        resultIsSuccessful && createCurrentDialogs(currentUserId, dialogId, !!currentUserHasDialogs)
     }
-}
+};
 
 
-export const setDialogs = (routeHistory) => {
-    return (dispatch, getState) => {
-        const userId = localStorage.getItem('userId')
-        setCurrentDialogsObserver(dispatch, getState, userId, routeHistory)
+export const setDialogs = (routeHistory) => async (dispatch, getState) => {
+    const userId = localStorage.getItem('userId')
+    setCurrentDialogsObserver(dispatch, getState, userId, routeHistory)
 
-        getUser(userId)
-            .then(item => {
-                dispatch(setCurrentUser(item.val()))
-                if (item.val().hasOwnProperty('currentDialogs')) {
-                    const currentDialogs = Object.values(item.val().currentDialogs)
-                    const dialogsPromises = []
-                    for (let i = 0; i < currentDialogs.length; i++) {
-                        const dialog = getDialog(currentDialogs[i]).then(item => item.val())
-                        dialogsPromises.push(dialog)
-                    }
+    const user = await getUser(userId)
+    dispatch(setCurrentUser(user))
+    if (user.hasOwnProperty('currentDialogs')) {
+        const currentDialogs = Object.values(user.currentDialogs)
+        const dialogs = []
+        for (let i = 0; i < currentDialogs.length; i++) {
+            const dialog = await getDialog(currentDialogs[i])
+            dialogs.push(dialog)
+        }
 
-                    Promise.all(dialogsPromises)
-                        .then(async (dialogs) => {
-                            for (let i = 0; i < dialogs.length; i++) {
-                                const members = await getMembers(dialogs[i])
-                                const messages = dialogs[i].hasOwnProperty('content') ? sortMessages(dialogs[i].content) : []
-                                setDialogObserver(dispatch, getState, dialogs[i].id, userId)
-                                dispatch(setDialogsAction({
-                                    dialogId: dialogs[i].id,
-                                    messages: messages,
-                                    members: members,
-                                    unreadMessages: calculateUnreadMessages(messages, userId)
-                                }))
-                            }
-                            dispatch(toggleAppIsInit(true))
-                        })
-                        .catch(error => console.log(error))
-                } else { dispatch(toggleAppIsInit(true)) }
-            })
-            .catch(error => console.log(error))
-    }
+        for (let i = 0; i < dialogs.length; i++) {
+            const members = await getMembers(dialogs[i])
+            const messages = dialogs[i].hasOwnProperty('content') ? sortMessages(dialogs[i].content) : []
+            setDialogObserver(dispatch, getState, dialogs[i].id, userId)
+            dispatch(setDialogsAction({
+                dialogId: dialogs[i].id,
+                messages: messages,
+                members: members,
+                unreadMessages: calculateUnreadMessages(messages, userId)
+            }))
+        }
+        dispatch(toggleAppIsInit(true))
+    } else { dispatch(toggleAppIsInit(true)) }
 }
 
 export const logOutUser = () => {
@@ -234,6 +204,8 @@ export const logOutUser = () => {
         dispatch(clearDialogs())
         dispatch(setCurrentUser(null))
         dispatch(onChangeCurrentDialog(null))
+        dispatch(setUserIsAuthorized(false))
+        dispatch(toggleAppIsInit(false))
     }
 }
 

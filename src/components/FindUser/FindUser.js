@@ -12,7 +12,6 @@ import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
 
 const FindUser = (props) => {
-
     const addNewDialog = (interlocutorId) => {
         props.toggleElementVisibility(false, false, false);
         const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null);
@@ -36,8 +35,8 @@ const FindUser = (props) => {
 
     const getUserItems = () => {
         if (props.foundUsers.length) {
-            return props.foundUsers.map(item => item.id === props.currentUser.id ? '' :
-                <UserItem user={ item } addNewDialog={ addNewDialog } key={ item.id } />)
+            const filteredFoundUsers = props.foundUsers.filter(item => item.id !== props.currentUser.id);
+            return filteredFoundUsers.map(item => <UserItem user={ item } addNewDialog={ addNewDialog } key={ item.id } />)
         }
     };
 

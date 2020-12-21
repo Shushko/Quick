@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from "./MessageItem.module.sass";
+import * as PropTypes from 'prop-types';
 import moment from "moment";
 
 const MessageItem = ({ messageItem, currentUserId }) => {
@@ -23,6 +24,11 @@ const MessageItem = ({ messageItem, currentUserId }) => {
             </div>
         </div>
     )
+};
+
+MessageItem.propTypes = {
+    messageItem: PropTypes.object,
+    currentUserId: PropTypes.string
 };
 
 export default MessageItem

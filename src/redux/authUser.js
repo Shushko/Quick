@@ -3,7 +3,7 @@ import { setUser } from "../api/api";
 const SET_AUTHORIZED_USER = 'SET_AUTHORIZED_USER';
 
 const init = {
-    userIsAuthorized: localStorage.getItem('userIsAuthorized')
+    userIsAuthorized: JSON.parse(localStorage.getItem('userIsAuthorized'))
 };
 
 const authUser = (state = init, action) => {

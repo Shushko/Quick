@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./AuthUserForm.module.sass";
+import * as PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import { composeValidators, mustBeNumber, mustBePhoneNumber, required } from "../../../common/Validators";
 import { CODE_FORM_TEXT, NUMBER_PHONE_FORM_TEXT } from "../../../common/Messages";
@@ -65,6 +66,13 @@ const AuthUserForm = (props) => {
             </Form>
         </div>
     )
+};
+
+AuthUserForm.propTypes = {
+    numberFormIsVisible: PropTypes.bool,
+    authorizeUser: PropTypes.func,
+    checkVerificationCode: PropTypes.func,
+    isInvalidNumber: PropTypes.bool
 };
 
 export default AuthUserForm

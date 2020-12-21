@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './SendMessagePanel.module.sass';
+import * as PropTypes from 'prop-types';
 import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import { Field, Form } from 'react-final-form'
 import { v4 as uuidv4 } from "uuid";
@@ -54,6 +55,14 @@ const SendMessagePanel = ({ currentUser, interlocutor, currentDialog, setIsNewUs
             </div>
         </div>
     )
-}
+};
+
+SendMessagePanel.propTypes = {
+    currentUser: PropTypes.object,
+    interlocutor: PropTypes.object,
+    currentDialog: PropTypes.string,
+    setIsNewUserMessage: PropTypes.func,
+    addNewMessage: PropTypes.func
+};
 
 export default SendMessagePanel

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as PropTypes from 'prop-types';
 import SendMessagePanel from "./SendMessagePanel";
 
 const SendMessagePanelContainer = ({ dialogsData, addNewMessage, setIsNewUserMessage }) => {
@@ -24,6 +25,12 @@ const SendMessagePanelContainer = ({ dialogsData, addNewMessage, setIsNewUserMes
             addNewMessage={ addNewMessage }
         />
     )
-}
+};
+
+SendMessagePanelContainer.propTypes = {
+    dialogsData: PropTypes.object,
+    addNewMessage: PropTypes.func,
+    setIsNewUserMessage: PropTypes.func
+};
 
 export default SendMessagePanelContainer

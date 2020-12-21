@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './UserDialogs.module.sass';
+import * as PropTypes from 'prop-types';
 import TheDialog from "./TheDialog/TheDialog";
 import moment from "moment";
 import { connect } from "react-redux";
@@ -9,10 +10,9 @@ import { togglePreloader } from "../../redux/preloader";
 const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) => {
     const modifyMessage = (message) => {
         if (typeof (message) === 'string') {
-            const VALIDLENGTH = 18;
-            if (message.length > VALIDLENGTH) {
-                const result = message.slice(0, 17) + '...';
-                return result
+            const VALID_LENGTH = 18;
+            if (message.length > VALID_LENGTH) {
+                return message.slice(0, 17) + '...';
             }
             return message
         }
@@ -61,15 +61,21 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) =>
             </div>
         </div>
     )
-}
+};
 
 const mapStateToProps = (state) => ({
     dialogsData: state.dialogsDataReducer
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onChangeCurrentDialog: (value) => dispatch(onChangeCurrentDialog(value)),
     togglePreloader: (value) => dispatch(togglePreloader(value))
-})
+});
+
+UserDialogs.propTypes = {
+    dialogsData: PropTypes.object,
+    onChangeCurrentDialog: PropTypes.func,
+    togglePreloader: PropTypes.func,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserDialogs)

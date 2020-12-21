@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import classes from './AuthUser.module.sass'
+import classes from './AuthUser.module.sass';
+import * as PropTypes from 'prop-types';
 import * as firebase from "firebase";
 import { connect } from "react-redux";
 import AuthUserForm from "./AuthUserForm/AuthUserForm";
@@ -126,5 +127,9 @@ const AuthUser = (props) => {
 const mapDispatchToProps = (dispatch) => ({
     setAuthorizedUser: (isNewUser, userId, userPhoneNumber) => dispatch(setAuthorizedUser(isNewUser, userId, userPhoneNumber))
 });
+
+AuthUser.propTypes = {
+    setAuthorizedUser: PropTypes.func
+};
 
 export default connect(null, mapDispatchToProps)(AuthUser)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef} from 'react';
 import { InView } from 'react-intersection-observer';
 import classes from './ChatWindow.module.sass';
+import * as PropTypes from 'prop-types';
 import ChatItem from "./ChatItem/ChatItem";
 import arrowDown from '../../../assets/arrow.png'
 import { togglePreloader } from "../../../redux/preloader";
@@ -120,5 +121,13 @@ const mapDispatchToProps = (dispatch) => ({
     setIsNewUserMessage: value => dispatch(setIsNewUserMessage(value))
 });
 
+ChatWindow.propTypes = {
+    dialogsState: PropTypes.object,
+    preloader: PropTypes.bool,
+    isNewUserMessage: PropTypes.bool,
+    changeMessageStatus: PropTypes.func,
+    togglePreloader: PropTypes.func,
+    setIsNewUserMessage: PropTypes.func,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow)

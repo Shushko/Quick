@@ -1,19 +1,33 @@
-import React from 'react';
-import classes from './SendMessagePanel.module.sass';
+import React, { useState, useEffect } from 'react';
 import InputForm from "../../../common/InputForm/InputForm";
 import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg';
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import classes from "./SendMessagePanel.module.sass";
 
-const SendMessagePanel = ({ currentUser, interlocutor, currentDialog, setIsNewUserMessage, addNewMessage }) => {
+const SendMessagePanel = ({ dialogsData, addNewMessage, setIsNewUserMessage }) => {
+    const [dialog, setDialog] = useState(null);
+    const [interlocutor, setInterlocutor] = useState(null);
+
+    useEffect(() => {
+        if (!dialog || dialog.dialogId !== dialogsData.currentDialog) {
+            const dialog = dialogsData.dialogs.find(d => d.dialogId === dialogsData.currentDialog);
+            const interlocutor = dialog && findInterlocutor(dialog);
+            setDialog(dialog);
+            setInterlocutor(interlocutor);
+        }
+    } );
+
+    const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== dialogsData.currentUser.id);
+
     const onSubmit = (formData) => {
         addNewMessage(
             interlocutor.id,
             uuidv4(),
-            currentDialog,
-            currentUser.id,
+            dialogsData.currentDialog,
+            dialogsData.currentUser.id,
             moment().format(),
-            formData[currentDialog]
+            formData[dialogsData.currentDialog]
         );
         setIsNewUserMessage(true);
     };
@@ -21,15 +35,15 @@ const SendMessagePanel = ({ currentUser, interlocutor, currentDialog, setIsNewUs
     return (
         <div className={ classes.send_message_panel_wrap }>
             <div className={ classes.send_message_panel }>
-                <img src={ currentUser.avatar } alt="avatar"/>
+                <img src={ dialogsData.currentUser.avatar } alt="avatar"/>
 
                 <div className={ classes.send_message_form }>
                     <InputForm
                         formType={ 'send_message_panel' }
-                        inputName={ currentDialog }
+                        inputName={ dialogsData.currentDialog }
                         onSubmit={ onSubmit }
                         placeholder={ "Type a message..." }
-                        currentDialogId={ currentDialog }
+                        currentDialogId={ dialogsData.currentDialog }
                     />
                 </div>
 

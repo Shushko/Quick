@@ -2,6 +2,8 @@ import React from 'react';
 import classes from './SendMessagePanel.module.sass';
 import InputForm from "../../../common/InputForm/InputForm";
 import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg';
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 const SendMessagePanel = ({ currentUser, interlocutor, currentDialog, setIsNewUserMessage, addNewMessage }) => {
     const onSubmit = (formData) => {
@@ -11,7 +13,7 @@ const SendMessagePanel = ({ currentUser, interlocutor, currentDialog, setIsNewUs
             currentDialog,
             currentUser.id,
             moment().format(),
-            formData.message
+            formData[currentDialog]
         );
         setIsNewUserMessage(true);
     };

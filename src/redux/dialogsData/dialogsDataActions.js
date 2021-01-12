@@ -51,7 +51,6 @@ export const clearDialogs = () => ({
 })
 
 
-
 export const changeMessageStatus = (dialogId, message, delivered, read) => () => updateMessage(dialogId, message.id, delivered, read)
 
 export const addNewMessage = (interlocutorId,  messageId, dialogId, userId, time, inputValue) => async () => {
@@ -64,7 +63,7 @@ export const addNewMessage = (interlocutorId,  messageId, dialogId, userId, time
     addMessage(dialogId, messageId, time, inputValue, userId, dialogHasContent)
 };
 
-const calculateUnreadMessages = (dialog, userId) => {
+export const calculateUnreadMessages = (dialog, userId) => {
     let sumUnreadMessages = 0
     dialog.forEach(i => {
         if (!i.isRead && i.userId !== userId) {
@@ -74,7 +73,7 @@ const calculateUnreadMessages = (dialog, userId) => {
     return sumUnreadMessages
 }
 
-const sortMessages = (dialog) => {
+export const sortMessages = (dialog) => {
     const dialogArr = Object.values(dialog)
     dialogArr.sort((a, b) => {
         if (moment(a.time).valueOf() > moment(b.time).valueOf()) return 1
@@ -85,7 +84,7 @@ const sortMessages = (dialog) => {
 }
 
 
-const setUpdatedDialog = (data, userDialogs, userId) => {
+export const getUpdatedDialog = (data, userDialogs, userId) => {
     const updDialog = Object.values(data.content)
     const oldDialog = userDialogs.find(i => i.dialogId === data.id).messages
     const updMessage = updDialog.find(i => !oldDialog.find(n => i.id === n.id))
@@ -122,7 +121,7 @@ const setDialogObserver = (dispatch, getState, dialogKey, userId) => {
             const dialogHasContent = data.hasOwnProperty('content')
             const userHasDialog = checkForDialog(getState, dialogKey)
             if (appIsInitialized && dialogHasContent && userHasDialog) {
-                const { sortedMessages, sumUnreadMessages } = setUpdatedDialog(data, userDialogs, userId)
+                const { sortedMessages, sumUnreadMessages } = getUpdatedDialog(data, userDialogs, userId)
                 dispatch(updateDialog(data.id, sortedMessages, sumUnreadMessages))
             }
         })

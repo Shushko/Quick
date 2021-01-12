@@ -27,7 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "server": "json-server --watch src/api/db.json --port 8080"
   },
@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "prop-types": "latest"
   }
 }

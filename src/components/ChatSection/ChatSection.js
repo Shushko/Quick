@@ -1,5 +1,6 @@
 import React from 'react';
-import classes from './ChatSection.module.sass'
+import classes from './ChatSection.module.sass';
+import * as PropTypes from 'prop-types';
 import ChatWindow from "./ChatWindow/ChatWindow";
 import SendMessagePanel from "./SendMessagePanel/SendMessagePanel";
 import { connect } from "react-redux";
@@ -30,5 +31,11 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(addNewMessage(interlocutorId, messageId, dialogId, userId, time, inputValue)) },
     setIsNewUserMessage: value => dispatch(setIsNewUserMessage(value))
 });
+
+ChatSection.propTypes = {
+    dialogsData: PropTypes.object,
+    addNewMessage: PropTypes.func,
+    setIsNewUserMessage: PropTypes.func
+};
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(ChatSection)

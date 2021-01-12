@@ -1,7 +1,8 @@
 import React from "react";
 import classes from './BurgerMenu.module.sass'
+import * as PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import ava from '../../../assets/defaultAvatar/ava.jpg'
+import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import button from '../../../assets/menu_button.png'
 import exit from '../../../assets/exit.png'
 import create from '../../../assets/create.png'
@@ -34,7 +35,7 @@ const BurgerMenu = (props) => {
             { props.currentUser &&
             <div className={ props.menuIsVisible ? classes.menu_active : classes.menu }>
                 <div className={ classes.header }>
-                    <img src={ props.currentUser.avatar || ava } alt="avatar"/>
+                    <img src={ props.currentUser.avatar || defaultAvatar } alt="avatar"/>
                     <div className={ classes.profileInfo }>
                         <span className={ classes.user_name }>{ props.currentUser.name }</span>
                     </div>
@@ -58,7 +59,7 @@ const mapStateToProps = (state) => ({
     currentUser: state.dialogsDataReducer.currentUser,
     menuIsVisible: state.displayMenu.menuIsVisible,
     darkBackgroundIsVisible: state.displayMenu.darkBackgroundIsVisible
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
     toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
@@ -66,6 +67,15 @@ const mapDispatchToProps = (dispatch) => ({
     },
     setUserIsAuthorized: (value) => { dispatch(setUserIsAuthorized(value)) },
     logOutUser: () => dispatch(logOutUser())
-})
+});
+
+BurgerMenu.propTypes = {
+    currentUser: PropTypes.object,
+    menuIsVisible: PropTypes.bool,
+    darkBackgroundIsVisible: PropTypes.bool,
+    toggleElementVisibility: PropTypes.func,
+    setUserIsAuthorized: PropTypes.func,
+    logOutUser: PropTypes.func,
+};
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(BurgerMenu)

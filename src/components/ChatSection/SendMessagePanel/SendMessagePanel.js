@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import classes from "./SendMessagePanel.module.sass";
 import InputForm from "../../../common/InputForm/InputForm";
-import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg';
+import * as PropTypes from 'prop-types';
+import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import classes from "./SendMessagePanel.module.sass";
+
 
 const SendMessagePanel = ({ dialogsData, addNewMessage, setIsNewUserMessage }) => {
     const [dialog, setDialog] = useState(null);
@@ -51,6 +53,14 @@ const SendMessagePanel = ({ dialogsData, addNewMessage, setIsNewUserMessage }) =
             </div>
         </div>
     )
-}
+};
+
+SendMessagePanel.propTypes = {
+    currentUser: PropTypes.object,
+    interlocutor: PropTypes.object,
+    currentDialog: PropTypes.string,
+    setIsNewUserMessage: PropTypes.func,
+    addNewMessage: PropTypes.func
+};
 
 export default SendMessagePanel

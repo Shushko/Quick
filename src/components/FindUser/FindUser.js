@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./FindUser.module.sass"
+import * as PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
@@ -79,6 +80,17 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
     },
     createNewDialog: (dialogId, currentUserId, interlocutorId) => dispatch(createNewDialog(dialogId, currentUserId, interlocutorId))
-})
+});
+
+FindUser.propTypes = {
+    dialogs: PropTypes.array,
+    foundUsers: PropTypes.array,
+    currentUser: PropTypes.object,
+    addFoundUsers: PropTypes.func,
+    searchUsers: PropTypes.func,
+    onChangeCurrentDialog: PropTypes.func,
+    toggleElementVisibility: PropTypes.func,
+    createNewDialog: PropTypes.func
+};
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(FindUser)

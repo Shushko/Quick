@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './ChatSection.module.sass';
 import * as PropTypes from 'prop-types';
 import ChatWindow from "./ChatWindow/ChatWindow";
-import SendMessagePanelContainer from "./SendMessagePanel/SendMessagePanelContainer";
+import SendMessagePanel from "./SendMessagePanel/SendMessagePanel";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
@@ -17,7 +17,7 @@ const ChatSection = (props) => {
                     <span className={ classes.startTextStyle }>Select a dialog and start communication</span>
                 </div> }
 
-            { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ? <SendMessagePanelContainer { ...props } /> : ''}
+            { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ? <SendMessagePanel { ...props } /> : ''}
         </div>
     )
 };

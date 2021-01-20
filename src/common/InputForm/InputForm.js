@@ -3,7 +3,7 @@ import { Field, Form } from "react-final-form";
 import classes from "./InputForm.module.sass";
 import { composeValidators } from "../Validators";
 
-const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormIsVisible, validators,  placeholder, currentDialogId }) => {
+const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormIsVisible, validators,  placeholder, currentDialogId, hideInput, currentUserName }) => {
     const moveCaretToEnd = (e) => {
         const temp_value = e.target.value;
         e.target.value = '';
@@ -12,6 +12,7 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
 
     const hasError = useRef(false);
     const prevCurrentDialogId = useRef(currentDialogId);
+    const inputRef = useRef(null);
 
     const Textarea = ({ input, meta, isInvalidNumber, numberFormIsVisible, ...rest }) => {
         if (formType === 'send_message_panel') {
@@ -55,7 +56,30 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
                 </div>
             )
         }
+
+        if (formType === 'edit_user_name') {
+            hasError.current = !!meta.error;
+
+            const handleClick = (e) => {
+                if (inputRef.current !== e.target) {
+                    hideInput();
+                    document.removeEventListener('click', handleClick)
+                }
+            };
+            document.addEventListener('click', handleClick);
+
+            return (
+                <div className={ classes.edit_user_name }>
+                    <textarea { ...input } { ...rest } className={ classes.edit_user_name_textarea } autoFocus={ true } ref={ inputRef }/>
+
+                    <div className={ classes.edit_user_name_error }>
+                        { meta.error && <span>{ meta.error }</span> }
+                    </div>
+                </div>
+            )
+        }
     };
+
 
     const onPressEnter = (event, form, pristine, handleSubmit) => {
         if (event.key === 'Enter') {
@@ -76,7 +100,7 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
     };
 
     return (
-        <Form onSubmit={ onSubmit }>
+        <Form onSubmit={ onSubmit } initialValues={{ edit_user_name: currentUserName }}>
             { ({ handleSubmit, pristine, form }) => {
                 setCurrentInputValue(form);
                 return <form onSubmit={ handleSubmit }>

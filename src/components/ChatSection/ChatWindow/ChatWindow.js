@@ -90,7 +90,7 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
 
     return (
         <div className={ classes.chats_window }>
-            { preloader && <Preloader isChatWindow={ true }/> }
+            { preloader && <Preloader type={ 'chat_window' }/> }
             <div className={ classes.chat_wrapper }>
                 <div ref={ chatStart }/>
                 { getUserChat() }

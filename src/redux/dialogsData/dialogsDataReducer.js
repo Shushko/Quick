@@ -59,6 +59,18 @@ const dialogsDataReducer = (state = init, action) => {
                 currentUser: action.currentUser
             };
 
+        case 'SET_USER_NAME':
+            return {
+                ...state,
+                currentUser: { ...state.currentUser, name: action.userName }
+            };
+
+        case 'SET_USER_AVATAR':
+            return {
+                ...state,
+                currentUser: { ...state.currentUser, avatar: action.userAvatarUrl }
+            };
+
         case 'CHANGE_CURRENT_DIALOG':
             return {
                 ...state,

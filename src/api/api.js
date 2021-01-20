@@ -44,6 +44,25 @@ export const addMessage = (dialogId, messageId, time, inputValue, userId, dialog
         axios.put(url, messTemp).catch(e => console.log(e))
 };
 
+export const updateUserName = (newUserName, userId) => {
+    return axios.patch(getUrl('users', userId), {
+        name: newUserName
+    })
+};
+
+export const updateUserAvatar = async (file, userID) => {
+    const result = await firebase.storage().ref(`/Avatars/${ userID }`).put(file);
+    if (result.state === 'success') {
+        const userAvatarUrl = await firebase.storage().ref(`/Avatars/${ userID }`).getDownloadURL();
+        const result = await axios.patch(getUrl('users', userID), {
+            avatar: userAvatarUrl
+        });
+        if (result.statusText === 'OK') {
+            return userAvatarUrl
+        }
+    }
+};
+
 export const updateMessage = (dialogId, messageId, delivered, read) => {
     axios.patch(getUrl('dialogs', `${ dialogId }/content/${ messageId }`), {
         isDelivered: delivered,

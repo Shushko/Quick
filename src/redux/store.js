@@ -2,17 +2,19 @@ import { applyMiddleware, combineReducers, createStore, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
 import dialogsDataReducer from "./dialogsData/dialogsDataReducer";
 import authUser from "./authUser";
-import displayMenu from "./displayMenu";
+import displayModalElements from "./displayModalElements";
 import findUsers from "./findUsers";
 import preloader from "./preloader";
 import sendNewMessage from "./sendNewMessage"
+import notification from "./notification";
 
 const reducers = combineReducers({
     dialogsDataReducer,
     authUser,
-    displayMenu,
+    displayModalElements,
     findUsers,
     preloader,
+    notification,
     sendNewMessage
 })
 

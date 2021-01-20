@@ -108,7 +108,7 @@ const AuthUser = (props) => {
                                     Sign In
                                 </button> :
                                 <div>
-                                    { preloaderIsVisible ? <Preloader/> :
+                                    { preloaderIsVisible ? <Preloader type={ 'default' }/> :
                                         <AuthUserForm
                                             numberFormIsVisible={ numberFormIsVisible }
                                             authorizeUser={ authorizeUser }

@@ -8,9 +8,9 @@ import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
 import { addFoundUsers, searchUsers } from "../../redux/findUsers";
 import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
-import { toggleElementVisibility } from "../../redux/displayMenu";
 import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
+import { hideAllModalWindows } from "../../redux/displayModalElements";
 
 const FindUser = (props) => {
     const addNewDialog = (interlocutorId) => {
@@ -45,7 +45,7 @@ const FindUser = (props) => {
         <div className={ classes.find_user_menu_container }>
             <div className={ classes.find_user_header }>
                 <span>Find user</span>
-                <button className={ classes.close_button } onClick={ () => props.toggleElementVisibility(false, false, false) }>
+                <button className={ classes.close_button } onClick={ () => props.hideAllModalWindows() }>
                     Close
                 </button>
             </div>
@@ -76,10 +76,8 @@ const mapDispatchToProps = (dispatch) => ({
     addFoundUsers: (foundUsers) => { dispatch(addFoundUsers(foundUsers)) },
     searchUsers: (value) => { dispatch(searchUsers(value)) },
     onChangeCurrentDialog: (dialogId) => { dispatch(onChangeCurrentDialog(dialogId)) },
-    toggleElementVisibility: (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => {
-        dispatch(toggleElementVisibility(menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible))
-    },
-    createNewDialog: (dialogId, currentUserId, interlocutorId) => dispatch(createNewDialog(dialogId, currentUserId, interlocutorId))
+    createNewDialog: (dialogId, currentUserId, interlocutorId) => dispatch(createNewDialog(dialogId, currentUserId, interlocutorId)),
+    hideAllModalWindows: () => dispatch(hideAllModalWindows()),
 });
 
 FindUser.propTypes = {
@@ -89,7 +87,7 @@ FindUser.propTypes = {
     addFoundUsers: PropTypes.func,
     searchUsers: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,
-    toggleElementVisibility: PropTypes.func,
+    hideAllModalWindows: PropTypes.func,
     createNewDialog: PropTypes.func
 };
 

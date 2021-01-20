@@ -7,14 +7,19 @@ import {
     createCurrentDialogs,
     createDialog,
     updateMessage,
-    addMessage
+    addMessage,
+    updateUserName, updateUserAvatar
 } from "../../api/api";
 import { setUserIsAuthorized } from "../authUser";
+import { togglePhotoEditorPreloader } from "../preloader";
+import { toggleNotificationVisibility } from "../notification";
 
 const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED'
 const SET_DIALOGS = 'SET_DIALOGS'
 const UPDATE_DIALOG = 'UPDATE_DIALOG'
 const SET_CURRENT_USER = 'SET_CURRENT_USER'
+const SET_USER_NAME = 'SET_USER_NAME'
+const SET_USER_AVATAR = 'SET_USER_AVATAR'
 const CHANGE_CURRENT_DIALOG = 'CHANGE_CURRENT_DIALOG'
 const CLEAR_DIALOGS = 'CLEAR_DIALOGS'
 
@@ -46,10 +51,39 @@ export const setCurrentUser = (currentUser) => ({
     currentUser
 })
 
+export const setUserName = (userName) => ({
+    type: SET_USER_NAME,
+    userName
+})
+
+export const setUserAvatar = (userAvatarUrl) => ({
+    type: SET_USER_AVATAR,
+    userAvatarUrl
+})
+
 export const clearDialogs = () => ({
     type: CLEAR_DIALOGS
 })
 
+
+export const changeUserAvatar = (file, userID) => async (dispatch) => {
+    const userAvatarUrl = await updateUserAvatar(file, userID);
+    if (userAvatarUrl) {
+        dispatch(setUserAvatar(userAvatarUrl));
+        dispatch(togglePhotoEditorPreloader(false))
+        dispatch(toggleNotificationVisibility(true, 'Photo uploaded successfully'))
+        setTimeout(() => dispatch(toggleNotificationVisibility(false, '')), 3000)
+    }
+};
+
+export const changeUserName = (newUserName, userId) => async (dispatch) => {
+    try {
+        const result = await updateUserName(newUserName, userId);
+        result.statusText === 'OK' && dispatch(setUserName(newUserName));
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 export const changeMessageStatus = (dialogId, message, delivered, read) => () => updateMessage(dialogId, message.id, delivered, read)
 
@@ -205,6 +239,8 @@ export const logOutUser = () => {
         dispatch(onChangeCurrentDialog(null))
         dispatch(setUserIsAuthorized(false))
         dispatch(toggleAppIsInit(false))
+        localStorage.removeItem('userIsAuthorized');
+        localStorage.removeItem('userId');
     }
 }
 

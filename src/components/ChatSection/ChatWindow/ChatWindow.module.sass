@@ -1,7 +1,6 @@
 .chats_window
   box-sizing: border-box
   width: 100%
-  height: 457px
   overflow: auto
   overflow-x: hidden
   display: flex
@@ -17,16 +16,17 @@
     width: 100%
     max-width: 520px
   .arrowDown_wrap
-    margin-top: 50%
+    position: absolute
+    right: 80px
+    bottom: 120px
     .sum_unread_messages
       background: #005c99
       padding: 4px 5px 1px 5px
-      border-radius: 10px
+      border-radius: 50%
       color: white
       font-weight: bold
       font-size: 0.8em
       position: fixed
-      bottom: 270px
       z-index: 2
     .arrow_down
       position: fixed
@@ -34,4 +34,7 @@
       border-radius: 50%
       height: 40px
       width: 40px
+@media (max-width: 700px)
+  .chats_window
+    height: calc(100vh - 104px)
 

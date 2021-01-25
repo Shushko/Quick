@@ -1,51 +1,71 @@
+%temp
+  height: 100%
+  width: 100%
+  padding: 12px 10px 12px 0
+  display: flex
+  align-items: center
+  box-sizing: border-box
+
 .dialog_item
   height: 65px
   cursor: pointer
   outline: none
+  position: relative
   &:hover
     background-color: #e6fffa
   .item
-    height: 100%
-    width: 100%
-    padding: 12px 10px 12px 0
-    display: flex
-    align-items: center
-    box-sizing: border-box
+    @extend %temp
   .active_item
-    height: 100%
-    width: 100%
-    padding: 12px 10px 12px 0
-    display: flex
-    align-items: center
-    box-sizing: border-box
+    @extend %temp
     background-color: #6490b1
     color: white
-  .active_item .dialog_description_last_time
-    color: white
+    & .dialog_description_right_last_message_time
+      color: white
   img
     margin-left: 15px
     width: 48px
     border-radius: 50%
   .dialog_description
     height: 100%
-    width: 100%
+    width: 70%
     margin-left: 10px
     &_user_name
+      width: 50%
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
       font-weight: bold
-    &_last_time
-      float: right
+    &_last_message
+      width: 90%
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+      margin-top: 12px
+      font-size: 12px
+  .dialog_description_right
+    width: 30%
+    &_last_message_time
+      position: absolute
+      top: 12px
+      right: 10px
       color: #adadad
       font-size: 11px
       font-weight: bold
-    &_message
-      margin-top: 12px
-      .last_message
-        font-size: 12px
-      .unread_messages
-        background: #64c270
-        padding: 4px 5px 1px 5px
-        border-radius: 10px
-        color: white
-        font-weight: bold
-        font-size: 0.8em
-        float: right
+    &_unread_messages
+      position: absolute
+      right: 10px
+      bottom: 15px
+      background: #64c270
+      padding: 5px 8px 3px 7px
+      border-radius: 50%
+      color: white
+      font-weight: bold
+      font-size: 0.8em
+@media (max-width: 700px)
+  .dialog_item
+    border-bottom: 1px solid #e0e0e0
+    .active_item
+      background-color: #fff
+      color: black
+      & .dialog_description_right_last_message_time
+        color: #adadad

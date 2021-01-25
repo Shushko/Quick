@@ -4,26 +4,17 @@ import * as PropTypes from 'prop-types';
 import TheDialog from "./TheDialog/TheDialog";
 import moment from "moment";
 import { connect } from "react-redux";
-import { onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
+import { onChangeCurrentDialog, toggleDialogsListIsVisible } from "../../redux/dialogsData/dialogsDataActions";
 import { togglePreloader } from "../../redux/preloader";
 
-const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) => {
-    const modifyMessage = (message) => {
-        if (typeof (message) === 'string') {
-            const VALID_LENGTH = 18;
-            if (message.length > VALID_LENGTH) {
-                return message.slice(0, 17) + '...';
-            }
-            return message
-        }
-    }
+const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader, isMobileVersion, toggleDialogsListIsVisible, dialogsListIsVisible }) => {
 
     const getLastMessage = (data) => {
         const dialog = Object.values(data);
         if (dialog.length > 0) {
             const lastDialogItem = dialog[dialog.length - 1];
             return {
-                message: modifyMessage(lastDialogItem.message),
+                message: lastDialogItem.message,
                 time: moment(lastDialogItem.time).format('LT')
             }
         }
@@ -40,39 +31,52 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) =>
         }
     };
 
+    const handleDialogClick = (dialog) => {
+        changeDialog(dialog);
+        isMobileVersion && toggleDialogsListIsVisible(false)
+    };
+
     const getInterlocutor = (members) => members.find(m => m.id !== dialogsData.currentUser.id);
 
     return (
-        <div className={ classes.dialogs_container }>
-            <div className={ classes.dialogs }>
-                { dialogsData.dialogs.map(dialog => {
-                        return (
-                            <TheDialog
-                                dialog={ dialog }
-                                getLastMessage={ getLastMessage }
-                                currentDialog={ dialogsData.currentDialog }
-                                getInterlocutor={ getInterlocutor }
-                                changeDialog={ changeDialog }
-                                key={ dialog.dialogId }
-                            />
-                        )
-                    }
-                ) }
-            </div>
-        </div>
+        <>
+            { dialogsListIsVisible &&
+            <div className={ classes.dialogs_container }>
+                <div className={ classes.dialogs }>
+                    { dialogsData.dialogs.map(dialog => {
+                            return (
+                                <TheDialog
+                                    dialog={ dialog }
+                                    getLastMessage={ getLastMessage }
+                                    currentDialog={ dialogsData.currentDialog }
+                                    getInterlocutor={ getInterlocutor }
+                                    handleDialogClick={ handleDialogClick }
+                                    key={ dialog.dialogId }
+                                />
+                            )
+                        }
+                    ) }
+                </div>
+            </div> }
+        </>
     )
 };
 
 const mapStateToProps = (state) => ({
+    isMobileVersion: state.appState.isMobileVersion,
+    dialogsListIsVisible: state.dialogsDataReducer.dialogsListIsVisible,
     dialogsData: state.dialogsDataReducer
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    toggleDialogsListIsVisible: (value) => dispatch(toggleDialogsListIsVisible(value)),
     onChangeCurrentDialog: (value) => dispatch(onChangeCurrentDialog(value)),
     togglePreloader: (value) => dispatch(togglePreloader(value))
 });
 
 UserDialogs.propTypes = {
+    isMobileVersion: PropTypes.bool,
+    toggleDialogsListIsVisible: PropTypes.func,
     dialogsData: PropTypes.object,
     onChangeCurrentDialog: PropTypes.func,
     togglePreloader: PropTypes.func,

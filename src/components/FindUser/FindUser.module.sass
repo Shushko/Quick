@@ -15,7 +15,7 @@
     border-radius: 2px 2px 0 0
     background: #3a6d99
     span
-      margin-left: 4%
+      margin: 5px 0 0 4%
       font-weight: bold
       font-size: 1.1em
       color: #fff
@@ -46,3 +46,13 @@
       width: 4px
     &::-webkit-scrollbar-thumb
       background: rgba(137, 160, 179, 0.5)
+
+@media (max-width: 700px)
+  .find_user_menu_container
+    margin-top: -2px
+    position: absolute
+    top: 50px
+    height: calc(100vh - 48px)
+    width: 100vw
+    .find_user_header
+      display: none

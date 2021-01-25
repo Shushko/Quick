@@ -4,6 +4,7 @@ const TOGGLE_PHOTO_EDITOR_VISIBILITY = 'TOGGLE_PHOTO_EDITOR_VISIBILITY';
 const HIDE_ALL_MODAL_WINDOWS = 'HIDE_ALL_MODAL_WINDOWS';
 
 const init = {
+    activeTitle: '',
     menuIsVisible: false,
     findUserMenuIsVisible: false,
     photoEditorIsVisible: false,
@@ -17,7 +18,10 @@ const displayModalElements = (state = init, action) => {
             return {
                 ...state,
                 menuIsVisible: action.menuIsVisible,
-                darkBackgroundIsVisible: action.darkBackgroundIsVisible
+                darkBackgroundIsVisible: action.darkBackgroundIsVisible,
+                activeTitle: action.activeTitle,
+                findUserMenuIsVisible: false,
+                photoEditorIsVisible: false
             };
 
         case 'TOGGLE_FIND_USER_MENU_VISIBILITY':
@@ -25,7 +29,8 @@ const displayModalElements = (state = init, action) => {
                 ...state,
                 menuIsVisible: action.menuIsVisible,
                 findUserMenuIsVisible: action.findUserMenuIsVisible,
-                darkBackgroundIsVisible: action.darkBackgroundIsVisible
+                darkBackgroundIsVisible: action.darkBackgroundIsVisible,
+                activeTitle: action.activeTitle
             };
 
         case 'TOGGLE_PHOTO_EDITOR_VISIBILITY':
@@ -33,7 +38,8 @@ const displayModalElements = (state = init, action) => {
                 ...state,
                 menuIsVisible: action.menuIsVisible,
                 photoEditorIsVisible: action.photoEditorIsVisible,
-                darkBackgroundIsVisible: action.darkBackgroundIsVisible
+                darkBackgroundIsVisible: action.darkBackgroundIsVisible,
+                activeTitle: action.activeTitle
             };
 
         case 'HIDE_ALL_MODAL_WINDOWS':
@@ -42,7 +48,8 @@ const displayModalElements = (state = init, action) => {
                 menuIsVisible: false,
                 findUserMenuIsVisible: false,
                 photoEditorIsVisible: false,
-                darkBackgroundIsVisible: false
+                darkBackgroundIsVisible: false,
+                activeTitle: ''
             };
 
         default:
@@ -51,24 +58,27 @@ const displayModalElements = (state = init, action) => {
     }
 };
 
-export const toggleMenuVisibility = (menuIsVisible) => ({
+export const toggleMenuVisibility = (menuIsVisible, darkBackgroundIsVisible, activeTitle) => ({
     type: TOGGLE_MENU_IS_VISIBLE,
     menuIsVisible,
-    darkBackgroundIsVisible: menuIsVisible
+    darkBackgroundIsVisible,
+    activeTitle
 });
 
-export const toggleFindUserMenuVisibility = (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible) => ({
+export const toggleFindUserMenuVisibility = (menuIsVisible, findUserMenuIsVisible, darkBackgroundIsVisible, activeTitle) => ({
     type: TOGGLE_FIND_USER_MENU_VISIBILITY,
     menuIsVisible,
     findUserMenuIsVisible,
-    darkBackgroundIsVisible
+    darkBackgroundIsVisible,
+    activeTitle
 });
 
-export const togglePhotoEditorVisibility = (menuIsVisible, photoEditorIsVisible, darkBackgroundIsVisible) => ({
+export const togglePhotoEditorVisibility = (menuIsVisible, photoEditorIsVisible, darkBackgroundIsVisible, activeTitle) => ({
     type: TOGGLE_PHOTO_EDITOR_VISIBILITY,
     menuIsVisible,
     photoEditorIsVisible,
-    darkBackgroundIsVisible
+    darkBackgroundIsVisible,
+    activeTitle
 });
 
 export const hideAllModalWindows = () => ({

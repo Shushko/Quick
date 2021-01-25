@@ -1,14 +1,13 @@
 .send_message_panel_wrap
   box-sizing: border-box
   width: 98%
-  height: 128px
+  height: 130px
+  padding: 25px 0
   border-top: 2px solid #E9EBED
   .send_message_panel
-    margin-top: 15px
     width: 100%
     display: flex
     justify-content: center
-    align-items: start
     .send_message_form
       width: 60%
     img
@@ -16,4 +15,22 @@
       width: 50px
       border-radius: 50%
       margin: 0 10px 0 10px
-
+@media (max-width: 700px)
+  .send_message_panel_wrap
+    height: 54px
+    width: 100%
+    padding: 10px 0 12px
+    .send_message_panel
+      display: flex
+      justify-content: center
+      align-items: center
+      width: 100%
+      .send_message_form
+        display: flex
+        justify-content: center
+        align-items: center
+        width: 100%
+        form
+          width: 85%
+      img
+        display: none

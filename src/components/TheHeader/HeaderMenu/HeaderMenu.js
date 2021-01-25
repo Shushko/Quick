@@ -1,35 +1,31 @@
 import React from "react";
-import classes from './BurgerMenuMob.module.sass';
-import button from '../../../../assets/menu_button.png';
-import edit from '../../../../assets/edit.png';
-import InputForm from "../../../../common/InputForm/InputForm";
-import { limitLength } from "../../../../common/Validators";
-import UserAvatar from "../UserAvatar/UserAvatar";
-import MenuList from "../MenuList/MenuList";
+import classes from './HeaderMenu.module.sass';
+import InputForm from "../../../common/InputForm/InputForm";
+import { limitLength } from "../../../common/Validators";
+import MenuList from "./MenuList/MenuList";
+import defaultAvatar from "../../../assets/defaultAvatar/ava.jpg";
+import camera from "../../../assets/camera.png";
+import button from '../../../assets/menu_button.png';
+import edit from '../../../assets/edit.png';
 
-const BurgerMenuMob = ({ props }) => {
-
-    const handleClickMenuButton = () => {
-        const activeTitle = props.menuIsVisible ? '' : 'Menu';
-        props.toggleMenuVisibility(!props.menuIsVisible, false, activeTitle)
-    };
+const HeaderMenu = ( props ) => {
 
     return (
         <div className={ classes.menu_container }>
-            <div onClick={ handleClickMenuButton } className={ classes.menu_button }>
+            <div onClick={ props.handleClickMenuButton } className={ classes.menu_button }>
                 <img src={ button } alt="Menu"/>
             </div>
 
             { props.menuIsVisible &&
             <div className={ classes.menu }>
                 <div className={ classes.menu_header }>
-                    <UserAvatar
-                        isMobileVersion={ props.isMobileVersion }
-                        currentUser={ props.currentUser }
-                        togglePhotoEditorVisibility={ props.togglePhotoEditorVisibility }
-                    />
+                    <img src={ props.currentUser.avatar || defaultAvatar } className={ classes.menu_header_avatar } alt="avatar"/>
+                    <div className={ classes.select_photo }
+                         onClick={ () => props.togglePhotoEditorVisibility(false, true, !props.isMobileVersion, 'Avatar editor') }>
+                        <img src={ camera } alt="camera"/>
+                    </div>
 
-                    <div className={ classes.profileInfo }>
+                    <div className={ classes.menu_header_profile_info }>
                         <div className={ classes.user_name_container }>
                             { props.isEditMode ?
                                 <InputForm
@@ -43,8 +39,7 @@ const BurgerMenuMob = ({ props }) => {
                                 /> :
                                 <>
                                     <div className={ classes.user_name }>{ props.currentUser.name }</div>
-                                    <img src={ edit } className={ classes.edit_button } onClick={ props.handleEditMode }
-                                         alt="edit"/>
+                                    <img src={ edit } className={ classes.edit_button } onClick={ props.handleEditMode } alt="edit"/>
                                 </>
                             }
                         </div>
@@ -54,11 +49,13 @@ const BurgerMenuMob = ({ props }) => {
 
                 <MenuList
                     isMobileVersion={ props.isMobileVersion }
-                    toggleFindUserMenuVisibility={ props.toggleFindUserMenuVisibility }/>
+                    toggleFindUserMenuVisibility={ props.toggleFindUserMenuVisibility }
+                    handleLogOutUser={ props.handleLogOutUser }
+                />
             </div>
             }
         </div>
     )
-}
+};
 
-export default BurgerMenuMob
+export default HeaderMenu

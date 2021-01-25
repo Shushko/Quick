@@ -10,10 +10,9 @@ import {
 import { changeUserName, logOutUser } from "../../../redux/dialogsData/dialogsDataActions";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import BurgerMenuMob from "./BurgerMenuMob/BurgerMenuMob";
-import BurgerMenuDesk from "./BurgerMenuDesk/BurgerMenuDesk";
+import HeaderMenu from "./HeaderMenu";
 
-const BurgerMenu = (props) => {
+const HeaderMenuContainer = (props) => {
 
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -30,30 +29,26 @@ const BurgerMenu = (props) => {
 
     const handleEditMode = () => setIsEditMode(!isEditMode);
 
-    const hideInput = () => setIsEditMode(false);
-
-    const propsObj = {
-        isMobileVersion: props.isMobileVersion,
-        isEditMode: isEditMode,
-        handleLogOutUser: handleLogOutUser,
-        onSubmit: onSubmit,
-        handleEditMode: handleEditMode,
-        hideInput: hideInput,
-        currentUser: props.currentUser,
-        menuIsVisible: props.menuIsVisible,
-        toggleFindUserMenuVisibility: props.toggleFindUserMenuVisibility,
-        togglePhotoEditorVisibility: props.togglePhotoEditorVisibility,
-        toggleMenuVisibility: props.toggleMenuVisibility,
-        changeUserName: props.changeUserName,
-        hideAllModalWindows: props.hideAllModalWindows,
-        logOutUser: props.logOutUser
+    const handleClickMenuButton = () => {
+        const activeTitle = props.menuIsVisible ? '' : 'Menu';
+        props.toggleMenuVisibility(!props.menuIsVisible, !props.isMobileVersion, activeTitle)
     };
 
-    return (
-        <>
-            { props.isMobileVersion ? <BurgerMenuMob props={ propsObj }/> : <BurgerMenuDesk props={ propsObj } /> }
-        </>
-    )
+    const hideInput = () => setIsEditMode(false);
+
+    return <HeaderMenu
+        isMobileVersion={ props.isMobileVersion }
+        isEditMode={ isEditMode }
+        handleClickMenuButton={ handleClickMenuButton }
+        handleLogOutUser={ handleLogOutUser }
+        onSubmit={ onSubmit }
+        handleEditMode={ handleEditMode }
+        hideInput={ hideInput }
+        currentUser={ props.currentUser }
+        menuIsVisible={ props.menuIsVisible }
+        toggleFindUserMenuVisibility={ props.toggleFindUserMenuVisibility }
+        togglePhotoEditorVisibility={ props.togglePhotoEditorVisibility }
+    />
 };
 
 const mapStateToProps = (state) => ({
@@ -77,7 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
     logOutUser: () => dispatch(logOutUser())
 });
 
-BurgerMenu.propTypes = {
+HeaderMenuContainer.propTypes = {
     currentUser: PropTypes.object,
     menuIsVisible: PropTypes.bool,
     toggleMenuVisibility: PropTypes.func,
@@ -88,4 +83,4 @@ BurgerMenu.propTypes = {
     logOutUser: PropTypes.func,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(BurgerMenu)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(HeaderMenuContainer)

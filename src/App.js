@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.sass';
 import * as PropTypes from 'prop-types';
-import TheHeaderMob from "./components/Header/TheHeaderMob/TheHeaderMob";
-import TheHeader from "./components/Header/TheHeader/TheHeader";
+import TheHeader from "./components/TheHeader/TheHeader";
 import FindUser from "./components/FindUser/FindUser";
 import AvatarEditor from "./components/AvatarEditor/AvatarEditor";
 import ChatSection from "./components/ChatSection/ChatSection";
@@ -38,7 +37,8 @@ const App = (props) => {
 
     return (
         <div className="app_container">
-            { props.displayModalElements.darkBackgroundIsVisible && <div className={ "dark_background" } onClick={ () => props.hideAllModalWindows() } /> }
+            { props.displayModalElements.darkBackgroundIsVisible &&
+            <div className={ "dark_background" } onClick={ () => props.hideAllModalWindows() } /> }
 
             { props.displayModalElements.findUserMenuIsVisible && <FindUser /> }
 
@@ -48,13 +48,13 @@ const App = (props) => {
                 <>
                     { props.appIsInitialized ?
                         <div className="app_wrapper">
-                            { props.isMobileVersion ? <TheHeaderMob /> : <TheHeader /> }
+                            <TheHeader />
 
                             <div className="main_content">
-                                <UserDialogs/>
-                                <ChatSection/>
+                                <UserDialogs />
+                                <ChatSection />
                             </div>
-                        </div> : <Preloader type={ 'default' }/> }
+                        </div> : <Preloader type={ 'default' } /> }
                 </> : <AuthUser/> }
         </div>
     )

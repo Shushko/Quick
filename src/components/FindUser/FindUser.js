@@ -7,14 +7,19 @@ import { compose } from "redux";
 import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
 import { addFoundUsers, searchUsers } from "../../redux/findUsers";
-import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
+import {
+    createNewDialog,
+    onChangeCurrentDialog,
+    toggleDialogsListIsVisible
+} from "../../redux/dialogsData/dialogsDataActions";
 import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
 import { hideAllModalWindows } from "../../redux/displayModalElements";
 
 const FindUser = (props) => {
     const addNewDialog = (interlocutorId) => {
-        props.toggleElementVisibility(false, false, false);
+        props.hideAllModalWindows();
+        props.isMobileVersion && props.toggleDialogsListIsVisible(false);
         const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null);
         if (hasDialog) {
             props.onChangeCurrentDialog(hasDialog.dialogId);
@@ -44,7 +49,7 @@ const FindUser = (props) => {
     return (
         <div className={ classes.find_user_menu_container }>
             <div className={ classes.find_user_header }>
-                <span>Find user</span>
+                <span>Search users</span>
                 <button className={ classes.close_button } onClick={ () => props.hideAllModalWindows() }>
                     Close
                 </button>
@@ -67,12 +72,14 @@ const FindUser = (props) => {
 }
 
 const mapStateToProps = (state) => ({
+    isMobileVersion: state.appState.isMobileVersion,
     dialogs: state.dialogsDataReducer.dialogs,
     foundUsers: state.findUsers.foundUsers,
     currentUser: state.dialogsDataReducer.currentUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    toggleDialogsListIsVisible: (value) => dispatch(toggleDialogsListIsVisible(value)),
     addFoundUsers: (foundUsers) => { dispatch(addFoundUsers(foundUsers)) },
     searchUsers: (value) => { dispatch(searchUsers(value)) },
     onChangeCurrentDialog: (dialogId) => { dispatch(onChangeCurrentDialog(dialogId)) },
@@ -81,9 +88,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 FindUser.propTypes = {
+    isMobileVersion: PropTypes.bool,
     dialogs: PropTypes.array,
     foundUsers: PropTypes.array,
     currentUser: PropTypes.object,
+    toggleDialogsListIsVisible: PropTypes.func,
     addFoundUsers: PropTypes.func,
     searchUsers: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,

@@ -1,5 +1,6 @@
 const init = {
     appIsInitialized: false,
+    dialogsListIsVisible: true,
     currentDialog: null,
     currentUser: null,
     dialogs: []
@@ -41,11 +42,18 @@ const updateDialog  = (state, action) => {
 
 const dialogsDataReducer = (state = init, action) => {
     switch (action.type) {
+
         case 'APP_IS_INITIALIZED':
             return {
                 ...state,
                 appIsInitialized: action.value
-            }
+            };
+
+        case 'TOGGLE_DIALOG_LIST_IS_VISIBLE':
+            return {
+                ...state,
+                dialogsListIsVisible: action.dialogsListIsVisible
+            };
 
         case 'SET_DIALOGS':
             return setDialogs(state, action);

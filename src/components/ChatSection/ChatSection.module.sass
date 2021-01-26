@@ -1,7 +1,11 @@
 .chat_container
+  position: relative
+  display: flex
+  flex-direction: column
+  justify-content: space-between
   box-sizing: border-box
   width: 69%
-  height: 100%
+  height: calc(97vh - 50px)
   padding: 0 1%
   .startTextWrap
     width: 100%
@@ -13,3 +17,7 @@
       font-weight: bold
       font-size: 1.1em
       color: #adadad
+@media (max-width: 700px)
+  .chat_container
+    width: 100%
+    height: max-content

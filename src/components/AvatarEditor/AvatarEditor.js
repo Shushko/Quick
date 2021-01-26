@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import * as PropTypes from 'prop-types';
+import { connect } from "react-redux";
 import classes from './AvatarEditor.module.sass'
 import ReactAvatarEditor from 'react-avatar-editor'
 import download from '../../assets/download.png'
@@ -8,18 +9,24 @@ import close from "../../assets/close.png";
 import downloadImage from "../../assets/downloadImage.jpg";
 import Preloader from "../../common/Preloader/Preloader";
 import Notification from "../../common/Notification/Notification";
+import { changeUserAvatar } from "../../redux/dialogsData/dialogsDataActions";
+import { togglePhotoEditorVisibility } from "../../redux/displayModalElements";
+import { togglePhotoEditorPreloader } from "../../redux/preloader";
+import { toggleNotificationVisibility } from "../../redux/notification";
 
 const AvatarEditor = (props) => {
-    const [width, setWidth] = useState(490);
-    const [height, setHeight] = useState(490);
-    const [borderRadius, setBorderRadius] = useState(50);
-    const [rotate, setRotate] = useState('0');
-    const [allowZoomOut, setAllowZoomOut] = useState(false);
+
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
     const [editor, setEditor] = useState(null);
     const [image, setImage] = useState(null);
     const prevImage = useRef(null);
+
+    const imageWidth = props.isMobileVersion ? props.screenWidth : 490;
+    const imageHeight = props.isMobileVersion ? props.screenWidth : 490;
+    const editorBorderRadius = 50;
+    const editorRotate = '0';
+    const editorAllowZoomOut = false;
 
     const UPLOAD_YOUR_PHOTO = 'Upload your photo';
     const VALID_FORMATS = 'Image can be .jpg .jpeg .png .gif .svg formats';
@@ -45,7 +52,7 @@ const AvatarEditor = (props) => {
                 prevImage.current = editor.getImage().toDataURL();
                 props.togglePhotoEditorPreloader(true);
                 const resultImage = editor.getImageScaledToCanvas();
-                resultImage.toBlob(blob => props.changeUserAvatar(blob, props.currentUserId));
+                resultImage.toBlob(blob => props.changeUserAvatar(blob, props.currentUser.id));
             } else {
                 showNotification('The image has already been loaded')
             }
@@ -65,13 +72,13 @@ const AvatarEditor = (props) => {
                     <ReactAvatarEditor
                         ref={ setEditorRef }
                         scale={ scale }
-                        width={ width }
-                        height={ height }
+                        width={ imageWidth }
+                        height={ imageHeight }
                         border={ 0 }
                         position={ position }
                         onPositionChange={ handlePositionChange }
-                        rotate={ parseFloat(rotate) }
-                        borderRadius={ width / (100 / borderRadius) }
+                        rotate={ parseFloat(editorRotate) }
+                        borderRadius={ imageWidth / (100 / editorBorderRadius) }
                         image={ image }
                     /> :
                     <div className={ classes.upload_photo }>
@@ -96,7 +103,7 @@ const AvatarEditor = (props) => {
                     name="scale"
                     type="range"
                     onChange={ handleScale }
-                    min={ allowZoomOut ? '0.1' : '1' }
+                    min={ editorAllowZoomOut ? '0.1' : '1' }
                     max="2"
                     step="0.01"
                     defaultValue="1"
@@ -114,9 +121,27 @@ const AvatarEditor = (props) => {
     )
 };
 
+const mapStateToProps = (state) => ({
+    isMobileVersion: state.appState.isMobileVersion,
+    screenWidth: state.appState.screenWidth,
+    currentUser: state.dialogsDataReducer.currentUser,
+    preloader: state.preloader.photoEditorPreloaderIsVisible,
+    notification: state.notification
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    changeUserAvatar: (file, userID) => dispatch(changeUserAvatar(file, userID)),
+    togglePhotoEditorPreloader: (value) => dispatch(togglePhotoEditorPreloader(value)),
+    toggleNotificationVisibility: (isVisible, notificationContent) => dispatch(toggleNotificationVisibility(isVisible, notificationContent)),
+    togglePhotoEditorVisibility: (menuIsVisible, photoEditorIsVisible, darkBackgroundIsVisible) => {
+        dispatch(togglePhotoEditorVisibility(menuIsVisible, photoEditorIsVisible, darkBackgroundIsVisible))
+    },
+});
+
 AvatarEditor.propTypes = {
+    isMobileVersion: PropTypes.bool,
     changeUserAvatar: PropTypes.func,
-    currentUserId: PropTypes.string,
+    currentUser: PropTypes.object,
     togglePhotoEditorVisibility: PropTypes.func,
     preloader: PropTypes.bool,
     togglePhotoEditorPreloader: PropTypes.func,
@@ -125,4 +150,4 @@ AvatarEditor.propTypes = {
 };
 
 
-export default AvatarEditor
+export default connect(mapStateToProps, mapDispatchToProps)(AvatarEditor)

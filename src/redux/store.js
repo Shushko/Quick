@@ -5,10 +5,12 @@ import authUser from "./authUser";
 import displayModalElements from "./displayModalElements";
 import findUsers from "./findUsers";
 import preloader from "./preloader";
-import sendNewMessage from "./sendNewMessage"
+import sendNewMessage from "./sendNewMessage";
 import notification from "./notification";
+import appState from "./appState";
 
 const reducers = combineReducers({
+    appState,
     dialogsDataReducer,
     authUser,
     displayModalElements,

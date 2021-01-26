@@ -1,7 +1,8 @@
 .dialogs_container
   box-sizing: border-box
   width: 31%
-  height: 100%
+  height: calc(97vh - 50px)
+  background-color: #fff
   border-right: 2px solid #E9EBED
   .dialogs
     height: 100%
@@ -16,3 +17,15 @@
     & > a
       text-decoration: none
       color: black
+@media (max-width: 700px)
+  .dialogs_container
+    box-sizing: border-box
+    position: absolute
+    top: 48px
+    width: 100%
+    height: calc(100vh - 48px)
+    border: none
+    z-index: 10
+    .dialogs
+      width: 100%
+      overflow-y: auto

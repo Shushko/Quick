@@ -15,6 +15,7 @@ import { togglePhotoEditorPreloader } from "../preloader";
 import { toggleNotificationVisibility } from "../notification";
 
 const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED'
+const TOGGLE_DIALOG_LIST_IS_VISIBLE = 'TOGGLE_DIALOG_LIST_IS_VISIBLE'
 const SET_DIALOGS = 'SET_DIALOGS'
 const UPDATE_DIALOG = 'UPDATE_DIALOG'
 const SET_CURRENT_USER = 'SET_CURRENT_USER'
@@ -27,6 +28,11 @@ const CLEAR_DIALOGS = 'CLEAR_DIALOGS'
 export const toggleAppIsInit = (value) => ({
     type: APP_IS_INITIALIZED,
     value
+})
+
+export const toggleDialogsListIsVisible = (dialogsListIsVisible) => ({
+    type: TOGGLE_DIALOG_LIST_IS_VISIBLE,
+    dialogsListIsVisible
 })
 
 export const setDialogsAction = (dialog) => ({

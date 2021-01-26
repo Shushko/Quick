@@ -1,6 +1,6 @@
 .editor_content
   position: absolute
-  margin-top: 2%
+  margin-top: 4%
   width: 500px
   height: 540px
   z-index: 300
@@ -51,14 +51,14 @@
       &:hover
         background-color: rgba(0, 0, 0, 0.5)
     .download
-      margin: 5px 0 0 10px
+      margin: 6px 0 0 10px
       width: 30px
       height: 30px
       cursor: pointer
     .scale
       cursor: pointer
     .accept
-      margin: 5px 0 0 10px
+      margin: 6px 0 0 10px
       width: 30px
       height: 30px
       cursor: pointer
@@ -66,3 +66,19 @@
       display: none
     .accept_image
       display: none
+
+@media (max-width: 700px)
+  .editor_content
+    margin-top: 0
+    top: 48px
+    width: 100vw
+    height: calc(100vh - 88px)
+    border-radius: 0
+    .photo_editor
+      height: calc(100vh - 88px)
+      margin-top: 0
+      .close_button
+        display: none
+    .image_settings
+      margin-top: 0
+      border-radius: 0

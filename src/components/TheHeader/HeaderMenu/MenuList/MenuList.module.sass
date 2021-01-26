@@ -1,0 +1,36 @@
+.menu_list
+  &_item
+    display: flex
+    align-items: center
+    height: 35px
+    width: 100%
+    cursor: pointer
+    &_button
+      margin-left: 35%
+      img
+        height: 13px
+        width: 13px
+      span
+        margin: 4px 0 0 10px
+    &:hover
+      background-color: #e6fffa
+@media (max-width: 700px)
+  .menu_list
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    &_item
+      display: flex
+      align-items: center
+      height: 50px
+      width: 96%
+      border-bottom: 1px solid #e0e0e0
+      cursor: pointer
+      &_button
+        margin-left: 2%
+        img
+          height: 13px
+          width: 13px
+        span
+          margin: 4px 0 0 10px

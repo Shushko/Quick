@@ -63,10 +63,10 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
             const handleClick = (e) => {
                 if (inputRef.current !== e.target) {
                     hideInput();
-                    document.removeEventListener('click', handleClick)
+                    document.removeEventListener('mousedown', handleClick)
                 }
             };
-            document.addEventListener('click', handleClick);
+            document.addEventListener('mousedown', handleClick);
 
             return (
                 <div className={ classes.edit_user_name }>

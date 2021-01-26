@@ -10,6 +10,7 @@ import AuthUser from "./components/AuthUser/AuthUser";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import { useResizeDetector  } from 'react-resize-detector';
 import { hideAllModalWindows } from "./redux/displayModalElements";
 import Preloader from "./common/Preloader/Preloader";
 import { onChangeCurrentDialog, setDialogs } from "./redux/dialogsData/dialogsDataActions";
@@ -17,17 +18,16 @@ import { changeScreenWidth, toggleAppVersion } from "./redux/appState";
 
 
 const App = (props) => {
-    props.toggleAppVersion(window.innerWidth <= 700);
-    !props.screenWidth && props.changeScreenWidth(window.innerWidth);
+    const { width, ref } = useResizeDetector();
 
-    window.addEventListener('resize', () => {
-        if (window.innerWidth <= 700) {
+    useEffect(() => {
+        if (width <= 700) {
             !props.isMobileVersion && props.toggleAppVersion(true);
-            props.changeScreenWidth(window.innerWidth)
+            props.changeScreenWidth(width)
         } else {
-            props.isMobileVersion && props.toggleAppVersion(false)
+            props.isMobileVersion && props.toggleAppVersion(false);
         }
-    });
+    }, [width]);
 
     useEffect(() => {
         !props.appIsInitialized && props.userIsAuthorized && props.setDialogs(props.history)
@@ -36,7 +36,7 @@ const App = (props) => {
     useEffect(() => props.onChangeCurrentDialog(props.match.params.dialogId));
 
     return (
-        <div className="app_container">
+        <div className="app_container" ref={ ref }>
             { props.displayModalElements.darkBackgroundIsVisible &&
             <div className={ "dark_background" } onClick={ () => props.hideAllModalWindows() } /> }
 
@@ -62,7 +62,6 @@ const App = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    screenWidth: state.appState.screenWidth,
     appIsInitialized: state.dialogsDataReducer.appIsInitialized,
     userIsAuthorized: state.authUser.userIsAuthorized,
     displayModalElements: state.displayModalElements,
@@ -82,6 +81,7 @@ App.propTypes = {
     isMobileVersion: PropTypes.bool,
     displayModalElements: PropTypes.object,
     toggleAppVersion: PropTypes.func,
+    changeScreenWidth: PropTypes.func,
     setDialogs: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,
     hideAllModalWindows: PropTypes.func

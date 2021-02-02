@@ -18,7 +18,7 @@ const MessageItem = ({ messageItem, currentUserId }) => {
     return (
         <div className={ classes.message_item }>
             <span className={ classes.message_content }>{ messageItem.message }</span>
-            <div>
+            <div className={ classes.add_info }>
                 { displayMessageStatus() }
                 <span className={ classes.message_time }>{ moment(messageItem.time).format('LTS') }</span>
             </div>

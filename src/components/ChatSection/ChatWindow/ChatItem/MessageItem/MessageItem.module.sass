@@ -4,7 +4,8 @@
   margin-left: 57px
   .message_content
     width: 80%
-    word-break: break-all
+    word-break: break-word
+  .add_info
   .not_delivered
     display: inline-block
     margin-right: 5px
@@ -22,3 +23,8 @@
   .message_time
     color: #adadad
     font-size: 0.8em
+
+@media (max-width: 700px)
+  .message_item
+    .message_content
+      width: 76%

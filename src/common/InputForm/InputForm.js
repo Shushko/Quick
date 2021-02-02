@@ -15,10 +15,11 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
     const inputRef = useRef(null);
 
     const Textarea = ({ input, meta, isInvalidNumber, numberFormIsVisible, ...rest }) => {
+
         if (formType === 'send_message_panel') {
             return (
                 <div className={ classes.send_message_panel }>
-                    <textarea { ...input } { ...rest } className={ classes.send_message_panel_textarea }/>
+                    <textarea { ...input } { ...rest } className={ classes.send_message_panel_textarea } />
                     <button type="submit" className={ classes.send_message_panel_button }>Send</button>
                 </div>
             )

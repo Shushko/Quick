@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { Field, Form } from "react-final-form";
 import classes from "./InputForm.module.sass";
 import { composeValidators } from "../Validators";
+import send from '../../assets/send.png'
 
-const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormIsVisible, validators,  placeholder, currentDialogId, hideInput, currentUserName }) => {
+const InputForm = (props) => {
     const moveCaretToEnd = (e) => {
         const temp_value = e.target.value;
         e.target.value = '';
@@ -11,26 +12,42 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
     };
 
     const hasError = useRef(false);
-    const prevCurrentDialogId = useRef(currentDialogId);
+    const prevCurrentDialogId = useRef(props.currentDialogId);
     const inputRef = useRef(null);
+    const sendMessageTextareaRef = useRef();
+    const sendMessageTextareaIsActive = useRef(false);
 
     const Textarea = ({ input, meta, isInvalidNumber, numberFormIsVisible, ...rest }) => {
 
-        if (formType === 'send_message_panel') {
+        if (props.formType === 'send_message_panel') {
             return (
                 <div className={ classes.send_message_panel }>
-                    <textarea { ...input } { ...rest } className={ classes.send_message_panel_textarea } />
-                    <button type="submit" className={ classes.send_message_panel_button }>Send</button>
+                    <textarea { ...input } { ...rest }
+                              className={ classes.send_message_panel_textarea }
+                              ref={ sendMessageTextareaRef }
+                              onFocus={ () => sendMessageTextareaIsActive.current = true }
+                              onBlur={ () => sendMessageTextareaIsActive.current = false }
+                              autoFocus={ sendMessageTextareaIsActive.current }
+                    />
+                    { props.isMobileVersion ?
+                        <div className={ classes.send_message_panel_button_mob }>
+                            <label htmlFor="sendButtonMob">
+                                <img src={ send } className={ classes.send_message_panel_button_mob_image } alt="Send"/>
+                            </label>
+                            <button type="submit" id="sendButtonMob"/>
+                        </div>
+                         :
+                        <button type="submit" className={ classes.send_message_panel_button }>Send</button>}
                 </div>
             )
         }
 
-        if (formType === 'find_user') {
+        if (props.formType === 'find_user') {
             return (
                 <div className={ classes.find_user }>
                 <textarea { ...input } { ...rest } onChange={ (e) => {
                     input.onChange(e);
-                    onSubmit(e.currentTarget.value)
+                    props.onSubmit(e.currentTarget.value)
                 } }
                           className={ classes.find_user_textarea }
                           autoFocus={ true }
@@ -42,7 +59,7 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
             )
         }
 
-        if (formType === 'auth_user') {
+        if (props.formType === 'auth_user') {
             hasError.current = !!meta.error;
 
             return (
@@ -50,7 +67,7 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
                     <textarea { ...input } { ...rest } className={ classes.auth_user_textarea } autoFocus={ true } />
                     <button type="submit" className={ classes.auth_user_button }>Send</button>
                     <div className={ classes.error_message }>
-                        { isInvalidNumber && !meta.modified && !meta.touched && <span>Invalid number</span> }
+                        { props.isInvalidNumber && !meta.modified && !meta.touched && <span>Invalid number</span> }
                         { meta.error && meta.error !== 'Required field' && <span>{ meta.error }</span> }
                         { meta.error === 'Required field' && meta.touched && !meta.active && <span>{ meta.error }</span> }
                     </div>
@@ -58,12 +75,12 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
             )
         }
 
-        if (formType === 'edit_user_name') {
+        if (props.formType === 'edit_user_name') {
             hasError.current = !!meta.error;
 
             const handleClick = (e) => {
                 if (inputRef.current !== e.target) {
-                    hideInput();
+                    props.hideInput();
                     document.removeEventListener('mousedown', handleClick)
                 }
             };
@@ -87,33 +104,46 @@ const InputForm = ({ formType, inputName, onSubmit, isInvalidNumber, numberFormI
             event.preventDefault();
             if (!pristine) {
                 handleSubmit();
-                (!hasError.current || formType === 'send_message_panel') && form.reset()
+                (!hasError.current || props.formType === 'send_message_panel') && form.reset()
             }
         }
     };
 
     const setCurrentInputValue = (form) => {
-        if (prevCurrentDialogId.current !== currentDialogId) {
-            prevCurrentDialogId.current = currentDialogId;
-            const currentInputValue = form.getState().values[currentDialogId];
-            form.change(currentDialogId, currentInputValue)
+        if (prevCurrentDialogId.current !== props.currentDialogId) {
+            prevCurrentDialogId.current = props.currentDialogId;
+            const currentInputValue = form.getState().values[props.currentDialogId];
+            form.change(props.currentDialogId, currentInputValue)
+        }
+    };
+
+    const onClickSubmit = (event, handleSubmit, pristine, form) => {
+        event.preventDefault();
+        if (!pristine) {
+            handleSubmit();
+            !hasError.current && form.reset();
+            sendMessageTextareaIsActive.current = true;
+            sendMessageTextareaRef.current.focus();
         }
     };
 
     return (
-        <Form onSubmit={ onSubmit } initialValues={{ edit_user_name: currentUserName }}>
+        <Form onSubmit={ props.onSubmit } initialValues={{ edit_user_name: props.currentUserName }}>
             { ({ handleSubmit, pristine, form }) => {
                 setCurrentInputValue(form);
-                return <form onSubmit={ handleSubmit }>
-                    <Field component={ Textarea }
-                           name={ inputName }
-                           validate={ validators && composeValidators(...validators) }
-                           isInvalidNumber={ isInvalidNumber }
-                           numberFormIsVisible={ numberFormIsVisible }
-                           onKeyDown={ event => onPressEnter(event, form, pristine, handleSubmit) }
-                           placeholder={ placeholder }
-                    />
-                </form>
+
+                return (
+                    <form onSubmit={ event => onClickSubmit(event, handleSubmit, pristine, form) }>
+                        <Field component={ Textarea }
+                               name={ props.inputName }
+                               validate={ props.validators && composeValidators(...props.validators) }
+                               isInvalidNumber={ props.isInvalidNumber }
+                               numberFormIsVisible={ props.numberFormIsVisible }
+                               onKeyDown={ event => onPressEnter(event, form, pristine, handleSubmit) }
+                               placeholder={ props.placeholder }
+                        />
+                    </form>
+                )
             } }
         </Form>
     )

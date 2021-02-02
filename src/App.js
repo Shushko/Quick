@@ -10,22 +10,29 @@ import AuthUser from "./components/AuthUser/AuthUser";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { useResizeDetector  } from 'react-resize-detector';
+import { useResizeDetector } from 'react-resize-detector';
 import { hideAllModalWindows } from "./redux/displayModalElements";
 import Preloader from "./common/Preloader/Preloader";
-import { onChangeCurrentDialog, setDialogs } from "./redux/dialogsData/dialogsDataActions";
+import { onChangeCurrentDialog, setDialogs, toggleDialogsListIsVisible } from "./redux/dialogsData/dialogsDataActions";
 import { changeScreenWidth, toggleAppVersion } from "./redux/appState";
 
-
 const App = (props) => {
+
     const { width, ref } = useResizeDetector();
 
     useEffect(() => {
-        if (width <= 700) {
-            !props.isMobileVersion && props.toggleAppVersion(true);
+        ref.current && ref.current.style.setProperty('--vh', `${ window.innerHeight / 100 }px`)
+    }, []);
+
+    useEffect(() => {
+        if (width <= 700 && !props.isMobileVersion) {
+            props.toggleAppVersion(true);
+            props.history.push(`/`);
+            props.onChangeCurrentDialog(null);
             props.changeScreenWidth(width)
-        } else {
-            props.isMobileVersion && props.toggleAppVersion(false);
+        } else if (width > 700 && props.isMobileVersion) {
+            props.toggleAppVersion(false);
+            props.toggleDialogsListIsVisible(true);
         }
     }, [width]);
 
@@ -38,23 +45,27 @@ const App = (props) => {
     return (
         <div className="app_container" ref={ ref }>
             { props.displayModalElements.darkBackgroundIsVisible &&
-            <div className={ "dark_background" } onClick={ () => props.hideAllModalWindows() } /> }
+            <div className={ "dark_background" } onClick={ () => props.hideAllModalWindows() }/> }
 
-            { props.displayModalElements.findUserMenuIsVisible && <FindUser /> }
+            { props.displayModalElements.findUserMenuIsVisible && <FindUser/> }
 
-            { props.displayModalElements.photoEditorIsVisible && <AvatarEditor /> }
+            { props.displayModalElements.photoEditorIsVisible && <AvatarEditor/> }
 
             { props.userIsAuthorized ?
                 <>
                     { props.appIsInitialized ?
                         <div className="app_wrapper">
-                            <TheHeader />
+                            <TheHeader/>
 
                             <div className="main_content">
-                                <UserDialogs />
-                                <ChatSection />
+                                { props.isMobileVersion ?
+                                    props.dialogsListIsVisible ? <UserDialogs/> : <ChatSection/> :
+                                <>
+                                    <UserDialogs/>
+                                    <ChatSection/>
+                                </> }
                             </div>
-                        </div> : <Preloader type={ 'default' } /> }
+                        </div> : <Preloader type={ 'start' }/> }
                 </> : <AuthUser/> }
         </div>
     )
@@ -62,6 +73,7 @@ const App = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
+    dialogsListIsVisible: state.dialogsDataReducer.dialogsListIsVisible,
     appIsInitialized: state.dialogsDataReducer.appIsInitialized,
     userIsAuthorized: state.authUser.userIsAuthorized,
     displayModalElements: state.displayModalElements,
@@ -70,13 +82,19 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     toggleAppVersion: (isMobileVersion) => dispatch(toggleAppVersion(isMobileVersion)),
     changeScreenWidth: (screenWidth) => dispatch(changeScreenWidth(screenWidth)),
-    setDialogs: (routeHistory) => { dispatch(setDialogs(routeHistory)) },
-    onChangeCurrentDialog: (value) => { dispatch(onChangeCurrentDialog(value)) },
+    setDialogs: (routeHistory) => {
+        dispatch(setDialogs(routeHistory))
+    },
+    onChangeCurrentDialog: (value) => {
+        dispatch(onChangeCurrentDialog(value))
+    },
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
+    toggleDialogsListIsVisible: (dialogsListIsVisible) => dispatch(toggleDialogsListIsVisible(dialogsListIsVisible)),
 });
 
 App.propTypes = {
     appIsInitialized: PropTypes.bool,
+    dialogsListIsVisible: PropTypes.bool,
     userIsAuthorized: PropTypes.bool,
     isMobileVersion: PropTypes.bool,
     displayModalElements: PropTypes.object,
@@ -84,7 +102,8 @@ App.propTypes = {
     changeScreenWidth: PropTypes.func,
     setDialogs: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,
-    hideAllModalWindows: PropTypes.func
+    hideAllModalWindows: PropTypes.func,
+    toggleDialogsListIsVisible: PropTypes.func
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(App)

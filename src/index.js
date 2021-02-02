@@ -20,6 +20,8 @@ firebase.initializeApp({
     appId: "1:495625166359:web:2569d80a5efaf76774c652"
 });
 
+const root = document.getElementById('root');
+
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
@@ -30,7 +32,7 @@ ReactDOM.render(
             </Route>
         </BrowserRouter>
     </React.StrictMode>,
-    document.getElementById('root')
+    root
 );
 
 serviceWorker.unregister();

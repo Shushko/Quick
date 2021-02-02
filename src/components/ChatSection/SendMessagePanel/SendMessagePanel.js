@@ -60,6 +60,7 @@ SendMessagePanel.propTypes = {
     interlocutor: PropTypes.object,
     currentDialog: PropTypes.string,
     setIsNewUserMessage: PropTypes.func,
+    changeAppHeight: PropTypes.func,
     addNewMessage: PropTypes.func
 };
 

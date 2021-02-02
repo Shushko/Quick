@@ -1,24 +1,31 @@
-.chats_window
+.chat_window
+  position: relative
+  overflow-y: scroll
+  overflow-x: hidden
   box-sizing: border-box
   width: 100%
-  overflow: auto
-  overflow-x: hidden
-  display: flex
-  justify-content: center
-  align-items: center
+  height: calc(97vh - 180px)
   &::-webkit-scrollbar
     background-color: #dfe5ec
     width: 3px
   &::-webkit-scrollbar-thumb
     background-color: #6490b1
   .chat_wrapper
-    height: 100%
+    display: flex
+    flex-direction: column
     width: 100%
-    max-width: 520px
+    padding: 0 5%
+    box-sizing: border-box
   .arrowDown_wrap
     position: absolute
-    right: 80px
-    bottom: 120px
+    right: 70px
+    bottom: 70px
+    .arrow_down
+      position: fixed
+      cursor: pointer
+      border-radius: 50%
+      height: 40px
+      width: 40px
     .sum_unread_messages
       background: #005c99
       padding: 4px 5px 1px 5px
@@ -28,13 +35,13 @@
       font-size: 0.8em
       position: fixed
       z-index: 2
-    .arrow_down
-      position: fixed
-      cursor: pointer
-      border-radius: 50%
-      height: 40px
-      width: 40px
+
 @media (max-width: 700px)
-  .chats_window
-    height: calc(100vh - 104px)
+  .chat_window
+    height: 100%
+    .chat_wrapper
+      padding: 0
+    .arrowDown_wrap
+      right: 50px
+      bottom: 50px
 

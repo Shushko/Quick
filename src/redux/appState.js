@@ -3,7 +3,7 @@ const CHANGE_SCREEN_WIDTH = 'CHANGE_SCREEN_WIDTH';
 
 const init = {
     isMobileVersion: false,
-    screenWidth: null
+    screenWidth: null,
 };
 
 const appState = (state = init, action) => {

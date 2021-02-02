@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { InView } from 'react-intersection-observer';
 import classes from './ChatWindow.module.sass';
 import * as PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import Preloader from "../../../common/Preloader/Preloader";
 
 
-const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage }) => {
+const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage, isMobileVersion }) => {
     const currentUser = dialogsState.currentUser;
     const LIMIT_UNREAD_MESSAGES = 5;
     const chatStart = useRef();
@@ -21,9 +21,29 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     const prevCurrentChatId = useRef(null);
     const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog));
     const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
+    const refLastMessageIsVisible = useRef(false);
+    const chatWindowRef = useRef();
 
-    const scrollToEnd = (target) => target.current.scrollIntoView({ block: 'end' });
-    const smoothScrollDown = () => chatEnd.current.scrollIntoView({ block: "end", behavior: "smooth" });
+
+    const setChatWindowHeight = () => {
+        if (chatWindowRef.current) {
+            if (isMobileVersion) {
+                chatWindowRef.current.style.height = `${ window.innerHeight - 104 }px`;
+            } else {
+                chatWindowRef.current.style.height = `${ window.innerHeight - 180 }px`;
+            }
+        }
+    };
+
+    const scrollToEnd = (target) => target.current && target.current.scrollIntoView({ block: 'end' });
+    const smoothScrollDown = () => chatEnd.current.scrollIntoView({ block: 'end', behavior: 'smooth' });
+
+    window.addEventListener('resize', () => {
+        refLastMessageIsVisible.current && scrollToEnd(chatEnd);
+        setChatWindowHeight();
+    });
+
+    isMobileVersion && setChatWindowHeight();
 
     useEffect(() => {
         if (prevCurrentChatId.current !== currentChat.current.dialogId && lastReadMessageRef) {
@@ -50,6 +70,7 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
             lastReadMessageRef !== entry.target && setLastReadMessageRef(entry.target)
         }
         if (messageItem.id === lastMessage.id) {
+            refLastMessageIsVisible.current = entry.isIntersecting;
             setLastMessageIsVisible(entry.isIntersecting);
         }
         if (entry.isIntersecting && !messageItem.isRead && messageItem.userId !== currentUser.id) {
@@ -73,7 +94,9 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
             const isSameMessageOwner = prevMessageUserId.current === messageItem.userId;
             prevMessageUserId.current = messageItem.userId;
             return (
-                <InView as="div" onChange={ (inView, entry) => observeChat(inView, entry, messageItem, lastReadMessage, lastMessage) } key={ messageItem.id }>
+                <InView as="div"
+                        onChange={ (inView, entry) => observeChat(inView, entry, messageItem, lastReadMessage, lastMessage) }
+                        key={ messageItem.id }>
                     <div>
                         <ChatItem
                             isSameMessageOwner={ isSameMessageOwner }
@@ -89,7 +112,7 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     };
 
     return (
-        <div className={ classes.chats_window }>
+        <div className={ classes.chat_window } ref={ chatWindowRef }>
             { preloader && <Preloader type={ 'chat_window' }/> }
             <div className={ classes.chat_wrapper }>
                 <div ref={ chatStart }/>
@@ -97,19 +120,19 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
                 <div ref={ chatEnd }/>
             </div>
 
-            {
-                !lastMessageIsVisible && !!currentChat.current.messages.length &&
-                <div className={ classes.arrowDown_wrap }>
-                    { !!currentChat.current.unreadMessages &&
-                    <span className={ classes.sum_unread_messages }>{ currentChat.current.unreadMessages }</span> }
-                    <img src={ arrowDown } className={ classes.arrow_down } onClick={ smoothScrollDown } alt=""/>
-                </div>
-            }
+            { !lastMessageIsVisible && !!currentChat.current.messages.length &&
+            <div className={ classes.arrowDown_wrap }>
+                { !!currentChat.current.unreadMessages &&
+                <span className={ classes.sum_unread_messages }>{ currentChat.current.unreadMessages }</span> }
+                <img src={ arrowDown } className={ classes.arrow_down } onClick={ smoothScrollDown } alt="arrow down"/>
+            </div> }
         </div>
     )
 };
 
 const mapStateToProps = (state) => ({
+    isMobileVersion: state.appState.isMobileVersion,
+    appHeight: state.appState.appHeight,
     dialogsState: state.dialogsDataReducer,
     preloader: state.preloader.preloaderIsVisible,
     isNewUserMessage: state.sendNewMessage.isNewUserMessage
@@ -123,7 +146,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 ChatWindow.propTypes = {
     dialogsState: PropTypes.object,
+    isMobileVersion: PropTypes.bool,
     preloader: PropTypes.bool,
+    appHeight: PropTypes.number,
     isNewUserMessage: PropTypes.bool,
     changeMessageStatus: PropTypes.func,
     togglePreloader: PropTypes.func,

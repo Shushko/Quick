@@ -22,7 +22,7 @@ const AuthUserForm = (props) => {
                 isInvalidNumber={ props.isInvalidNumber }
                 numberFormIsVisible={ props.numberFormIsVisible }
                 validators={ props.numberFormIsVisible ? [required, mustBePhoneNumber] : [required, mustBeNumber] }
-                placeholder={ props.numberFormIsVisible ? "Phone number (+380XXXXXXXXX)" : "Code" }
+                placeholder={ props.numberFormIsVisible ? "+380XXXXXXXXX" : "Code" }
             />
         </div>
     )

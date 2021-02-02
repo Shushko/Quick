@@ -7,6 +7,7 @@ import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
 import { setAuthorizedUser } from "../../redux/authUser";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
+import TheLogo from "../../common/TheLogo/TheLogo";
 
 
 const AuthUser = (props) => {
@@ -69,9 +70,10 @@ const AuthUser = (props) => {
         return (
             <div className={ classes.authorization_wrapper }>
                 <div className={ classes.authorization_content }>
-                    <div className={ classes.logo }>
-                        <div className={ classes.logo_text }>Quick</div>
+                    <div className={ classes.content_header }>
+                        <TheLogo />
                     </div>
+
                     <div className={ classes.auth_form_text }>
                         { signInIsVisible &&
                         <span className={ classes.auth_form_text_grit }>

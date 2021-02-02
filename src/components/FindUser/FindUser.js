@@ -7,11 +7,7 @@ import { compose } from "redux";
 import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
 import { addFoundUsers, searchUsers } from "../../redux/findUsers";
-import {
-    createNewDialog,
-    onChangeCurrentDialog,
-    toggleDialogsListIsVisible
-} from "../../redux/dialogsData/dialogsDataActions";
+import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
 import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
 import { hideAllModalWindows } from "../../redux/displayModalElements";
@@ -19,7 +15,6 @@ import { hideAllModalWindows } from "../../redux/displayModalElements";
 const FindUser = (props) => {
     const addNewDialog = (interlocutorId) => {
         props.hideAllModalWindows();
-        props.isMobileVersion && props.toggleDialogsListIsVisible(false);
         const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null);
         if (hasDialog) {
             props.onChangeCurrentDialog(hasDialog.dialogId);
@@ -79,7 +74,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleDialogsListIsVisible: (value) => dispatch(toggleDialogsListIsVisible(value)),
     addFoundUsers: (foundUsers) => { dispatch(addFoundUsers(foundUsers)) },
     searchUsers: (value) => { dispatch(searchUsers(value)) },
     onChangeCurrentDialog: (dialogId) => { dispatch(onChangeCurrentDialog(dialogId)) },
@@ -92,7 +86,6 @@ FindUser.propTypes = {
     dialogs: PropTypes.array,
     foundUsers: PropTypes.array,
     currentUser: PropTypes.object,
-    toggleDialogsListIsVisible: PropTypes.func,
     addFoundUsers: PropTypes.func,
     searchUsers: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,

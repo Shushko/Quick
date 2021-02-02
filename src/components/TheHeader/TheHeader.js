@@ -6,11 +6,12 @@ import * as PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import HeaderMenuContainer from "./HeaderMenu/HeaderMenuContainer";
 import TheLogo from "../../common/TheLogo/TheLogo";
-import { toggleDialogsListIsVisible } from "../../redux/dialogsData/dialogsDataActions";
 import { hideAllModalWindows, toggleMenuVisibility } from "../../redux/displayModalElements";
 import arrow_back from '../../assets/arrow_back.png'
 
-const TheHeader = ({ dialogsListIsVisible, toggleDialogsListIsVisible, modalWindowsState, hideAllModalWindows, toggleMenuVisibility, ...props }) => {
+const TheHeader = ({ modalWindowsState, hideAllModalWindows, toggleMenuVisibility, ...props }) => {
+
+    const dialogsListIsVisible = !props.match.params.dialogId;
 
     const handleClickBack = () => {
         const submenuIsOpen = modalWindowsState.findUserMenuIsVisible || modalWindowsState.photoEditorIsVisible;
@@ -21,7 +22,6 @@ const TheHeader = ({ dialogsListIsVisible, toggleDialogsListIsVisible, modalWind
             toggleMenuVisibility(false, false, '')
         } else {
             props.history.push('/');
-            !dialogsListIsVisible && toggleDialogsListIsVisible(true)
         }
     };
 
@@ -52,12 +52,10 @@ const TheHeader = ({ dialogsListIsVisible, toggleDialogsListIsVisible, modalWind
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    dialogsListIsVisible: state.dialogsDataReducer.dialogsListIsVisible,
     modalWindowsState: state.displayModalElements
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleDialogsListIsVisible: (value) => dispatch(toggleDialogsListIsVisible(value)),
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
     toggleMenuVisibility: (menuIsVisible, darkBackgroundIsVisible, activeTitle) => {
         dispatch(toggleMenuVisibility(menuIsVisible, darkBackgroundIsVisible, activeTitle))
@@ -66,9 +64,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 TheHeader.propTypes = {
     isMobileVersion: PropTypes.bool,
-    dialogsListIsVisible: PropTypes.bool,
     modalWindowsState: PropTypes.object,
-    toggleDialogsListIsVisible: PropTypes.func,
     toggleMenuVisibility: PropTypes.func,
     hideAllModalWindows: PropTypes.func
 };

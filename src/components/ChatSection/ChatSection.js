@@ -12,22 +12,21 @@ import { setIsNewUserMessage } from "../../redux/sendNewMessage";
 const ChatSection = (props) => {
     return (
         <div className={ classes.chat_container }>
-
-            { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ? <ChatWindow /> :
-
-            <div className={ classes.start_text_wrap }>
-                <span className={ classes.start_text_style }>Select a dialog and start communication</span>
-            </div> }
-
-            { props.dialogsData.currentDialog && props.dialogsData.dialogs.length ?
-                <SendMessagePanel { ...props } /> : '' }
+            { !!props.match.params.dialogId ?
+                <>
+                    <ChatWindow />
+                    <SendMessagePanel { ...props } />
+                </>
+                :
+                <div className={ classes.start_text_wrap }>
+                    <span className={ classes.start_text_style }>Select a dialog and start communication</span>
+                </div> }
         </div>
     )
 };
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    dialogsListIsVisible: state.dialogsDataReducer.dialogsListIsVisible,
     dialogsData: state.dialogsDataReducer,
 });
 
@@ -40,7 +39,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 ChatSection.propTypes = {
     isMobileVersion: PropTypes.bool,
-    dialogsListIsVisible: PropTypes.bool,
     dialogsData: PropTypes.object,
     addNewMessage: PropTypes.func,
     setIsNewUserMessage: PropTypes.func

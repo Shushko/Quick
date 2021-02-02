@@ -33,11 +33,24 @@
     outline: none
     &:hover
       color: #6490b1
+  &_button_mob
+    button
+      display: none
+    &_image
+      height: 25px
+      width: 25px
+      margin-top: 5px
+
 @media (max-width: 700px)
   .send_message_panel
+    display: flex
+    justify-content: space-around
+    align-items: center
+    width: 100%
     &_textarea
       height: 32px
-      width: 100%
+      width: 80%
+      margin-left: 5%
       min-height: 32px
       background-color: #f1f1f1
       transition: background-color 0.2s
@@ -45,8 +58,6 @@
         padding: 6px 5px 5px 5px
         border: 1px solid #f1f1f1
         background-color: #fff
-    &_button
-      display: none
 
 .auth_user
   margin-top: 5%

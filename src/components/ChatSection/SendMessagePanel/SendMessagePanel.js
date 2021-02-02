@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
 
-const SendMessagePanel = ({ dialogsData, addNewMessage, setIsNewUserMessage }) => {
+const SendMessagePanel = ({ isMobileVersion, dialogsData, addNewMessage, setIsNewUserMessage }) => {
     const [dialog, setDialog] = useState(null);
     const [interlocutor, setInterlocutor] = useState(null);
 
@@ -37,19 +37,20 @@ const SendMessagePanel = ({ dialogsData, addNewMessage, setIsNewUserMessage }) =
     return (
         <div className={ classes.send_message_panel_wrap }>
             <div className={ classes.send_message_panel }>
-                <img src={ dialogsData.currentUser.avatar } alt="avatar"/>
+                { !isMobileVersion &&
+                <img src={ dialogsData.currentUser.avatar } className={ classes.send_message_panel_avatar } alt="avatar"/> }
 
-                <div className={ classes.send_message_form }>
-                    <InputForm
-                        formType={ 'send_message_panel' }
-                        inputName={ dialogsData.currentDialog }
-                        onSubmit={ onSubmit }
-                        placeholder={ "Type a message..." }
-                        currentDialogId={ dialogsData.currentDialog }
-                    />
-                </div>
+                <InputForm
+                    formType={ 'send_message_panel' }
+                    inputName={ dialogsData.currentDialog }
+                    onSubmit={ onSubmit }
+                    placeholder={ "Type a message..." }
+                    currentDialogId={ dialogsData.currentDialog }
+                    isMobileVersion={ isMobileVersion }
+                />
 
-                <img src={ interlocutor ? interlocutor.avatar : defaultAvatar } alt="avatar" />
+                { !isMobileVersion &&
+                <img src={ interlocutor ? interlocutor.avatar : defaultAvatar } className={ classes.send_message_panel_avatar } alt="avatar" /> }
             </div>
         </div>
     )

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 import { InView } from 'react-intersection-observer';
 import classes from './ChatWindow.module.sass';
 import * as PropTypes from 'prop-types';
@@ -11,7 +13,7 @@ import { connect } from "react-redux";
 import Preloader from "../../../common/Preloader/Preloader";
 
 
-const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage, isMobileVersion }) => {
+const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage, isMobileVersion, ...props }) => {
     const currentUser = dialogsState.currentUser;
     const LIMIT_UNREAD_MESSAGES = 5;
     const chatStart = useRef();
@@ -19,7 +21,7 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     const prevMessageUserId = useRef(null);
     const [lastReadMessageRef, setLastReadMessageRef] = useState(null);
     const prevCurrentChatId = useRef(null);
-    const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog));
+    const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === props.match.params.dialogId));
     const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
     const refLastMessageIsVisible = useRef(false);
     const chatWindowRef = useRef();
@@ -44,6 +46,10 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     });
 
     isMobileVersion && setChatWindowHeight();
+
+    useEffect(() => {
+        currentChat.current = dialogsState.dialogs.find(d => d.dialogId === props.match.params.dialogId)
+    }, [props.match.params.dialogId]);
 
     useEffect(() => {
         if (prevCurrentChatId.current !== currentChat.current.dialogId && lastReadMessageRef) {
@@ -79,7 +85,6 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     };
 
     const getUserChat = () => {
-        currentChat.current = dialogsState.dialogs.find(d => d.dialogId === dialogsState.currentDialog);
         prevMessageUserId.current = null;
         const chatMessages = currentChat.current.messages;
         const chatMembers = currentChat.current.members;
@@ -155,4 +160,4 @@ ChatWindow.propTypes = {
     setIsNewUserMessage: PropTypes.func,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(ChatWindow)

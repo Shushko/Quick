@@ -8,12 +8,12 @@ import ChatSection from "./components/ChatSection/ChatSection";
 import UserDialogs from "./components/DialogsSection/UserDialogs";
 import AuthUser from "./components/AuthUser/AuthUser";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, Route, Switch } from "react-router-dom";
 import { compose } from "redux";
 import { useResizeDetector } from 'react-resize-detector';
 import { hideAllModalWindows } from "./redux/displayModalElements";
 import Preloader from "./common/Preloader/Preloader";
-import { onChangeCurrentDialog, setDialogs, toggleDialogsListIsVisible } from "./redux/dialogsData/dialogsDataActions";
+import { onChangeCurrentDialog, setDialogs } from "./redux/dialogsData/dialogsDataActions";
 import { changeScreenWidth, toggleAppVersion } from "./redux/appState";
 
 const App = (props) => {
@@ -32,7 +32,6 @@ const App = (props) => {
             props.changeScreenWidth(width)
         } else if (width > 700 && props.isMobileVersion) {
             props.toggleAppVersion(false);
-            props.toggleDialogsListIsVisible(true);
         }
     }, [width]);
 
@@ -57,14 +56,18 @@ const App = (props) => {
                         <div className="app_wrapper">
                             <TheHeader/>
 
-                            <div className="main_content">
+                            <main className="main_content">
                                 { props.isMobileVersion ?
-                                    props.dialogsListIsVisible ? <UserDialogs/> : <ChatSection/> :
-                                <>
-                                    <UserDialogs/>
-                                    <ChatSection/>
-                                </> }
-                            </div>
+                                    <Switch>
+                                        <Route exact path='/' component={ UserDialogs } />
+                                        <Route path='/:dialogId' component={ ChatSection } />
+                                    </Switch>
+                                    :
+                                    <>
+                                        <UserDialogs/>
+                                        <ChatSection/>
+                                    </> }
+                            </main>
                         </div> : <Preloader type={ 'start' }/> }
                 </> : <AuthUser/> }
         </div>
@@ -73,7 +76,6 @@ const App = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    dialogsListIsVisible: state.dialogsDataReducer.dialogsListIsVisible,
     appIsInitialized: state.dialogsDataReducer.appIsInitialized,
     userIsAuthorized: state.authUser.userIsAuthorized,
     displayModalElements: state.displayModalElements,
@@ -89,12 +91,10 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(onChangeCurrentDialog(value))
     },
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
-    toggleDialogsListIsVisible: (dialogsListIsVisible) => dispatch(toggleDialogsListIsVisible(dialogsListIsVisible)),
 });
 
 App.propTypes = {
     appIsInitialized: PropTypes.bool,
-    dialogsListIsVisible: PropTypes.bool,
     userIsAuthorized: PropTypes.bool,
     isMobileVersion: PropTypes.bool,
     displayModalElements: PropTypes.object,
@@ -103,7 +103,6 @@ App.propTypes = {
     setDialogs: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,
     hideAllModalWindows: PropTypes.func,
-    toggleDialogsListIsVisible: PropTypes.func
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(App)

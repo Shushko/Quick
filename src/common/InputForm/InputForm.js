@@ -13,7 +13,7 @@ const InputForm = (props) => {
 
     const hasError = useRef(false);
     const prevCurrentDialogId = useRef(props.currentDialogId);
-    const inputRef = useRef(null);
+    const editNameFormRef = useRef(null);
     const sendMessageTextareaRef = useRef();
     const sendMessageTextareaIsActive = useRef(false);
 
@@ -78,17 +78,14 @@ const InputForm = (props) => {
         if (props.formType === 'edit_user_name') {
             hasError.current = !!meta.error;
 
-            const handleClick = (e) => {
-                if (inputRef.current !== e.target) {
-                    props.hideInput();
-                    document.removeEventListener('mousedown', handleClick)
-                }
-            };
-            document.addEventListener('mousedown', handleClick);
-
             return (
-                <div className={ classes.edit_user_name }>
-                    <textarea { ...input } { ...rest } className={ classes.edit_user_name_textarea } autoFocus={ true } ref={ inputRef }/>
+                <div className={ classes.edit_user_name } ref={ editNameFormRef }>
+                    <textarea { ...input } { ...rest }
+                              className={ classes.edit_user_name_textarea }
+                              onBlur={ () => setTimeout(props.hideInput, 0) }
+                              autoFocus={ true }
+                    />
+                    { props.isMobileVersion && <button type="submit" className={ classes.edit_user_name_button }>Save</button> }
 
                     <div className={ classes.edit_user_name_error }>
                         { meta.error && <span>{ meta.error }</span> }
@@ -122,8 +119,10 @@ const InputForm = (props) => {
         if (!pristine) {
             handleSubmit();
             !hasError.current && form.reset();
-            sendMessageTextareaIsActive.current = true;
-            sendMessageTextareaRef.current.focus();
+            if (props.formType === 'send_message_panel') {
+                sendMessageTextareaIsActive.current = true;
+                sendMessageTextareaRef.current.focus();
+            }
         }
     };
 

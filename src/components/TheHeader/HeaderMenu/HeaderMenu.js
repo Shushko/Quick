@@ -36,6 +36,7 @@ const HeaderMenu = ( props ) => {
                                     placeholder={ 'Enter a new name...' }
                                     hideInput={ props.hideInput }
                                     currentUserName={ props.currentUser.name }
+                                    isMobileVersion={ props.isMobileVersion }
                                 /> :
                                 <>
                                     <div className={ classes.user_name }>{ props.currentUser.name }</div>

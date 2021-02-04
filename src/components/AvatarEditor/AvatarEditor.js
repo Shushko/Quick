@@ -9,10 +9,10 @@ import close from "../../assets/close.png";
 import downloadImage from "../../assets/downloadImage.jpg";
 import Preloader from "../../common/Preloader/Preloader";
 import Notification from "../../common/Notification/Notification";
-import { changeUserAvatar } from "../../redux/dialogsData/dialogsDataActions";
 import { togglePhotoEditorVisibility } from "../../redux/displayModalElements";
 import { togglePhotoEditorPreloader } from "../../redux/preloader";
 import { toggleNotificationVisibility } from "../../redux/notification";
+import { changeUserAvatar } from "../../redux/userProfile";
 
 const AvatarEditor = (props) => {
 
@@ -124,7 +124,7 @@ const AvatarEditor = (props) => {
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     screenWidth: state.appState.screenWidth,
-    currentUser: state.dialogsDataReducer.currentUser,
+    currentUser: state.userProfile.currentUser,
     preloader: state.preloader.photoEditorPreloaderIsVisible,
     notification: state.notification
 });

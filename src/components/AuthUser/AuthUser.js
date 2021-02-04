@@ -5,7 +5,7 @@ import * as firebase from "firebase";
 import { connect } from "react-redux";
 import AuthUserForm from "./AuthUserForm/AuthUserForm";
 import Preloader from "../../common/Preloader/Preloader";
-import { setAuthorizedUser } from "../../redux/authUser";
+import { setAuthorizedUser } from "../../redux/userProfile";
 import { AUTH_FORM_GRIT, VERIFICATION_CODE_TEXT } from "../../common/Messages";
 import TheLogo from "../../common/TheLogo/TheLogo";
 

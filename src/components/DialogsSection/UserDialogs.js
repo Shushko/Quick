@@ -1,13 +1,16 @@
 import React from 'react';
 import classes from './UserDialogs.module.sass';
 import * as PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 import TheDialog from "./TheDialog/TheDialog";
 import moment from "moment";
 import { connect } from "react-redux";
-import { onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
 import { togglePreloader } from "../../redux/preloader";
 
-const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) => {
+const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) => {
+
+    const currentDialogId = props.match.params.dialogId;
 
     const getLastMessage = (data) => {
         const dialog = Object.values(data);
@@ -25,13 +28,12 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) =>
     };
 
     const changeDialog = (dialog) => {
-        if (dialogsData.currentDialog !== dialog.dialogId) {
+        if (currentDialogId !== dialog.dialogId) {
             dialog.messages.length && togglePreloader(true);
-            onChangeCurrentDialog(dialog.dialogId);
         }
     };
 
-    const getInterlocutor = (members) => members.find(m => m.id !== dialogsData.currentUser.id);
+    const getInterlocutor = (members) => members.find(m => m.id !== currentUser.id);
 
     return (
         <div className={ classes.dialogs_container }>
@@ -41,7 +43,7 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) =>
                             <TheDialog
                                 dialog={ dialog }
                                 getLastMessage={ getLastMessage }
-                                currentDialog={ dialogsData.currentDialog }
+                                currentDialogId={ currentDialogId }
                                 getInterlocutor={ getInterlocutor }
                                 handleDialogClick={ changeDialog }
                                 key={ dialog.dialogId }
@@ -55,11 +57,11 @@ const UserDialogs = ({ dialogsData, onChangeCurrentDialog, togglePreloader }) =>
 };
 
 const mapStateToProps = (state) => ({
-    dialogsData: state.dialogsDataReducer
+    dialogsData: state.dialogsDataReducer,
+    currentUser: state.userProfile.currentUser
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChangeCurrentDialog: (value) => dispatch(onChangeCurrentDialog(value)),
     togglePreloader: (value) => dispatch(togglePreloader(value))
 });
 
@@ -69,4 +71,4 @@ UserDialogs.propTypes = {
     togglePreloader: PropTypes.func,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserDialogs)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(UserDialogs)

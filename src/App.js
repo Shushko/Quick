@@ -13,7 +13,7 @@ import { compose } from "redux";
 import { useResizeDetector } from 'react-resize-detector';
 import { hideAllModalWindows } from "./redux/displayModalElements";
 import Preloader from "./common/Preloader/Preloader";
-import { onChangeCurrentDialog, setDialogs } from "./redux/dialogsData/dialogsDataActions";
+import { setDialogs } from "./redux/dialogsData/dialogsDataActions";
 import { changeScreenWidth, toggleAppVersion } from "./redux/appState";
 
 const App = (props) => {
@@ -28,7 +28,6 @@ const App = (props) => {
         if (width <= 700 && !props.isMobileVersion) {
             props.toggleAppVersion(true);
             props.history.push(`/`);
-            props.onChangeCurrentDialog(null);
             props.changeScreenWidth(width)
         } else if (width > 700 && props.isMobileVersion) {
             props.toggleAppVersion(false);
@@ -38,8 +37,6 @@ const App = (props) => {
     useEffect(() => {
         !props.appIsInitialized && props.userIsAuthorized && props.setDialogs(props.history)
     }, [props.appIsInitialized, props.userIsAuthorized]);
-
-    useEffect(() => props.onChangeCurrentDialog(props.match.params.dialogId));
 
     return (
         <div className="app_container" ref={ ref }>
@@ -76,20 +73,15 @@ const App = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    appIsInitialized: state.dialogsDataReducer.appIsInitialized,
-    userIsAuthorized: state.authUser.userIsAuthorized,
+    appIsInitialized: state.appState.appIsInitialized,
+    userIsAuthorized: state.userProfile.userIsAuthorized,
     displayModalElements: state.displayModalElements,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     toggleAppVersion: (isMobileVersion) => dispatch(toggleAppVersion(isMobileVersion)),
     changeScreenWidth: (screenWidth) => dispatch(changeScreenWidth(screenWidth)),
-    setDialogs: (routeHistory) => {
-        dispatch(setDialogs(routeHistory))
-    },
-    onChangeCurrentDialog: (value) => {
-        dispatch(onChangeCurrentDialog(value))
-    },
+    setDialogs: (routeHistory) => { dispatch(setDialogs(routeHistory)) },
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
 });
 

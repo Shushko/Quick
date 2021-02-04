@@ -3,12 +3,12 @@ import classes from "./TheDialog.module.sass";
 import * as PropTypes from 'prop-types';
 import { NavLink } from "react-router-dom";
 
-const TheDialog = ({ dialog, getLastMessage, currentDialog, getInterlocutor, handleDialogClick }) => {
+const TheDialog = ({ dialog, getLastMessage, currentDialogId, getInterlocutor, handleDialogClick }) => {
 
     return (
         <NavLink to={ `/${ dialog.dialogId }` }>
             <div onClick={ () => handleDialogClick(dialog) } className={ classes.dialog_item }>
-                <div className={ dialog.dialogId === currentDialog ? classes.active_item : classes.item }>
+                <div className={ dialog.dialogId === currentDialogId ? classes.active_item : classes.item }>
                     <img src={ getInterlocutor(dialog.members).avatar } alt="avatar" />
                     <div className={ classes.dialog_description }>
                         <div className={ classes.dialog_description_user_name }>

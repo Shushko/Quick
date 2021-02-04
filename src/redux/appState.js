@@ -1,13 +1,21 @@
+const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED';
 const TOGGLE_APP_VERSION = 'TOGGLE_APP_VERSION';
 const CHANGE_SCREEN_WIDTH = 'CHANGE_SCREEN_WIDTH';
 
 const init = {
+    appIsInitialized: false,
     isMobileVersion: false,
     screenWidth: null,
 };
 
 const appState = (state = init, action) => {
     switch (action.type) {
+        case 'APP_IS_INITIALIZED':
+            return {
+                ...state,
+                appIsInitialized: action.appIsInitialized
+            };
+
         case 'TOGGLE_APP_VERSION':
             return {
                 ...state,
@@ -25,6 +33,11 @@ const appState = (state = init, action) => {
 
     }
 };
+
+export const toggleAppIsInit = (appIsInitialized) => ({
+    type: APP_IS_INITIALIZED,
+    appIsInitialized
+})
 
 export const toggleAppVersion = (isMobileVersion) => ({
     type: TOGGLE_APP_VERSION,

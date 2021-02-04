@@ -6,16 +6,18 @@ import SendMessagePanel from "./SendMessagePanel/SendMessagePanel";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { addNewMessage } from "../../redux/dialogsData/dialogsDataActions";
-import { setIsNewUserMessage } from "../../redux/sendNewMessage";
+import { addNewMessage, toggleUserSentNewMessage } from "../../redux/dialogsData/dialogsDataActions";
 
 const ChatSection = (props) => {
+
+    const currentDialogId = props.match.params.dialogId;
+
     return (
         <div className={ classes.chat_container }>
-            { !!props.match.params.dialogId ?
+            { !!currentDialogId ?
                 <>
-                    <ChatWindow />
-                    <SendMessagePanel { ...props } />
+                    <ChatWindow/>
+                    <SendMessagePanel currentDialogId={ currentDialogId } { ...props } />
                 </>
                 :
                 <div className={ classes.start_text_wrap }>
@@ -27,6 +29,7 @@ const ChatSection = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
+    currentUser: state.userProfile.currentUser,
     dialogsData: state.dialogsDataReducer,
 });
 
@@ -34,11 +37,12 @@ const mapDispatchToProps = (dispatch) => ({
     addNewMessage: (interlocutorId, messageId, dialogId, userId, time, inputValue) => {
         dispatch(addNewMessage(interlocutorId, messageId, dialogId, userId, time, inputValue))
     },
-    setIsNewUserMessage: value => dispatch(setIsNewUserMessage(value))
+    toggleUserSentNewMessage: value => dispatch(toggleUserSentNewMessage(value))
 });
 
 ChatSection.propTypes = {
     isMobileVersion: PropTypes.bool,
+    currentUser: PropTypes.object,
     dialogsData: PropTypes.object,
     addNewMessage: PropTypes.func,
     setIsNewUserMessage: PropTypes.func

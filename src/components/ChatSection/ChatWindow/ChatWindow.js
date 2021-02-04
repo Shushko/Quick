@@ -7,21 +7,19 @@ import * as PropTypes from 'prop-types';
 import ChatItem from "./ChatItem/ChatItem";
 import arrowDown from '../../../assets/arrow.png'
 import { togglePreloader } from "../../../redux/preloader";
-import { changeMessageStatus } from "../../../redux/dialogsData/dialogsDataActions";
-import { setIsNewUserMessage } from "../../../redux/sendNewMessage";
+import { changeMessageStatus, toggleUserSentNewMessage } from "../../../redux/dialogsData/dialogsDataActions";
 import { connect } from "react-redux";
 import Preloader from "../../../common/Preloader/Preloader";
 
 
-const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloader, isNewUserMessage, setIsNewUserMessage, isMobileVersion, ...props }) => {
-    const currentUser = dialogsState.currentUser;
+const ChatWindow = ({ dialogsState, currentUser, changeMessageStatus, preloader, togglePreloader, isMobileVersion, ...props }) => {
     const LIMIT_UNREAD_MESSAGES = 5;
     const chatStart = useRef();
     const chatEnd = useRef();
     const prevMessageUserId = useRef(null);
     const [lastReadMessageRef, setLastReadMessageRef] = useState(null);
     const prevCurrentChatId = useRef(null);
-    const currentChat = useRef(dialogsState.dialogs.find(d => d.dialogId === props.match.params.dialogId));
+    const [currentChat, setCurrentChat] = useState(dialogsState.dialogs.find(d => d.dialogId === props.match.params.dialogId));
     const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
     const refLastMessageIsVisible = useRef(false);
     const chatWindowRef = useRef();
@@ -48,26 +46,26 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
     isMobileVersion && setChatWindowHeight();
 
     useEffect(() => {
-        currentChat.current = dialogsState.dialogs.find(d => d.dialogId === props.match.params.dialogId)
+        setCurrentChat(dialogsState.dialogs.find(d => d.dialogId === props.match.params.dialogId));
     }, [props.match.params.dialogId]);
 
     useEffect(() => {
-        if (prevCurrentChatId.current !== currentChat.current.dialogId && lastReadMessageRef) {
-            currentChat.current.unreadMessages > LIMIT_UNREAD_MESSAGES ? scrollToEnd(lastReadMessageRef) : scrollToEnd(chatEnd);
-            prevCurrentChatId.current = currentChat.current.dialogId;
+        if (prevCurrentChatId.current !== currentChat.dialogId && lastReadMessageRef) {
+            currentChat.unreadMessages > LIMIT_UNREAD_MESSAGES ? scrollToEnd(lastReadMessageRef) : scrollToEnd(chatEnd);
+            prevCurrentChatId.current = currentChat.dialogId;
             togglePreloader(false);
         }
     }, [lastReadMessageRef]);
 
     useEffect(() => {
-        isNewUserMessage && scrollToEnd(chatEnd);
-        setIsNewUserMessage(false);
-        const isNotNewChat = prevCurrentChatId.current === currentChat.current.dialogId;
+        dialogsState.userSentNewMessage && scrollToEnd(chatEnd);
+        props.toggleUserSentNewMessage(false);
+        const isNotNewChat = prevCurrentChatId.current === currentChat.dialogId;
         isNotNewChat && lastMessageIsVisible && scrollToEnd(chatEnd);
-    }, [currentChat.current.messages]);
+    }, [currentChat.messages]);
 
     const getLastReadMessage = () => {
-        const reversedMessages = [...currentChat.current.messages].reverse();
+        const reversedMessages = [...currentChat.messages].reverse();
         return reversedMessages.find(message => !message.isRead ? message.userId === currentUser.id && message : message);
     };
 
@@ -80,14 +78,14 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
             setLastMessageIsVisible(entry.isIntersecting);
         }
         if (entry.isIntersecting && !messageItem.isRead && messageItem.userId !== currentUser.id) {
-            changeMessageStatus(dialogsState.currentDialog, messageItem, true, true)
+            changeMessageStatus(currentChat.dialogId, messageItem, true, true)
         }
     };
 
     const getUserChat = () => {
         prevMessageUserId.current = null;
-        const chatMessages = currentChat.current.messages;
-        const chatMembers = currentChat.current.members;
+        const chatMessages = currentChat.messages;
+        const chatMembers = currentChat.members;
         const lastReadMessage = getLastReadMessage();
         const lastMessage = chatMessages[chatMessages.length - 1];
         const interlocutor = chatMembers.find(member => member.id !== currentUser.id);
@@ -125,10 +123,10 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
                 <div ref={ chatEnd }/>
             </div>
 
-            { !lastMessageIsVisible && !!currentChat.current.messages.length &&
+            { !lastMessageIsVisible && !!currentChat.messages.length &&
             <div className={ classes.arrowDown_wrap }>
-                { !!currentChat.current.unreadMessages &&
-                <span className={ classes.sum_unread_messages }>{ currentChat.current.unreadMessages }</span> }
+                { !!currentChat.unreadMessages &&
+                <span className={ classes.sum_unread_messages }>{ currentChat.unreadMessages }</span> }
                 <img src={ arrowDown } className={ classes.arrow_down } onClick={ smoothScrollDown } alt="arrow down"/>
             </div> }
         </div>
@@ -137,16 +135,16 @@ const ChatWindow = ({ dialogsState, changeMessageStatus, preloader, togglePreloa
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
+    currentUser: state.userProfile.currentUser,
     appHeight: state.appState.appHeight,
     dialogsState: state.dialogsDataReducer,
     preloader: state.preloader.preloaderIsVisible,
-    isNewUserMessage: state.sendNewMessage.isNewUserMessage
 });
 
 const mapDispatchToProps = (dispatch) => ({
     changeMessageStatus: (dialogId, message, delivered, read) => dispatch(changeMessageStatus(dialogId, message, delivered, read)),
     togglePreloader: value => dispatch(togglePreloader(value)),
-    setIsNewUserMessage: value => dispatch(setIsNewUserMessage(value))
+    toggleUserSentNewMessage: value => dispatch(toggleUserSentNewMessage(value))
 });
 
 ChatWindow.propTypes = {
@@ -154,10 +152,9 @@ ChatWindow.propTypes = {
     isMobileVersion: PropTypes.bool,
     preloader: PropTypes.bool,
     appHeight: PropTypes.number,
-    isNewUserMessage: PropTypes.bool,
     changeMessageStatus: PropTypes.func,
     togglePreloader: PropTypes.func,
-    setIsNewUserMessage: PropTypes.func,
+    toggleUserSentNewMessage: PropTypes.func,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(ChatWindow)

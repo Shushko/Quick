@@ -7,7 +7,7 @@ import {
     toggleFindUserMenuVisibility,
     hideAllModalWindows
 } from "../../../redux/displayModalElements";
-import { changeUserName, logOutUser } from "../../../redux/dialogsData/dialogsDataActions";
+import { changeUserName, logOutUser } from "../../../redux/userProfile";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import HeaderMenu from "./HeaderMenu";
@@ -53,7 +53,7 @@ const HeaderMenuContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    currentUser: state.dialogsDataReducer.currentUser,
+    currentUser: state.userProfile.currentUser,
     menuIsVisible: state.displayModalElements.menuIsVisible
 });
 

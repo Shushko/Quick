@@ -7,7 +7,7 @@ import { compose } from "redux";
 import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
 import { addFoundUsers, searchUsers } from "../../redux/findUsers";
-import { createNewDialog, onChangeCurrentDialog } from "../../redux/dialogsData/dialogsDataActions";
+import { createNewDialog } from "../../redux/dialogsData/dialogsDataActions";
 import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
 import { hideAllModalWindows } from "../../redux/displayModalElements";
@@ -17,7 +17,6 @@ const FindUser = (props) => {
         props.hideAllModalWindows();
         const hasDialog = props.dialogs.find(d => d.members.find(m => m.id === interlocutorId) ? d.dialogId : null);
         if (hasDialog) {
-            props.onChangeCurrentDialog(hasDialog.dialogId);
             props.history.push(`/${ hasDialog.dialogId }`)
         } else {
             const dialogId = uuidv4();
@@ -70,13 +69,12 @@ const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     dialogs: state.dialogsDataReducer.dialogs,
     foundUsers: state.findUsers.foundUsers,
-    currentUser: state.dialogsDataReducer.currentUser
+    currentUser: state.userProfile.currentUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
     addFoundUsers: (foundUsers) => { dispatch(addFoundUsers(foundUsers)) },
     searchUsers: (value) => { dispatch(searchUsers(value)) },
-    onChangeCurrentDialog: (dialogId) => { dispatch(onChangeCurrentDialog(dialogId)) },
     createNewDialog: (dialogId, currentUserId, interlocutorId) => dispatch(createNewDialog(dialogId, currentUserId, interlocutorId)),
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
 });
@@ -88,7 +86,6 @@ FindUser.propTypes = {
     currentUser: PropTypes.object,
     addFoundUsers: PropTypes.func,
     searchUsers: PropTypes.func,
-    onChangeCurrentDialog: PropTypes.func,
     hideAllModalWindows: PropTypes.func,
     createNewDialog: PropTypes.func
 };

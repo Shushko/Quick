@@ -6,46 +6,45 @@ import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-
-const SendMessagePanel = ({ isMobileVersion, dialogsData, addNewMessage, setIsNewUserMessage }) => {
+const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialogsData, addNewMessage, toggleUserSentNewMessage }) => {
     const [dialog, setDialog] = useState(null);
     const [interlocutor, setInterlocutor] = useState(null);
 
     useEffect(() => {
-        if (!dialog || dialog.dialogId !== dialogsData.currentDialog) {
-            const dialog = dialogsData.dialogs.find(d => d.dialogId === dialogsData.currentDialog);
+        if (!dialog || dialog.dialogId !== currentDialogId) {
+            const dialog = dialogsData.dialogs.find(d => d.dialogId === currentDialogId);
             const interlocutor = dialog && findInterlocutor(dialog);
             setDialog(dialog);
             setInterlocutor(interlocutor);
         }
     } );
 
-    const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== dialogsData.currentUser.id);
+    const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== currentUser.id);
 
     const onSubmit = (formData) => {
         addNewMessage(
             interlocutor.id,
             uuidv4(),
-            dialogsData.currentDialog,
-            dialogsData.currentUser.id,
+            currentDialogId,
+            currentUser.id,
             moment().format(),
-            formData[dialogsData.currentDialog]
+            formData[currentDialogId]
         );
-        setIsNewUserMessage(true);
+        toggleUserSentNewMessage(true);
     };
 
     return (
         <div className={ classes.send_message_panel_wrap }>
             <div className={ classes.send_message_panel }>
                 { !isMobileVersion &&
-                <img src={ dialogsData.currentUser.avatar } className={ classes.send_message_panel_avatar } alt="avatar"/> }
+                <img src={ currentUser.avatar } className={ classes.send_message_panel_avatar } alt="avatar"/> }
 
                 <InputForm
                     formType={ 'send_message_panel' }
-                    inputName={ dialogsData.currentDialog }
+                    inputName={ currentDialogId }
                     onSubmit={ onSubmit }
                     placeholder={ "Type a message..." }
-                    currentDialogId={ dialogsData.currentDialog }
+                    currentDialogId={ currentDialogId }
                     isMobileVersion={ isMobileVersion }
                 />
 
@@ -57,11 +56,11 @@ const SendMessagePanel = ({ isMobileVersion, dialogsData, addNewMessage, setIsNe
 };
 
 SendMessagePanel.propTypes = {
+    isMobileVersion: PropTypes.bool,
     currentUser: PropTypes.object,
-    interlocutor: PropTypes.object,
-    currentDialog: PropTypes.string,
-    setIsNewUserMessage: PropTypes.func,
-    changeAppHeight: PropTypes.func,
+    dialogsData: PropTypes.object,
+    currentDialogId: PropTypes.string,
+    toggleUserSentNewMessage: PropTypes.func,
     addNewMessage: PropTypes.func
 };
 

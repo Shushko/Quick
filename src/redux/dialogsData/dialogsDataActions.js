@@ -8,26 +8,15 @@ import {
     createDialog,
     updateMessage,
     addMessage,
-    updateUserName, updateUserAvatar
 } from "../../api/api";
-import { setUserIsAuthorized } from "../authUser";
-import { togglePhotoEditorPreloader } from "../preloader";
-import { toggleNotificationVisibility } from "../notification";
+import { setCurrentUser } from "../userProfile";
+import { toggleAppIsInit } from "../appState";
 
-const APP_IS_INITIALIZED = 'APP_IS_INITIALIZED'
 const SET_DIALOGS = 'SET_DIALOGS'
 const UPDATE_DIALOG = 'UPDATE_DIALOG'
-const SET_CURRENT_USER = 'SET_CURRENT_USER'
-const SET_USER_NAME = 'SET_USER_NAME'
-const SET_USER_AVATAR = 'SET_USER_AVATAR'
-const CHANGE_CURRENT_DIALOG = 'CHANGE_CURRENT_DIALOG'
 const CLEAR_DIALOGS = 'CLEAR_DIALOGS'
+const TOGGLE_USER_SENT_NEW_MESSAGE = 'TOGGLE_USER_SENT_NEW_MESSAGE'
 
-
-export const toggleAppIsInit = (value) => ({
-    type: APP_IS_INITIALIZED,
-    value
-})
 
 export const setDialogsAction = (dialog) => ({
     type: SET_DIALOGS,
@@ -41,49 +30,15 @@ export const updateDialog = (key, sortedMessages, sumUnreadMessages) => ({
     sumUnreadMessages
 })
 
-export const onChangeCurrentDialog = (value) => ({
-    type: CHANGE_CURRENT_DIALOG,
-    currentDialog: value
-})
-
-export const setCurrentUser = (currentUser) => ({
-    type: SET_CURRENT_USER,
-    currentUser
-})
-
-export const setUserName = (userName) => ({
-    type: SET_USER_NAME,
-    userName
-})
-
-export const setUserAvatar = (userAvatarUrl) => ({
-    type: SET_USER_AVATAR,
-    userAvatarUrl
-})
-
 export const clearDialogs = () => ({
     type: CLEAR_DIALOGS
 })
 
+export const toggleUserSentNewMessage = (value) => ({
+    type: TOGGLE_USER_SENT_NEW_MESSAGE,
+    value
+})
 
-export const changeUserAvatar = (file, userID) => async (dispatch) => {
-    const userAvatarUrl = await updateUserAvatar(file, userID);
-    if (userAvatarUrl) {
-        dispatch(setUserAvatar(userAvatarUrl));
-        dispatch(togglePhotoEditorPreloader(false))
-        dispatch(toggleNotificationVisibility(true, 'Photo uploaded successfully'))
-        setTimeout(() => dispatch(toggleNotificationVisibility(false, '')), 3000)
-    }
-};
-
-export const changeUserName = (newUserName, userId) => async (dispatch) => {
-    try {
-        const result = await updateUserName(newUserName, userId);
-        result.statusText === 'OK' && dispatch(setUserName(newUserName));
-    } catch (e) {
-        console.log(e);
-    }
-};
 
 export const changeMessageStatus = (dialogId, message, delivered, read) => () => updateMessage(dialogId, message.id, delivered, read)
 
@@ -149,7 +104,7 @@ const setDialogObserver = (dispatch, getState, dialogKey, userId) => {
     const hasDialog = checkForDialog(getState, dialogKey)
     if (!hasDialog) {
         getRefDialog(dialogKey).on('value', (dataSnapshot) => {
-            const appIsInitialized = getState().dialogsDataReducer.appIsInitialized
+            const appIsInitialized = getState().appState.appIsInitialized
             const data = dataSnapshot.val()
             const userDialogs = getState().dialogsDataReducer.dialogs
             const dialogHasContent = data.hasOwnProperty('content')
@@ -183,7 +138,6 @@ const setCurrentDialogsObserver = (dispatch, getState, userId, routeHistory) => 
                     unreadMessages: calculateUnreadMessages(messages, userId)
                 }))
                 if (!messages.length) {
-                    dispatch(onChangeCurrentDialog(newDialog.id))
                     routeHistory.push(`/${ newDialog.id }`)
                 }
             }
@@ -232,15 +186,4 @@ export const setDialogs = (routeHistory) => async (dispatch, getState) => {
     } else { dispatch(toggleAppIsInit(true)) }
 }
 
-export const logOutUser = () => {
-    return (dispatch) => {
-        dispatch(clearDialogs())
-        dispatch(setCurrentUser(null))
-        dispatch(onChangeCurrentDialog(null))
-        dispatch(setUserIsAuthorized(false))
-        dispatch(toggleAppIsInit(false))
-        localStorage.removeItem('userIsAuthorized');
-        localStorage.removeItem('userId');
-    }
-}
 

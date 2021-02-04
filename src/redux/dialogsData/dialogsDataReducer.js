@@ -1,8 +1,6 @@
 const init = {
-    appIsInitialized: false,
-    currentDialog: null,
-    currentUser: null,
-    dialogs: []
+    dialogs: [],
+    userSentNewMessage: false
 };
 
 
@@ -41,47 +39,22 @@ const updateDialog  = (state, action) => {
 
 const dialogsDataReducer = (state = init, action) => {
     switch (action.type) {
-
-        case 'APP_IS_INITIALIZED':
-            return {
-                ...state,
-                appIsInitialized: action.value
-            };
-
         case 'SET_DIALOGS':
             return setDialogs(state, action);
 
         case 'UPDATE_DIALOG':
             return updateDialog(state, action);
 
-        case 'SET_CURRENT_USER':
-            return {
-                ...state,
-                currentUser: action.currentUser
-            };
-
-        case 'SET_USER_NAME':
-            return {
-                ...state,
-                currentUser: { ...state.currentUser, name: action.userName }
-            };
-
-        case 'SET_USER_AVATAR':
-            return {
-                ...state,
-                currentUser: { ...state.currentUser, avatar: action.userAvatarUrl }
-            };
-
-        case 'CHANGE_CURRENT_DIALOG':
-            return {
-                ...state,
-                currentDialog: action.currentDialog
-            };
-
         case 'CLEAR_DIALOGS':
             return {
                 ...state,
                 dialogs: []
+            };
+
+        case 'TOGGLE_USER_SENT_NEW_MESSAGE':
+            return {
+                ...state,
+                userSentNewMessage: action.value
             };
 
         default:

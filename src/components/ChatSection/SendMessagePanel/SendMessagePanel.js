@@ -6,7 +6,7 @@ import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialogsData, addNewMessage, toggleUserSentNewMessage }) => {
+const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialogsData, addNewMessage }) => {
     const [dialog, setDialog] = useState(null);
     const [interlocutor, setInterlocutor] = useState(null);
 
@@ -22,15 +22,19 @@ const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialo
     const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== currentUser.id);
 
     const onSubmit = (formData) => {
-        addNewMessage(
-            interlocutor.id,
-            uuidv4(),
-            currentDialogId,
-            currentUser.id,
-            moment().format(),
-            formData[currentDialogId]
-        );
-        toggleUserSentNewMessage(true);
+        const isFirstMessage = !dialogsData.dialogs.find(d => d.dialogId === currentDialogId).messages.length;
+        const time = moment().valueOf();
+        const message = {
+            [time]:{
+                id: uuidv4(),
+                time: time,
+                message: formData[currentDialogId],
+                isDelivered: false,
+                isRead: false,
+                userId: currentUser.id
+            }
+        };
+        addNewMessage(interlocutor.id, currentDialogId, isFirstMessage, message);
     };
 
     return (
@@ -60,7 +64,6 @@ SendMessagePanel.propTypes = {
     currentUser: PropTypes.object,
     dialogsData: PropTypes.object,
     currentDialogId: PropTypes.string,
-    toggleUserSentNewMessage: PropTypes.func,
     addNewMessage: PropTypes.func
 };
 

@@ -63,19 +63,20 @@ const FindUser = (props) => {
             </div>
         </div>
     )
-}
+};
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     dialogs: state.dialogsDataReducer.dialogs,
     foundUsers: state.findUsers.foundUsers,
     currentUser: state.userProfile.currentUser
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
     addFoundUsers: (foundUsers) => { dispatch(addFoundUsers(foundUsers)) },
     searchUsers: (value) => { dispatch(searchUsers(value)) },
-    createNewDialog: (dialogId, currentUserId, interlocutorId) => dispatch(createNewDialog(dialogId, currentUserId, interlocutorId)),
+    createNewDialog: (dialogId, currentUserId, interlocutorId) =>
+        dispatch(createNewDialog(dialogId, currentUserId, interlocutorId)),
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
 });
 

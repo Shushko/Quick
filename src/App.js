@@ -13,7 +13,7 @@ import { compose } from "redux";
 import { useResizeDetector } from 'react-resize-detector';
 import { hideAllModalWindows } from "./redux/displayModalElements";
 import Preloader from "./common/Preloader/Preloader";
-import { setDialogs } from "./redux/dialogsData/dialogsDataActions";
+import { setUserDialogs } from "./redux/dialogsData/dialogsDataActions";
 import { changeScreenWidth, toggleAppVersion } from "./redux/appState";
 
 const App = (props) => {
@@ -35,7 +35,7 @@ const App = (props) => {
     }, [width]);
 
     useEffect(() => {
-        !props.appIsInitialized && props.userIsAuthorized && props.setDialogs(props.history)
+        !props.appIsInitialized && props.userIsAuthorized && props.setUserDialogs(props.history);
     }, [props.appIsInitialized, props.userIsAuthorized]);
 
     return (
@@ -81,7 +81,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     toggleAppVersion: (isMobileVersion) => dispatch(toggleAppVersion(isMobileVersion)),
     changeScreenWidth: (screenWidth) => dispatch(changeScreenWidth(screenWidth)),
-    setDialogs: (routeHistory) => { dispatch(setDialogs(routeHistory)) },
+    setUserDialogs: (routeHistory) => { dispatch(setUserDialogs(routeHistory)) },
     hideAllModalWindows: () => dispatch(hideAllModalWindows()),
 });
 
@@ -92,7 +92,6 @@ App.propTypes = {
     displayModalElements: PropTypes.object,
     toggleAppVersion: PropTypes.func,
     changeScreenWidth: PropTypes.func,
-    setDialogs: PropTypes.func,
     onChangeCurrentDialog: PropTypes.func,
     hideAllModalWindows: PropTypes.func,
 };

@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import axios from 'axios'
+import axios from 'axios';
 
 const getUrl = (endPoint, params = '') => {
     const URL = 'https://mymessenger-50d8e.firebaseio.com';
@@ -7,14 +7,12 @@ const getUrl = (endPoint, params = '') => {
     return `${ URL }/${ endPoint }/${ params }.json?auth=${ SECRET_CODE }`
 };
 
-export const getDialog = (dialogId) => axios.get(getUrl('dialogs', dialogId)).then(response => response.data);
-
 export const getUser = (userId) => axios.get(getUrl('users', userId)).then(response => response.data);
 
-export const createCurrentDialogs = (userId, dialogId, userHasCurrentDialogs) => {
+export const addDialogToCurrentDialogs = (userId, currentDialogId, interlocutorHasCurrentDialogs) => {
     const url = getUrl('users', `${ userId }/currentDialogs`);
-    const objTemp = { [dialogId]: dialogId };
-    userHasCurrentDialogs ?
+    const objTemp = { [currentDialogId]: currentDialogId };
+    return interlocutorHasCurrentDialogs ?
         axios.patch(url, objTemp).catch(e => console.log(e)) :
         axios.put(url, objTemp).catch(e => console.log(e))
 };
@@ -27,21 +25,11 @@ export const createDialog = async (key, currentUserId, interlocutorId) => {
         .catch(e => console.log(e))
 };
 
-export const addMessage = (dialogId, messageId, time, inputValue, userId, dialogHasContent) => {
-    const url = getUrl('dialogs', `${ dialogId }/content`);
-    const messTemp = {
-        [messageId]:{
-            id: messageId,
-            time: time,
-            message: inputValue,
-            isDelivered: false,
-            isRead: false,
-            userId: userId
-        }
-    };
-    dialogHasContent ?
-        axios.patch(url, messTemp).catch(e => console.log(e)) :
-        axios.put(url, messTemp).catch(e => console.log(e))
+export const addMessage = (currentDialogId, message, isFirstMessage) => {
+    const url = getUrl('dialogs', `${ currentDialogId }/content`);
+    return isFirstMessage ?
+        axios.put(url, message).catch(e => console.log(e)) :
+        axios.patch(url, message).catch(e => console.log(e))
 };
 
 export const updateUserName = (newUserName, userId) => {
@@ -63,10 +51,10 @@ export const updateUserAvatar = async (file, userID) => {
     }
 };
 
-export const updateMessage = (dialogId, messageId, delivered, read) => {
-    axios.patch(getUrl('dialogs', `${ dialogId }/content/${ messageId }`), {
-        isDelivered: delivered,
-        isRead: read
+export const updateMessageStatus = (dialogId, messageKey, isDelivered, isRead) => {
+    axios.patch(getUrl('dialogs', `${ dialogId }/content/${ messageKey }`), {
+        isDelivered: isDelivered,
+        isRead: isRead
     })
         .catch(e => console.log(e));
 };
@@ -91,7 +79,28 @@ export const getRefCurrentDialogs = (userId) => firebase.database().ref(`/users/
 
 export const getRefDialog = (key) => firebase.database().ref(`/dialogs/${ key }`);
 
+export const getSomeMessages = (dialogId, endTime, limit) => {
+    return firebase.database().ref(`/dialogs/${ dialogId }/content`)
+        .orderByChild('time')
+        .startAt(0)
+        .endAt(endTime - 1)
+        .limitToLast(limit)
+        .once('value')
+};
 
+export const getUnwatchedMessages = (dialogId) => {
+    return firebase.database().ref(`/dialogs/${ dialogId }/content`)
+        .orderByChild('isRead')
+        .startAt(false)
+        .endAt(false)
+        .once('value')
+};
+
+
+export const getDialogMembersId = async (dialogId) => {
+    const result = await axios.get(getUrl('dialogs', `${ dialogId }/members`));
+    return Object.values(result.data)
+}
 
 
 

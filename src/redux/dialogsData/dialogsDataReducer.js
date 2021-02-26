@@ -1,61 +1,60 @@
 const init = {
-    dialogs: [],
-    userSentNewMessage: false
+    dialogs: []
 };
 
+const getCopyDialog = (state, dialogId) => ({ ...state.dialogs.find(dialog => dialog.dialogId === dialogId) });
 
+const getResultState = (state, dialogId, updatedDialog) => {
+    const copyDialogs = [...state.dialogs.filter(dialog => dialog.dialogId !== dialogId), updatedDialog];
+    return { ...state, dialogs: copyDialogs }
+};
 
-const setDialogs = (state, action) => {
-    const dialogAlreadyInstalled = state.dialogs.find(d => d.dialogId === action.dialog.dialogId);
-    if (dialogAlreadyInstalled) {
-        return state
+const addNewMessage = (state, dialogId, newMessage) => {
+    const copyDialog = getCopyDialog(state, dialogId);
+    if (!newMessage) {
+        copyDialog.chatIsOpened = true
     } else {
-        return {
-            ...state,
-            dialogs: [
-                ...state.dialogs,
-                action.dialog
-            ]
-        }
+        copyDialog.messages = Array.isArray(newMessage) ? [...newMessage, ...copyDialog.messages] : [...copyDialog.messages, newMessage];
+        copyDialog.chatIsOpened = Array.isArray(newMessage);
     }
-}
+    return getResultState(state, dialogId, copyDialog);
+};
 
-const updateDialog  = (state, action) => {
-    if (state.dialogs.length > 0) {
-        const copyCurrentDialogs = [...state.dialogs];
-        const dialogForUpdate = copyCurrentDialogs.find(d => d.dialogId === action.key);
-        dialogForUpdate.messages = action.sortedMessages;
-        dialogForUpdate.unreadMessages = action.sumUnreadMessages;
-        return {
-            ...state,
-            dialogs: copyCurrentDialogs
-        }
-    } else {
-        return state
-    }
-}
+const changeTotalCountUnreadMessages = (state, dialogId, totalSum) => {
+    const copyDialog = getCopyDialog(state, dialogId);
+    const updatedDialog = { ...copyDialog, unreadMessages: totalSum };
+    return getResultState(state, dialogId, updatedDialog);
+};
 
+const updateDialog = (state, dialogId, newContent) => {
+    const copyDialog = getCopyDialog(state, dialogId);
+    const updatedDialog = { ...copyDialog, messages: newContent };
+    return getResultState(state, dialogId, updatedDialog);
+};
 
 
 const dialogsDataReducer = (state = init, action) => {
     switch (action.type) {
-        case 'SET_DIALOGS':
-            return setDialogs(state, action);
-
-        case 'UPDATE_DIALOG':
-            return updateDialog(state, action);
-
         case 'CLEAR_DIALOGS':
             return {
                 ...state,
                 dialogs: []
             };
 
-        case 'TOGGLE_USER_SENT_NEW_MESSAGE':
+        case 'ADD_NEW_DIALOG':
             return {
                 ...state,
-                userSentNewMessage: action.value
+                dialogs: [...state.dialogs, action.dialog]
             };
+
+        case 'UPDATE_DIALOG':
+            return updateDialog(state, action.dialogId, action.newContent);
+
+        case 'CHANGE_TOTAL_COUNT_UNREAD_MESSAGES':
+            return changeTotalCountUnreadMessages(state, action.dialogId, action.totalSum);
+
+        case 'ADD_NEW_MESSAGE_TO_DIALOG':
+            return addNewMessage(state, action.dialogId, action.newMessage);
 
         default:
             return state

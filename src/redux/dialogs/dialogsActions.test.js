@@ -1,4 +1,4 @@
-import { calculateUnreadMessages, sortMessages, getUpdatedDialog } from './dialogsDataActions'
+import { calculateUnreadMessages, sortMessages, getUpdatedDialog } from './dialogsActions'
 
 const userDialogs = [
     {

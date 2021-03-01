@@ -13,7 +13,7 @@ import { compose } from "redux";
 import { useResizeDetector } from 'react-resize-detector';
 import { hideAllModalWindows } from "./redux/displayModalElements";
 import Preloader from "./common/Preloader/Preloader";
-import { setUserDialogs } from "./redux/dialogsData/dialogsDataActions";
+import { setUserDialogs } from "./redux/dialogs/dialogsActions";
 import { changeScreenWidth, toggleAppVersion } from "./redux/appState";
 
 const App = (props) => {

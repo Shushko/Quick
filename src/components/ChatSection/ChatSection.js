@@ -6,7 +6,7 @@ import SendMessagePanel from "./SendMessagePanel/SendMessagePanel";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { addNewMessage } from "../../redux/dialogsData/dialogsDataActions";
+import { addNewMessage } from "../../redux/dialogs/dialogsActions";
 
 const ChatSection = (props) => {
 
@@ -37,7 +37,7 @@ const ChatSection = (props) => {
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     currentUser: state.userProfile.currentUser,
-    dialogsData: state.dialogsDataReducer,
+    dialogsData: state.dialogsReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

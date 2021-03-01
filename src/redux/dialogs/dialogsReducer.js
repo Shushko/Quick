@@ -33,7 +33,7 @@ const updateDialog = (state, dialogId, newContent) => {
 };
 
 
-const dialogsDataReducer = (state = init, action) => {
+const dialogsReducer = (state = init, action) => {
     switch (action.type) {
         case 'CLEAR_DIALOGS':
             return {
@@ -59,6 +59,6 @@ const dialogsDataReducer = (state = init, action) => {
         default:
             return state
     }
-}
+};
 
-export default dialogsDataReducer
+export default dialogsReducer

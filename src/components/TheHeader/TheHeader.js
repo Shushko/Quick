@@ -27,7 +27,7 @@ const TheHeader = ({ modalWindowsState, hideAllModalWindows, toggleMenuVisibilit
 
     return (
         <header className={ classes.header }>
-            <HeaderMenuContainer/>
+            <HeaderMenuContainer />
             { !props.isMobileVersion && <div className={ classes.header_logo }><TheLogo /></div> }
 
             { props.isMobileVersion &&

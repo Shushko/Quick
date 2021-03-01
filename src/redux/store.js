@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, createStore, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
-import dialogsDataReducer from "./dialogsData/dialogsDataReducer";
+import dialogsReducer from "./dialogs/dialogsReducer";
 import userProfile from "./userProfile";
 import displayModalElements from "./displayModalElements";
 import findUsers from "./findUsers";
@@ -10,7 +10,7 @@ import appState from "./appState";
 
 const reducers = combineReducers({
     appState,
-    dialogsDataReducer,
+    dialogsReducer,
     userProfile,
     displayModalElements,
     findUsers,

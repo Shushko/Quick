@@ -46,7 +46,7 @@ const updateDialog = (dialogId, newContent) => ({
 
 
 
-const getUserDialog = (getState, dialogId) => getState().dialogsDataReducer.dialogs.find(i => i.dialogId === dialogId);
+const getUserDialog = (getState, dialogId) => getState().dialogsReducer.dialogs.find(i => i.dialogId === dialogId);
 
 export const changeMessageStatus = (dialogId, message, isDelivered, isRead) => () => updateMessageStatus(dialogId, message.time, isDelivered, isRead);
 
@@ -63,7 +63,7 @@ export const createNewDialog = (dialogId, currentUserId, interlocutorId) => {
     return async (dispatch, getState) => {
         const createDialogResult = await createDialog(dialogId, currentUserId, interlocutorId);
         if (createDialogResult.statusText === 'OK') {
-            const currentUserHasDialogs = !!getState().dialogsDataReducer.dialogs.length;
+            const currentUserHasDialogs = !!getState().dialogsReducer.dialogs.length;
             addDialogToCurrentDialogs(currentUserId, dialogId, currentUserHasDialogs);
         }
     }
@@ -139,7 +139,7 @@ const setCurrentDialogsObserver = (currentUserId, dispatch, getState, routeHisto
         const appIsInitialized = getState().appState.appIsInitialized;
         if (appIsInitialized && !!snapshot.val()) {
             const newUserDialogsKeys = Object.keys(snapshot.val());
-            const userDialogsId = getState().dialogsDataReducer.dialogs.map(dialog => dialog.dialogId);
+            const userDialogsId = getState().dialogsReducer.dialogs.map(dialog => dialog.dialogId);
             const newDialogId = userDialogsId.length ?
                 newUserDialogsKeys.find(key => key !== userDialogsId.find(id => id === key)) :
                 newUserDialogsKeys[0];

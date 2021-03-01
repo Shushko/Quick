@@ -57,7 +57,7 @@ const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) =>
 };
 
 const mapStateToProps = (state) => ({
-    dialogsData: state.dialogsDataReducer,
+    dialogsData: state.dialogsReducer,
     currentUser: state.userProfile.currentUser
 });
 

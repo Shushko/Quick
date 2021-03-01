@@ -7,7 +7,7 @@ import { compose } from "redux";
 import UserItem from "./UserItem/UserItem";
 import { v4 as uuidv4 } from "uuid";
 import { addFoundUsers, searchUsers } from "../../redux/findUsers";
-import { createNewDialog } from "../../redux/dialogsData/dialogsDataActions";
+import { createNewDialog } from "../../redux/dialogs/dialogsActions";
 import { mustBePhoneNumber } from "../../common/Validators";
 import InputForm from "../../common/InputForm/InputForm";
 import { hideAllModalWindows } from "../../redux/displayModalElements";
@@ -67,7 +67,7 @@ const FindUser = (props) => {
 
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
-    dialogs: state.dialogsDataReducer.dialogs,
+    dialogs: state.dialogsReducer.dialogs,
     foundUsers: state.findUsers.foundUsers,
     currentUser: state.userProfile.currentUser
 });

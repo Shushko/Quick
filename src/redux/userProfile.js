@@ -2,7 +2,7 @@ import { setUser, updateUserAvatar, updateUserName } from "../api/api";
 import { togglePhotoEditorPreloader } from "./preloader";
 import { toggleNotificationVisibility } from "./notification";
 import { toggleAppIsInit } from "./appState";
-import { clearDialogs } from "./dialogsData/dialogsDataActions";
+import { clearDialogs } from "./dialogs/dialogsActions";
 
 const SET_AUTHORIZED_USER = 'SET_AUTHORIZED_USER';
 const SET_CURRENT_USER = 'SET_CURRENT_USER';

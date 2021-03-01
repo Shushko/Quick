@@ -24,7 +24,8 @@ const FindUser = (props) => {
         }
     };
 
-    const onChangeField = (value) => {
+    const onChangeField = (data) => {
+        const value = data.search;
         const VALID_LENGTH = 7;
         if (value && value.length > VALID_LENGTH) {
             props.searchUsers(value)

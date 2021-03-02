@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, Form } from "react-final-form";
 import { composeValidators } from "../Validators";
+import { withRouter } from "react-router-dom";
 import SendMessageInput from "./InputFieldTypes/SendMessageInput/SendMessageInput";
 import FindUserInput from "./InputFieldTypes/FindUserInput/FindUserInput";
 import AuthUserInput from "./InputFieldTypes/AuthUserInput/AuthUserInput";
@@ -24,7 +25,6 @@ const Textarea = (props) => {
 };
 
 const InputForm = (props) => {
-
     return (
         <Form onSubmit={ props.onSubmit } initialValues={{ edit_user_name: props.currentUserName }}>
             { ({ handleSubmit, pristine, form }) => {
@@ -61,4 +61,4 @@ const InputForm = (props) => {
     )
 };
 
-export default InputForm
+export default withRouter(InputForm)

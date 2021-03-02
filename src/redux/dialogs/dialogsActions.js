@@ -110,7 +110,9 @@ const setDialogObserver = async (currentUserId, dialogId, getState, dispatch) =>
     if (unwatchedMessages) {
         for (let messageKey in unwatchedMessages) {
             let message = unwatchedMessages[messageKey];
-            !message.isDelivered && updateMessageStatus(dialogId, message.time, true, false);
+            if (!message.isDelivered && message.userId !== currentUserId) {
+                updateMessageStatus(dialogId, message.time, true, false);
+            }
         }
     }
 

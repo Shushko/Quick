@@ -4,7 +4,6 @@ import * as PropTypes from 'prop-types';
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import TheDialog from "./TheDialog/TheDialog";
-import moment from "moment";
 import { connect } from "react-redux";
 import { togglePreloader } from "../../redux/preloader";
 
@@ -12,18 +11,14 @@ const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) =>
 
     const currentDialogId = props.match.params.dialogId;
 
-    const getLastMessage = (data) => {
-        const dialog = Object.values(data);
-        if (dialog.length > 0) {
-            const lastDialogItem = dialog[dialog.length - 1];
+    const getLastMessage = (dialogMessages) => {
+        if (dialogMessages.length) {
+            const lastDialogItem = dialogMessages[dialogMessages.length - 1];
             return {
                 message: lastDialogItem.message,
-                time: moment(lastDialogItem.time).format('LT')
+                time: lastDialogItem.time,
+                userName: lastDialogItem.userName
             }
-        }
-        return {
-            message: '',
-            time: ''
         }
     };
 
@@ -35,16 +30,21 @@ const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) =>
 
     const getInterlocutor = (members) => members.find(m => m.id !== currentUser.id);
 
+    const sortDialogsByTime = (dialogs) => {
+        return dialogs.length > 1 ?
+            [...dialogs].sort((a, b) => getLastMessage(a.messages).time > getLastMessage(b.messages).time ? -1 : 1) : dialogs;
+    };
+
     return (
         <div className={ classes.dialogs_container }>
             <div className={ classes.dialogs }>
-                { dialogsData.dialogs.map(dialog => {
+                { sortDialogsByTime(dialogsData.dialogs).map(dialog => {
                         return (
                             <TheDialog
                                 dialog={ dialog }
-                                getLastMessage={ getLastMessage }
+                                lastMessage={ getLastMessage(dialog.messages) }
                                 currentDialogId={ currentDialogId }
-                                getInterlocutor={ getInterlocutor }
+                                interlocutor={ getInterlocutor(dialog.members) }
                                 handleDialogClick={ changeDialog }
                                 key={ dialog.dialogId }
                             />

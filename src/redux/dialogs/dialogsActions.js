@@ -121,7 +121,7 @@ const setDialogObserver = async (currentUserId, dialogId, getState, dispatch) =>
                 const updatedContent = Object.values(snapshot.val().content);
                 const dialogMessages = getUserDialog(getState, dialogId).messages;
                 const dialogLength = dialogMessages.length;
-                const newContent = updatedContent.slice(-dialogLength);
+                const newContent = updatedContent.slice(-dialogLength - 1);
                 dispatch(updateDialog(dialogId, newContent));
                 const newLastMessage = newContent[newContent.length - 1];
                 const currentLastMessage = dialogMessages[dialogMessages.length - 1];

@@ -31,7 +31,8 @@ const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialo
                 message: formData[currentDialogId],
                 isDelivered: false,
                 isRead: false,
-                userId: currentUser.id
+                userId: currentUser.id,
+                userName: currentUser.name
             }
         };
         addNewMessage(interlocutor.id, currentDialogId, isFirstMessage, message);

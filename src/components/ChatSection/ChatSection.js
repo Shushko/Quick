@@ -21,10 +21,10 @@ const ChatSection = (props) => {
 
     return (
         <div className={ classes.chat_container }>
-            { !!currentChat ?
+            { props.match.params.dialogId && currentChat ?
                 <>
                     <ChatWindow currentChat={ currentChat } />
-                    <SendMessagePanel currentDialogId={ currentDialogId } { ...props } />
+                    <SendMessagePanel currentDialogId={ props.match.params.dialogId } { ...props } />
                 </>
                 :
                 <div className={ classes.start_text_wrap }>

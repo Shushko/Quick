@@ -17,7 +17,7 @@ const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) =>
             return {
                 message: lastDialogItem.message,
                 time: lastDialogItem.time,
-                userName: lastDialogItem.userName
+                userName: lastDialogItem.userId === currentUser.id ? 'You' : lastDialogItem.userName
             }
         }
     };

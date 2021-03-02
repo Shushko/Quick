@@ -53,6 +53,7 @@ const InputForm = (props) => {
                                hideInput={ props.hideInput }
                                onSearchType={ onSearchType }
                                onClickSubmit={ onClickSubmit }
+                               formReset={ form.reset }
                         />
                     </form>
                 )

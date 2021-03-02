@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from "../AuthUserInput/AuthUserInput.module.sass";
 
-const AuthUserInput = ({ input, meta, isInvalidNumber, onClickSubmit }, { ...rest }) => {
+const AuthUserInput = ({ input, meta, isInvalidNumber, numberFormIsVisible, formReset, onClickSubmit }, { ...rest }) => {
+    useEffect(() => formReset(), [numberFormIsVisible]);
 
     return (
         <div className={ classes.auth_user }>

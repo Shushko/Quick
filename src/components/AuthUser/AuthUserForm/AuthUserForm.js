@@ -7,7 +7,7 @@ import InputForm from "../../../common/InputForm/InputForm";
 
 const AuthUserForm = (props) => {
 
-    const onSubmit = (formData) => { props.numberFormIsVisible ? props.authorizeUser(formData.value) : props.checkVerificationCode(formData.value) };
+    const onSubmit = (formData) => { props.numberFormIsVisible ? props.authorizeUser(formData.authUser) : props.checkVerificationCode(formData.authUser) };
 
     return (
         <div>
@@ -17,7 +17,7 @@ const AuthUserForm = (props) => {
 
             <InputForm
                 formType={ 'auth_user' }
-                inputName={ 'value' }
+                inputName={ 'authUser' }
                 onSubmit={ onSubmit }
                 isInvalidNumber={ props.isInvalidNumber }
                 numberFormIsVisible={ props.numberFormIsVisible }

@@ -51,6 +51,7 @@ const InputForm = (props) => {
                                formType={ props.formType }
                                isMobileVersion={ props.isMobileVersion }
                                hideInput={ props.hideInput }
+                               changeStatusIsTyping={ props.changeStatusIsTyping }
                                onSearchType={ onSearchType }
                                onClickSubmit={ onClickSubmit }
                                formReset={ form.reset }

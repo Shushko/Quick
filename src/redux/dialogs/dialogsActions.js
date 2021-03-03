@@ -1,12 +1,12 @@
 import {
     getUser,
     getRefCurrentDialogs,
-    getRefDialog,
+    getRefDialogContent,
     addDialogToCurrentDialogs,
     createDialog,
     updateMessageStatus,
     addMessage,
-    getSomeMessages, getDialogMembersId, getUnwatchedMessages
+    getSomeMessages, getDialogMembersId, getUnwatchedMessages, setUserIsTyping, getRefDialogCommunicationProcess
 } from "../../api/api";
 import { setCurrentUser } from "../userProfile";
 import { toggleAppIsInit } from "../appState";
@@ -16,6 +16,7 @@ const ADD_NEW_DIALOG = 'ADD_NEW_DIALOG';
 const ADD_NEW_MESSAGE_TO_DIALOG = 'ADD_NEW_MESSAGE_TO_DIALOG';
 const CHANGE_TOTAL_COUNT_UNREAD_MESSAGES = 'CHANGE_TOTAL_COUNT_UNREAD_MESSAGES';
 const UPDATE_DIALOG = 'UPDATE_DIALOG';
+const SET_COMMUNICATION_PROCESS = 'SET_COMMUNICATION_PROCESS';
 
 export const clearDialogs = () => ({
     type: CLEAR_DIALOGS
@@ -44,11 +45,18 @@ const updateDialog = (dialogId, newContent) => ({
     newContent
 });
 
+const setCommunicationProcess = (typingUser) => ({
+    type: SET_COMMUNICATION_PROCESS,
+    typingUser
+});
+
 
 
 const getUserDialog = (getState, dialogId) => getState().dialogsReducer.dialogs.find(i => i.dialogId === dialogId);
 
 export const changeMessageStatus = (dialogId, message, isDelivered, isRead) => () => updateMessageStatus(dialogId, message.time, isDelivered, isRead);
+
+export const toggleUserIsTyping = (dialogId, isTyping, userId, userName) => () => setUserIsTyping(dialogId, isTyping, userId, userName);
 
 export const addNewMessage = (interlocutorId, currentDialogId, isFirstMessage, message) => async () => {
     if (isFirstMessage) {
@@ -70,7 +78,8 @@ export const createNewDialog = (dialogId, currentUserId, interlocutorId) => {
 };
 
 export const uploadChatMessages = (dialogId, lastMessageTime) => async (dispatch) => {
-    const resultUploadMessages = await getSomeMessages(dialogId, lastMessageTime, 20);
+    const UPLOAD_MESSAGES_LIMIT = 100;
+    const resultUploadMessages = await getSomeMessages(dialogId, lastMessageTime, UPLOAD_MESSAGES_LIMIT);
     if (resultUploadMessages.val()) {
         const uploadedMessages = Object.values(resultUploadMessages.val());
         dispatch(addNewMessageToDialog(dialogId, uploadedMessages));
@@ -104,34 +113,43 @@ const setTotalCountUnreadMessages = (updatedContent, currentUserId, dialogId, di
     dispatch(changeTotalCountUnreadMessages(dialogId, totalSum));
 };
 
-const setDialogObserver = async (currentUserId, dialogId, getState, dispatch) => {
-    const result = await getUnwatchedMessages(dialogId);
-    const unwatchedMessages = result.val();
-    if (unwatchedMessages) {
-        for (let messageKey in unwatchedMessages) {
-            let message = unwatchedMessages[messageKey];
-            if (!message.isDelivered && message.userId !== currentUserId) {
-                updateMessageStatus(dialogId, message.time, true, false);
+const setDialogObserver = async (currentUserId, dialogId, getState, dispatch, isNewDialog) => {
+    if (!isNewDialog) {
+        const result = await getUnwatchedMessages(dialogId);
+        const unwatchedMessages = result.val();
+        if (unwatchedMessages) {
+            for (let messageKey in unwatchedMessages) {
+                let message = unwatchedMessages[messageKey];
+                if (!message.isDelivered && message.userId !== currentUserId) {
+                    updateMessageStatus(dialogId, message.time, true, false);
+                }
             }
         }
     }
 
-    getRefDialog(dialogId).on('value', async (snapshot) => {
+    getRefDialogCommunicationProcess(dialogId).on('value', (snapshot) => {
+        const appIsInitialized = getState().appState.appIsInitialized;
+        if (appIsInitialized) {
+            snapshot.val().isTyping && snapshot.val().userId !== currentUserId ?
+                dispatch(setCommunicationProcess({ ...snapshot.val(), dialogId: dialogId })) :
+                dispatch(setCommunicationProcess(null))
+        }
+    });
+
+    getRefDialogContent(dialogId).on('value', async (snapshot) => {
         const appIsInitialized = getState().appState.appIsInitialized;
         if (appIsInitialized && !!snapshot.val()) {
-            if (snapshot.val().hasOwnProperty('content')) {
-                const updatedContent = Object.values(snapshot.val().content);
-                const dialogMessages = getUserDialog(getState, dialogId).messages;
-                const dialogLength = dialogMessages.length;
-                const newContent = updatedContent.slice(-dialogLength - 1);
-                dispatch(updateDialog(dialogId, newContent));
-                const newLastMessage = newContent[newContent.length - 1];
-                const currentLastMessage = dialogMessages[dialogMessages.length - 1];
-                const isNewMessage = !currentLastMessage || newLastMessage.id !== currentLastMessage.id;
-                isNewMessage && currentUserId !== newLastMessage.userId &&
-                updateMessageStatus(dialogId, newLastMessage.time, true, false);
-                setTotalCountUnreadMessages(updatedContent, currentUserId, dialogId, dispatch);
-            }
+            const updatedContent = Object.values(snapshot.val());
+            const dialogMessages = getUserDialog(getState, dialogId).messages;
+            const dialogLength = dialogMessages.length;
+            const newContent = updatedContent.slice(-dialogLength - 1);
+            dispatch(updateDialog(dialogId, newContent));
+            const newLastMessage = newContent[newContent.length - 1];
+            const currentLastMessage = dialogMessages[dialogMessages.length - 1];
+            const isNewMessage = !currentLastMessage || newLastMessage.id !== currentLastMessage.id;
+            isNewMessage && currentUserId !== newLastMessage.userId &&
+            updateMessageStatus(dialogId, newLastMessage.time, true, false);
+            setTotalCountUnreadMessages(updatedContent, currentUserId, dialogId, dispatch);
         }
     })
 };
@@ -154,7 +172,7 @@ const setCurrentDialogsObserver = (currentUserId, dispatch, getState, routeHisto
                 unreadMessages: null,
                 chatIsOpened: false
             }));
-            await setDialogObserver(currentUserId, newDialogId, getState, dispatch);
+            await setDialogObserver(currentUserId, newDialogId, getState, dispatch, true);
             !arrayWithLastMessage.length && routeHistory.push(`/${ newDialogId }`)
         }
     })
@@ -168,7 +186,7 @@ export const setUserDialogs = (routeHistory) => async (dispatch, getState) => {
 
     if (currentUser.hasOwnProperty('currentDialogs')) {
         for (let dialogId in currentUser.currentDialogs) {
-            await setDialogObserver(currentUser.id, dialogId, getState, dispatch);
+            await setDialogObserver(currentUser.id, dialogId, getState, dispatch, false);
             const lastMessage = await getLastMessageFromDialog(dialogId);
             const dialogMembers = await getMembersFromDialog(dialogId);
             const result = await getUnwatchedMessages(dialogId);

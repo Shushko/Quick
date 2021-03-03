@@ -6,7 +6,7 @@ import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialogsData, addNewMessage }) => {
+const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialogsData, addNewMessage, toggleUserIsTyping }) => {
     const [dialog, setDialog] = useState(null);
     const [interlocutor, setInterlocutor] = useState(null);
 
@@ -38,6 +38,8 @@ const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialo
         addNewMessage(interlocutor.id, currentDialogId, isFirstMessage, message);
     };
 
+    const changeStatusIsTyping = (isTyping) => toggleUserIsTyping(currentDialogId, isTyping, currentUser.id, currentUser.name);
+
     return (
         <div className={ classes.send_message_panel_wrap }>
             <div className={ classes.send_message_panel }>
@@ -48,6 +50,7 @@ const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialo
                     formType={ 'send_message_panel' }
                     inputName={ currentDialogId }
                     onSubmit={ onSubmit }
+                    changeStatusIsTyping={ changeStatusIsTyping }
                     placeholder={ "Type a message..." }
                     currentDialogId={ currentDialogId }
                     isMobileVersion={ isMobileVersion }

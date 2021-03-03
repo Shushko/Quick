@@ -32,7 +32,11 @@ const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) =>
 
     const sortDialogsByTime = (dialogs) => {
         return dialogs.length > 1 ?
-            [...dialogs].sort((a, b) => getLastMessage(a.messages).time > getLastMessage(b.messages).time ? -1 : 1) : dialogs;
+            [...dialogs].sort((a, b) => {
+                const timeA = a.messages.length ? getLastMessage(a.messages).time : a.dateOfCreation;
+                const timeB = b.messages.length ? getLastMessage(b.messages).time : b.dateOfCreation;
+                return timeA > timeB ? -1 : 1
+            }) : dialogs;
     };
 
     return (

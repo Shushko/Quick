@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import axios from 'axios';
+import moment from 'moment';
 
 const getUrl = (endPoint, params = '') => {
     const URL = 'https://mymessenger-50d8e.firebaseio.com';
@@ -21,7 +22,8 @@ export const createDialog = async (key, currentUserId, interlocutorId) => {
     return await axios.put(getUrl('dialogs', key), {
         id: key,
         members: { [currentUserId]: currentUserId, [interlocutorId]: interlocutorId },
-        communicationProcess: { isTyping: false }
+        communicationProcess: { isTyping: false },
+        dateOfCreation: moment().valueOf()
     })
         .catch(e => console.log(e))
 };
@@ -111,7 +113,12 @@ export const getUnwatchedMessages = (dialogId) => {
 export const getDialogMembersId = async (dialogId) => {
     const result = await axios.get(getUrl('dialogs', `${ dialogId }/members`));
     return Object.values(result.data)
-}
+};
+
+export const getDateOfDialogCreation = async (dialogId) => {
+    const result =  await axios.get(getUrl('dialogs', `${ dialogId }/dateOfCreation`));
+    return result.data
+};
 
 
 

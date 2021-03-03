@@ -6,7 +6,7 @@ import {
     createDialog,
     updateMessageStatus,
     addMessage,
-    getSomeMessages, getDialogMembersId, getUnwatchedMessages, setUserIsTyping, getRefDialogCommunicationProcess
+    getSomeMessages, getDialogMembersId, getUnwatchedMessages, setUserIsTyping, getRefDialogCommunicationProcess, getDateOfDialogCreation
 } from "../../api/api";
 import { setCurrentUser } from "../userProfile";
 import { toggleAppIsInit } from "../appState";
@@ -154,6 +154,25 @@ const setDialogObserver = async (currentUserId, dialogId, getState, dispatch, is
     })
 };
 
+const setDialogToState = async (dialogId, currentUserId, appIsInitialized, routeHistory, dispatch) => {
+    const arrayWithLastMessage = await getLastMessageFromDialog(dialogId);
+    const dialogMembers = await getMembersFromDialog(dialogId);
+    const dateOfDialogCreation = await getDateOfDialogCreation(dialogId);
+    const result = await getUnwatchedMessages(dialogId);
+    const totalCountUnreadMessages = result.val() ?
+        Object.values(result.val()).filter(message => message.userId !== currentUserId).length : 0;
+
+    dispatch(addNewDialog({
+        dialogId: dialogId,
+        messages: arrayWithLastMessage,
+        members: dialogMembers,
+        unreadMessages: totalCountUnreadMessages,
+        dateOfCreation: dateOfDialogCreation,
+        chatIsOpened: false
+    }));
+    appIsInitialized && !arrayWithLastMessage.length && routeHistory.push(`/${ dialogId }`)
+};
+
 const setCurrentDialogsObserver = (currentUserId, dispatch, getState, routeHistory) => {
     getRefCurrentDialogs(currentUserId).on('value', async (snapshot) => {
         const appIsInitialized = getState().appState.appIsInitialized;
@@ -163,17 +182,8 @@ const setCurrentDialogsObserver = (currentUserId, dispatch, getState, routeHisto
             const newDialogId = userDialogsId.length ?
                 newUserDialogsKeys.find(key => key !== userDialogsId.find(id => id === key)) :
                 newUserDialogsKeys[0];
-            const arrayWithLastMessage = await getLastMessageFromDialog(newDialogId);
-            const dialogMembers = await getMembersFromDialog(newDialogId);
-            dispatch(addNewDialog({
-                dialogId: newDialogId,
-                messages: arrayWithLastMessage,
-                members: dialogMembers,
-                unreadMessages: null,
-                chatIsOpened: false
-            }));
+            await setDialogToState(newDialogId, currentUserId, appIsInitialized, routeHistory, dispatch);
             await setDialogObserver(currentUserId, newDialogId, getState, dispatch, true);
-            !arrayWithLastMessage.length && routeHistory.push(`/${ newDialogId }`)
         }
     })
 };
@@ -186,20 +196,8 @@ export const setUserDialogs = (routeHistory) => async (dispatch, getState) => {
 
     if (currentUser.hasOwnProperty('currentDialogs')) {
         for (let dialogId in currentUser.currentDialogs) {
-            await setDialogObserver(currentUser.id, dialogId, getState, dispatch, false);
-            const lastMessage = await getLastMessageFromDialog(dialogId);
-            const dialogMembers = await getMembersFromDialog(dialogId);
-            const result = await getUnwatchedMessages(dialogId);
-            const totalCountUnreadMessages = result.val() ?
-                Object.values(result.val()).filter(message => message.userId !== currentUserId).length : 0;
-
-            dispatch(addNewDialog({
-                dialogId: dialogId,
-                messages: lastMessage,
-                members: dialogMembers,
-                unreadMessages: totalCountUnreadMessages,
-                chatIsOpened: false
-            }))
+          await setDialogObserver(currentUser.id, dialogId, getState, dispatch, false);
+          await setDialogToState(dialogId, currentUser.id, false, routeHistory, dispatch);
         }
     }
     dispatch(toggleAppIsInit(true));

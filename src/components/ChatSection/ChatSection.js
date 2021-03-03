@@ -6,7 +6,7 @@ import SendMessagePanel from "./SendMessagePanel/SendMessagePanel";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { addNewMessage } from "../../redux/dialogs/dialogsActions";
+import { addNewMessage, toggleUserIsTyping } from "../../redux/dialogs/dialogsActions";
 
 const ChatSection = (props) => {
 
@@ -43,7 +43,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     addNewMessage: (interlocutorId, currentDialogId, isFirstMessage, message) => {
         dispatch(addNewMessage(interlocutorId, currentDialogId, isFirstMessage, message))
-    }
+    },
+    toggleUserIsTyping: (dialogId, isTyping, userId, userName) => dispatch(toggleUserIsTyping(dialogId, isTyping, userId, userName))
 });
 
 ChatSection.propTypes = {

@@ -1,5 +1,6 @@
 const init = {
-    dialogs: []
+    dialogs: [],
+    communicationProcess: null
 };
 
 const getCopyDialog = (state, dialogId) => ({ ...state.dialogs.find(dialog => dialog.dialogId === dialogId) });
@@ -45,6 +46,12 @@ const dialogsReducer = (state = init, action) => {
             return {
                 ...state,
                 dialogs: [...state.dialogs, action.dialog]
+            };
+
+        case 'SET_COMMUNICATION_PROCESS':
+            return {
+                ...state,
+                communicationProcess: action.typingUser
             };
 
         case 'UPDATE_DIALOG':

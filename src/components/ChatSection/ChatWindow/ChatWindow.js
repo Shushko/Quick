@@ -105,8 +105,15 @@ const ChatWindow = ({ currentChat, currentUser, changeMessageStatus, preloaderIs
             <div className={ classes.chat_wrapper }>
                 <div ref={ chatStart }/>
                 { getUserChat() }
-                <div ref={ chatEnd }/>
+                <div className={ classes.chat_end } ref={ chatEnd }/>
             </div>
+
+            { props.communicationProcess && props.communicationProcess.dialogId === currentChat.dialogId &&
+            <div className={ classes.user_is_typing_wrap }>
+                <span className={ classes.user_is_typing }>
+                    { `${ props.communicationProcess.userName } is typing...` }
+                </span>
+            </div> }
 
             { !lastMessageIsVisible && !!currentChat.messages.length &&
             <div className={ classes.arrowDown_wrap }>
@@ -121,7 +128,8 @@ const ChatWindow = ({ currentChat, currentUser, changeMessageStatus, preloaderIs
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     currentUser: state.userProfile.currentUser,
-    preloaderIsVisible: state.preloader.preloaderIsVisible
+    preloaderIsVisible: state.preloader.preloaderIsVisible,
+    communicationProcess: state.dialogsReducer.communicationProcess
 });
 
 const mapDispatchToProps = (dispatch) => ({

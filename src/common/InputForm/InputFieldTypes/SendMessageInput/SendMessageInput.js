@@ -2,9 +2,29 @@ import React, { useRef } from 'react';
 import classes from "../SendMessageInput/SendMessageInput.module.sass";
 import send from "../../../../assets/send.png";
 
-const SendMessageInput = ({ input, onClickSubmit, isMobileVersion }, { ...rest }) => {
+const SendMessageInput = ({ input, onClickSubmit, isMobileVersion, changeStatusIsTyping }, { ...rest }) => {
     const sendMessageTextareaRef = useRef();
     const sendMessageTextareaIsActive = useRef(false);
+    const isTyping = useRef(false);
+    let timer = null;
+
+    const handleOnKeyPress = () => {
+        clearTimeout(timer);
+        if (!isTyping.current) {
+            changeStatusIsTyping(true);
+            isTyping.current = true;
+        }
+    };
+
+    const handleOnKeyUp = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            if (isTyping.current) {
+                changeStatusIsTyping(false);
+                isTyping.current = false
+            }
+        }, 3000);
+    };
 
     const handleClick = (event) => {
         onClickSubmit(event);
@@ -21,6 +41,8 @@ const SendMessageInput = ({ input, onClickSubmit, isMobileVersion }, { ...rest }
                       onBlur={ () => sendMessageTextareaIsActive.current = false }
                       autoFocus={ sendMessageTextareaIsActive.current }
                       onKeyDown={ event => event.key === 'Enter' && onClickSubmit(event) }
+                      onKeyPress={ handleOnKeyPress }
+                      onKeyUp={ handleOnKeyUp }
             />
             { isMobileVersion ?
                 <div className={ classes.send_message_panel_button_mob }>

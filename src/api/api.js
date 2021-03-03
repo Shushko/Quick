@@ -22,6 +22,7 @@ export const createDialog = async (key, currentUserId, interlocutorId) => {
     return await axios.put(getUrl('dialogs', key), {
         id: key,
         members: { [currentUserId]: currentUserId, [interlocutorId]: interlocutorId },
+        communicationProcess: { isTyping: false },
         dateOfCreation: moment().valueOf()
     })
         .catch(e => console.log(e))
@@ -61,6 +62,14 @@ export const updateMessageStatus = (dialogId, messageKey, isDelivered, isRead) =
         .catch(e => console.log(e));
 };
 
+export const setUserIsTyping = (dialogId, isTyping, userId, userName) => {
+    axios.patch(getUrl('dialogs', `${ dialogId }/communicationProcess`), {
+        isTyping: isTyping,
+        userId: userId,
+        userName: userName
+    })
+};
+
 export const setUser = (userId, userPhoneNumber) => {
     firebase.database().ref(`/users/${ userId }`)
         .set({
@@ -79,7 +88,9 @@ export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
 
 export const getRefCurrentDialogs = (userId) => firebase.database().ref(`/users/${ userId }/currentDialogs`);
 
-export const getRefDialog = (key) => firebase.database().ref(`/dialogs/${ key }`);
+export const getRefDialogContent = (key) => firebase.database().ref(`/dialogs/${ key }/content`);
+
+export const getRefDialogCommunicationProcess = (key) => firebase.database().ref(`/dialogs/${ key }/communicationProcess`);
 
 export const getSomeMessages = (dialogId, endTime, limit) => {
     return firebase.database().ref(`/dialogs/${ dialogId }/content`)

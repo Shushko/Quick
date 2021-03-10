@@ -24,7 +24,7 @@ const UserDialogs = ({ dialogsData, currentUser, togglePreloader, ...props }) =>
 
     const changeDialog = (dialog) => {
         if (currentDialogId !== dialog.dialogId) {
-            dialog.messages.length && togglePreloader(true);
+            // dialog.messages.length && togglePreloader(true);
         }
     };
 

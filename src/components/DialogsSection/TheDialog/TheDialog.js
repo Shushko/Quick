@@ -3,6 +3,7 @@ import classes from "./TheDialog.module.sass";
 import * as PropTypes from 'prop-types';
 import { NavLink } from "react-router-dom";
 import moment from "moment";
+import defaultAvatar from "../../../assets/defaultAvatar/defaultAvatar.jpg"
 
 const TheDialog = ({ dialog, lastMessage, currentDialogId, interlocutor, handleDialogClick }) => {
 
@@ -10,7 +11,7 @@ const TheDialog = ({ dialog, lastMessage, currentDialogId, interlocutor, handleD
         <NavLink to={ `/${ dialog.dialogId }` }>
             <div onClick={ () => handleDialogClick(dialog) } className={ classes.dialog_item }>
                 <div className={ dialog.dialogId === currentDialogId ? classes.active_item : classes.item }>
-                    <img src={ interlocutor.avatar } alt="avatar" />
+                    <img src={ interlocutor.avatar ? interlocutor.avatar : defaultAvatar } alt="avatar" />
                     <div className={ classes.dialog_description }>
                         <div className={ classes.dialog_description_user_name }>
                             { interlocutor.name }

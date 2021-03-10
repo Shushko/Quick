@@ -76,7 +76,7 @@ export const setUser = (userId, userPhoneNumber) => {
             id: userId,
             name: '',
             phoneNumber: userPhoneNumber,
-            avatar: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png'
+            avatar: 0
         })
 };
 

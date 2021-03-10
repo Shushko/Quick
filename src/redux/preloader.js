@@ -2,7 +2,7 @@ const TOGGLE_PRELOADER = 'TOGGLE_PRELOADER';
 const TOGGLE_PHOTO_EDITOR_PRELOADER = 'TOGGLE_PHOTO_EDITOR_PRELOADER';
 
 const init = {
-    preloaderIsVisible: true,
+    preloaderIsVisible: false,
     photoEditorPreloaderIsVisible: false
 };
 

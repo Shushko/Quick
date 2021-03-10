@@ -12,19 +12,26 @@ const ChatSection = (props) => {
 
     const currentDialogId = props.match.params.dialogId;
     const getCurrentChat = () => props.dialogsData.dialogs.find(d => d.dialogId === currentDialogId);
+    const getInterlocutor = (currentChat) => currentChat.members.find(member => member.id !== props.currentUser.id);
 
     const [currentChat, setCurrentChat] = useState(getCurrentChat());
+    const [interlocutor, setInterlocutor] = useState(null);
+
     useEffect(() => {
-        setCurrentChat(getCurrentChat())
+        if (currentDialogId) {
+            const currentChat = getCurrentChat();
+            setCurrentChat(currentChat);
+            setInterlocutor(getInterlocutor(currentChat))
+        }
     }, [props.dialogsData, currentDialogId]);
 
 
     return (
         <div className={ classes.chat_container }>
-            { props.match.params.dialogId && currentChat ?
+            { props.match.params.dialogId && currentChat && interlocutor ?
                 <>
-                    <ChatWindow currentChat={ currentChat } />
-                    <SendMessagePanel currentDialogId={ props.match.params.dialogId } { ...props } />
+                    <ChatWindow currentChat={ currentChat } interlocutor={ interlocutor } />
+                    <SendMessagePanel currentDialogId={ props.match.params.dialogId } interlocutor={ interlocutor } { ...props } />
                 </>
                 :
                 <div className={ classes.start_text_wrap }>

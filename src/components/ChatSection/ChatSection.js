@@ -9,7 +9,6 @@ import { compose } from "redux";
 import { addNewMessage, toggleUserIsTyping } from "../../redux/dialogs/dialogsActions";
 
 const ChatSection = (props) => {
-
     const currentDialogId = props.match.params.dialogId;
     const getCurrentChat = () => props.dialogsData.dialogs.find(d => d.dialogId === currentDialogId);
     const getInterlocutor = (currentChat) => currentChat.members.find(member => member.id !== props.currentUser.id);
@@ -21,7 +20,7 @@ const ChatSection = (props) => {
         if (currentDialogId) {
             const currentChat = getCurrentChat();
             setCurrentChat(currentChat);
-            setInterlocutor(getInterlocutor(currentChat))
+            setInterlocutor(getInterlocutor(currentChat));
         }
     }, [props.dialogsData, currentDialogId]);
 
@@ -44,7 +43,7 @@ const ChatSection = (props) => {
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     currentUser: state.userProfile.currentUser,
-    dialogsData: state.dialogsReducer,
+    dialogsData: state.dialogsReducer
 });
 
 const mapDispatchToProps = (dispatch) => ({

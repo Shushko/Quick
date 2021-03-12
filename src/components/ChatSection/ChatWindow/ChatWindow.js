@@ -6,62 +6,67 @@ import classes from './ChatWindow.module.sass';
 import { connect } from "react-redux";
 import moment from "moment";
 import * as PropTypes from 'prop-types';
-import arrowDown from '../../../assets/arrow.png';
-import { togglePreloader } from "../../../redux/preloader";
+import arrowToDown from '../../../assets/arrow.png';
 import { changeMessageStatus, uploadChatMessages } from "../../../redux/dialogs/dialogsActions";
-import Preloader from "../../../common/Preloader/Preloader";
 import MessageItem from "./MessageItem/MessageItem";
 import MessageItemWithAvatar from "./MessageItemWithAvatar/MessageItemWithAvatar";
+import Preloader from "../../../common/Preloader/Preloader";
+import { toggleChatPreloader } from "../../../redux/preloader";
 
-const ChatWindow = ({ currentChat, currentUser, interlocutor, preloaderIsVisible, togglePreloader, isMobileVersion, ...props }) => {
+const ChatWindow = ({ currentChat, currentUser, interlocutor, isMobileVersion, ...props }) => {
     const chatWindowRef = useRef();
     const chatWrapperRef = useRef();
     const chatStart = useRef();
     const chatEnd = useRef();
-    const [lastReadMessageRef, setLastReadMessageRef] = useState(null);
-    const [lastMessageIsVisible, setLastMessageIsVisible] = useState(false);
-    const lastMessageIsVisibleRef = useRef(false);
+    const arrowDown = useRef();
+    const [lastReadMessageElem, setLastReadMessageElem] = useState(null);
+    const lastMessageIsVisible = useRef(false);
     const observedDates = useRef([]);
+    const prevChat = useRef(null);
 
     const scrollToEnd = (target) => target && target.scrollIntoView({ block: 'end' });
     const smoothScrollDown = () => chatEnd.current.scrollIntoView({ block: 'end', behavior: 'smooth' });
 
     const setChatWindowHeight = () => {
-        const HEIGHT_GAP = isMobileVersion ? 104 : 180;
+        const HEIGHT_GAP = isMobileVersion ? 104 : 202;
         if (chatWindowRef.current) { chatWindowRef.current.style.height = `${ window.innerHeight - HEIGHT_GAP }px`; }
     };
     window.addEventListener('resize', () => {
-        lastMessageIsVisibleRef.current && scrollToEnd(chatEnd.current);
+        lastMessageIsVisible.current && scrollToEnd(chatEnd.current);
         setChatWindowHeight();
     });
     isMobileVersion && setChatWindowHeight();
 
     useEffect(() => {
-        observedDates.current = [];
         !currentChat.chatIsOpened && currentChat.messages.length && props.uploadChatMessages(currentChat.dialogId, currentChat.messages[0].time);
-        // lastMessageIsVisible && scrollToEnd(chatEnd)
+        if (prevChat.current && prevChat.current.dialogId !== currentChat.dialogId) {
+            observedDates.current = [];
+        }
+        prevChat.current = currentChat
     }, [currentChat]);
 
     useEffect(() => {
-        const UNREAD_MESSAGES_LIMIT = 0;
-        // !currentChat.messages.length && preloaderIsVisible && togglePreloader(false);
-        if (lastReadMessageRef) {
-            currentChat.unreadMessages > UNREAD_MESSAGES_LIMIT ? scrollToEnd(lastReadMessageRef) : scrollToEnd(chatEnd.current);
+        !currentChat.messages.length && props.toggleChatPreloader(false);
+        if (lastReadMessageElem) {
+            const lastMessage = currentChat.messages[currentChat.messages.length - 1];
+            props.chatPreloaderIsVisible ? scrollToEnd(lastReadMessageElem) :
+                lastMessageIsVisible.current ? scrollToEnd(chatEnd.current) :
+                    lastMessage.userId === currentUser.id && scrollToEnd(chatEnd.current);
 
+            props.chatPreloaderIsVisible && props.toggleChatPreloader(false);
         }
-    }, [lastReadMessageRef]);
+    }, [lastReadMessageElem]);
 
     const observeMessage = (entry, message, lastReadMessage, lastMessage) => {
-        if (lastReadMessage && message.id === lastReadMessage.id) {
-            lastReadMessageRef !== entry.target && setLastReadMessageRef(entry.target)
+        if (lastReadMessage && message.id === lastReadMessage.id && lastReadMessageElem !== entry.target) {
+            setLastReadMessageElem(entry.target);
         }
         if (message.id === lastMessage.id) {
-            lastMessageIsVisibleRef.current = entry.isIntersecting;
-            setLastMessageIsVisible(entry.isIntersecting);
+            arrowDown.current.className = entry.isIntersecting ? `${ classes.arrowDown_hide }` : `${ classes.arrowDown_wrap }`;
+            lastMessageIsVisible.current = entry.isIntersecting;
         }
         if (entry.isIntersecting && !message.isRead && message.userId !== currentUser.id) {
-            console.log(message);
-            props.changeMessageStatus(currentChat.dialogId, message, true, true)
+            !props.chatPreloaderIsVisible && props.changeMessageStatus(currentChat.dialogId, message, true, true)
         }
         if (entry.isIntersecting && entry.intersectionRatio < 1 && currentChat.messages[0].id === message.id) {
             props.uploadChatMessages(currentChat.dialogId, message.time)
@@ -70,11 +75,9 @@ const ChatWindow = ({ currentChat, currentUser, interlocutor, preloaderIsVisible
 
     const observeDate = (entry, message) => {
         const getDateKey = time => moment(time).format('DMY');
-        if (entry.isIntersecting) {
-            observedDates.current.push({ dateRef: entry.target, date: message.time });
-        } else {
+        entry.isIntersecting ?
+            observedDates.current.push({ dateRef: entry.target, date: message.time }) :
             observedDates.current = observedDates.current.filter(item => getDateKey(item.date) !== getDateKey(message.time));
-        }
     };
 
     let timer = null;
@@ -112,11 +115,9 @@ const ChatWindow = ({ currentChat, currentUser, interlocutor, preloaderIsVisible
     };
 
     const getUserChat = () => {
-        preloaderIsVisible && togglePreloader(false);
         const chatMessages = currentChat.messages;
         const lastReadMessage = getLastReadMessage();
         const lastMessage = chatMessages[chatMessages.length - 1];
-        !lastReadMessage && lastReadMessageRef !== chatStart.current && setLastReadMessageRef(chatStart.current);
 
         let resultChat = [];
         let messagesBlockByDate = [];
@@ -138,7 +139,7 @@ const ChatWindow = ({ currentChat, currentUser, interlocutor, preloaderIsVisible
 
     return (
         <div className={ classes.chat_window } ref={ chatWindowRef } onScroll={ handleOnScroll }>
-            { preloaderIsVisible && <Preloader type={ 'chat_window' }/> }
+            { props.chatPreloaderIsVisible && <Preloader type={ 'chat_window' }/> }
             <div className={ classes.chat_wrapper } ref={ chatWrapperRef } >
                 <div ref={ chatStart }/>
                 { getUserChat() }
@@ -152,12 +153,13 @@ const ChatWindow = ({ currentChat, currentUser, interlocutor, preloaderIsVisible
                 </span>
             </div> }
 
-            { !lastMessageIsVisible && !!currentChat.messages.length &&
-            <div className={ classes.arrowDown_wrap }>
+            { currentChat.messages.length ?
+            <div className={ classes.arrowDown_wrap } ref={ arrowDown }>
                 { !!currentChat.unreadMessages &&
                 <span className={ classes.sum_unread_messages }>{ currentChat.unreadMessages }</span> }
-                <img src={ arrowDown } className={ classes.arrow_down } onClick={ smoothScrollDown } alt="arrow down"/>
-            </div> }
+                <img src={ arrowToDown } className={ classes.arrow_down } onClick={ smoothScrollDown } alt="arrow down"/>
+            </div> : <div/> }
+
         </div>
     )
 };
@@ -165,14 +167,14 @@ const ChatWindow = ({ currentChat, currentUser, interlocutor, preloaderIsVisible
 const mapStateToProps = (state) => ({
     isMobileVersion: state.appState.isMobileVersion,
     currentUser: state.userProfile.currentUser,
-    preloaderIsVisible: state.preloader.preloaderIsVisible,
+    chatPreloaderIsVisible: state.preloader.chatPreloaderIsVisible,
     communicationProcess: state.dialogsReducer.communicationProcess
 });
 
 const mapDispatchToProps = (dispatch) => ({
     changeMessageStatus: (dialogId, message, delivered, read) => dispatch(changeMessageStatus(dialogId, message, delivered, read)),
     uploadChatMessages: (dialogId, lastMessageTime) => dispatch(uploadChatMessages(dialogId, lastMessageTime)),
-    togglePreloader: value => dispatch(togglePreloader(value))
+    toggleChatPreloader: value => dispatch(toggleChatPreloader(value))
 });
 
 ChatWindow.propTypes = {
@@ -181,10 +183,10 @@ ChatWindow.propTypes = {
     currentUser: PropTypes.object,
     interlocutor: PropTypes.object,
     communicationProcess: PropTypes.object,
-    preloaderIsVisible: PropTypes.bool,
+    chatPreloaderIsVisible: PropTypes.bool,
     changeMessageStatus: PropTypes.func,
     uploadChatMessages: PropTypes.func,
-    togglePreloader: PropTypes.func
+    toggleChatPreloader: PropTypes.func
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(ChatWindow)

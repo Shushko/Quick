@@ -1,25 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import classes from "./SendMessagePanel.module.sass";
 import InputForm from "../../../common/InputForm/InputForm";
 import * as PropTypes from 'prop-types';
-import defaultAvatar from '../../../assets/defaultAvatar/ava.jpg'
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import defaultAvatar from "../../../assets/defaultAvatar/defaultAvatar.jpg"
 
-const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialogsData, addNewMessage, toggleUserIsTyping }) => {
-    const [dialog, setDialog] = useState(null);
-    const [interlocutor, setInterlocutor] = useState(null);
-
-    useEffect(() => {
-        if (!dialog || dialog.dialogId !== currentDialogId) {
-            const dialog = dialogsData.dialogs.find(d => d.dialogId === currentDialogId);
-            const interlocutor = dialog && findInterlocutor(dialog);
-            setDialog(dialog);
-            setInterlocutor(interlocutor);
-        }
-    } );
-
-    const findInterlocutor = (dialog) => dialog.members.find(m => m.id !== currentUser.id);
+const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, interlocutor, dialogsData, addNewMessage, toggleUserIsTyping }) => {
 
     const onSubmit = (formData) => {
         const isFirstMessage = !dialogsData.dialogs.find(d => d.dialogId === currentDialogId).messages.length;
@@ -57,7 +44,8 @@ const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialo
                 />
 
                 { !isMobileVersion &&
-                <img src={ interlocutor ? interlocutor.avatar : defaultAvatar } className={ classes.send_message_panel_avatar } alt="avatar" /> }
+                <img src={ interlocutor && interlocutor.avatar ? interlocutor.avatar : defaultAvatar }
+                     className={ classes.send_message_panel_avatar } alt="avatar" /> }
             </div>
         </div>
     )
@@ -66,9 +54,11 @@ const SendMessagePanel = ({ isMobileVersion, currentDialogId, currentUser, dialo
 SendMessagePanel.propTypes = {
     isMobileVersion: PropTypes.bool,
     currentUser: PropTypes.object,
+    interlocutor: PropTypes.object,
     dialogsData: PropTypes.object,
     currentDialogId: PropTypes.string,
-    addNewMessage: PropTypes.func
+    addNewMessage: PropTypes.func,
+    toggleUserIsTyping: PropTypes.func
 };
 
 export default SendMessagePanel

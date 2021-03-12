@@ -3,7 +3,7 @@ import classes from './HeaderMenu.module.sass';
 import InputForm from "../../../common/InputForm/InputForm";
 import { limitLength } from "../../../common/Validators";
 import MenuList from "./MenuList/MenuList";
-import defaultAvatar from "../../../assets/defaultAvatar/ava.jpg";
+import defaultAvatar from "../../../assets/defaultAvatar/defaultAvatar.jpg";
 import camera from "../../../assets/camera.png";
 import button from '../../../assets/menu_button.png';
 import edit from '../../../assets/edit.png';

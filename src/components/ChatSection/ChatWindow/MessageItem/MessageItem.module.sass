@@ -1,0 +1,35 @@
+.message_item
+  display: flex
+  justify-content: space-between
+  padding-bottom: 15px
+  margin-left: 57px
+  .message_content
+    width: 80%
+    word-break: break-word
+  .message_info
+    width: 80px
+    display: flex
+    justify-content: space-between
+    .not_delivered
+      display: inline-block
+      margin-right: 5px
+      border-radius: 50%
+      height: 8px
+      width: 8px
+      background: #6490b1
+    .unread
+      display: inline-block
+      margin-right: 5px
+      border-radius: 50%
+      height: 8px
+      width: 8px
+      background: #64c270
+    &_time
+      float: right
+      color: #adadad
+      font-size: 0.8em
+
+@media (max-width: 700px)
+  .message_item
+    .message_content
+      width: 76%

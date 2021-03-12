@@ -23,7 +23,7 @@ const SendMessageInput = ({ input, onClickSubmit, isMobileVersion, changeStatusI
                 changeStatusIsTyping(false);
                 isTyping.current = false
             }
-        }, 3000);
+        }, 2000);
     };
 
     const handleClick = (event) => {

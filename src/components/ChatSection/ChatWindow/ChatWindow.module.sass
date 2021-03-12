@@ -14,10 +14,26 @@
     display: flex
     flex-direction: column
     width: 100%
-    padding: 0 5%
+    padding: 0 8%
     box-sizing: border-box
     .chat_end
       height: 20px
+    .date_wrap
+      position: sticky
+      top: 10px
+      opacity: 1
+      text-align: center
+      margin: 5px
+      transition: all 0.5s
+      .date
+        padding: 5px 15px 3px 15px
+        border-radius: 10px
+        background-color: rgba(0, 0, 0, 0.2)
+        font-size: 10px
+        color: #fff
+    .hide_date
+      opacity: 0
+      transition: all 0.5s
   .user_is_typing_wrap
     position: absolute
     bottom: 28px
@@ -49,6 +65,8 @@
       font-size: 0.8em
       position: fixed
       z-index: 2
+  .arrowDown_hide
+    display: none
 
 @media (max-width: 700px)
   .chat_window

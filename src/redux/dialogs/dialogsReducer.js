@@ -1,6 +1,7 @@
 const init = {
     dialogs: [],
-    communicationProcess: null
+    communicationProcess: null,
+    lastVisitCurrentInterlocutor: null
 };
 
 const getCopyDialog = (state, dialogId) => ({ ...state.dialogs.find(dialog => dialog.dialogId === dialogId) });
@@ -52,6 +53,12 @@ const dialogsReducer = (state = init, action) => {
             return {
                 ...state,
                 communicationProcess: action.typingUser
+            };
+
+        case 'SET_LAST_VISIT_CURRENT_INTERLOCUTOR':
+            return {
+                ...state,
+                lastVisitCurrentInterlocutor: action.lastVisit
             };
 
         case 'UPDATE_DIALOG':

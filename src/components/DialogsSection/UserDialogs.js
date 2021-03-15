@@ -6,6 +6,7 @@ import { compose } from "redux";
 import TheDialog from "./TheDialog/TheDialog";
 import { connect } from "react-redux";
 import { toggleChatPreloader } from "../../redux/preloader";
+import { changeLastVisitTime } from "../../redux/dialogs/dialogsActions";
 
 const UserDialogs = ({ dialogsData, currentUser, toggleChatPreloader, ...props }) => {
 
@@ -25,6 +26,7 @@ const UserDialogs = ({ dialogsData, currentUser, toggleChatPreloader, ...props }
     const changeDialog = (dialog) => {
         if (currentDialogId !== dialog.dialogId) {
             dialog.messages.length && toggleChatPreloader(true);
+            props.changeLastVisitTime(currentUser.id)
         }
     };
 
@@ -66,13 +68,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleChatPreloader: (value) => dispatch(toggleChatPreloader(value))
+    toggleChatPreloader: (value) => dispatch(toggleChatPreloader(value)),
+    changeLastVisitTime: (userId) => dispatch(changeLastVisitTime(userId))
 });
 
 UserDialogs.propTypes = {
     dialogsData: PropTypes.object,
     onChangeCurrentDialog: PropTypes.func,
     toggleChatPreloader: PropTypes.func,
+    changeLastVisitTime: PropTypes.func,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(UserDialogs)

@@ -66,8 +66,11 @@ export const setUserAvatar = (userAvatarUrl) => ({
     userAvatarUrl
 });
 
-export const setAuthorizedUser = (isNewUser, userId, userPhoneNumber) => (dispatch) => {
-    isNewUser && setUser(userId, userPhoneNumber);
+export const setAuthorizedUser = (isNewUser, userId, userPhoneNumber) => async (dispatch) => {
+    if (isNewUser) {
+        const result = await setUser(userId, userPhoneNumber);
+        if (result.statusText !== 'OK') { return }
+    }
     localStorage.setItem('userId', userId);
     localStorage.setItem('userIsAuthorized', 'true');
     dispatch(setUserIsAuthorized(true));

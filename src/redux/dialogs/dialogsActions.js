@@ -6,7 +6,13 @@ import {
     createDialog,
     updateMessageStatus,
     addMessage,
-    getSomeMessages, getDialogMembersId, getUnwatchedMessages, setUserIsTyping, getRefDialogCommunicationProcess, getDateOfDialogCreation
+    getSomeMessages,
+    getDialogMembersId,
+    getUnwatchedMessages,
+    setUserIsTyping,
+    getRefDialogCommunicationProcess,
+    getDateOfDialogCreation,
+    setUserLastVisit, getRefUserLastVisit
 } from "../../api/api";
 import { setCurrentUser } from "../userProfile";
 import { toggleAppIsInit } from "../appState";
@@ -17,6 +23,7 @@ const ADD_NEW_MESSAGE_TO_DIALOG = 'ADD_NEW_MESSAGE_TO_DIALOG';
 const CHANGE_TOTAL_COUNT_UNREAD_MESSAGES = 'CHANGE_TOTAL_COUNT_UNREAD_MESSAGES';
 const UPDATE_DIALOG = 'UPDATE_DIALOG';
 const SET_COMMUNICATION_PROCESS = 'SET_COMMUNICATION_PROCESS';
+const SET_LAST_VISIT_CURRENT_INTERLOCUTOR = 'SET_LAST_VISIT_CURRENT_INTERLOCUTOR';
 
 export const clearDialogs = () => ({
     type: CLEAR_DIALOGS
@@ -50,13 +57,33 @@ const setCommunicationProcess = (typingUser) => ({
     typingUser
 });
 
+const setInterlocutorLastVisitTime = (lastVisit) => ({
+    type: SET_LAST_VISIT_CURRENT_INTERLOCUTOR,
+    lastVisit
+});
+
 
 
 const getUserDialog = (getState, dialogId) => getState().dialogsReducer.dialogs.find(i => i.dialogId === dialogId);
 
-export const changeMessageStatus = (dialogId, message, isDelivered, isRead) => () => updateMessageStatus(dialogId, message.time, isDelivered, isRead);
+export const changeLastVisitTime = (userId) => () => setUserLastVisit(userId);
 
-export const toggleUserIsTyping = (dialogId, isTyping, userId, userName) => () => setUserIsTyping(dialogId, isTyping, userId, userName);
+export const setLastVisitListener = (interlocutorId) => async (dispatch) => {
+    getRefUserLastVisit(interlocutorId).on('value', (snapshot) => {
+        dispatch(setInterlocutorLastVisitTime(snapshot.val()));
+    })
+};
+
+export const changeMessageStatus = (dialogId, message, isDelivered, isRead) => (dispatch, getState) => {
+    updateMessageStatus(dialogId, message.time, isDelivered, isRead);
+    const userId = getState().userProfile.currentUser.id;
+    changeLastVisitTime(userId)()
+};
+
+export const toggleUserIsTyping = (dialogId, isTyping, userId, userName) => () => {
+    setUserIsTyping(dialogId, isTyping, userId, userName);
+    changeLastVisitTime(userId)()
+};
 
 export const addNewMessage = (interlocutorId, currentDialogId, isFirstMessage, message) => async () => {
     if (isFirstMessage) {
@@ -201,5 +228,6 @@ export const setUserDialogs = (routeHistory) => async (dispatch, getState) => {
         }
     }
     dispatch(toggleAppIsInit(true));
+    changeLastVisitTime(currentUserId)();
 };
 

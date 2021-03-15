@@ -33,9 +33,12 @@ const ChatSection = (props) => {
                     <SendMessagePanel currentDialogId={ props.match.params.dialogId } interlocutor={ interlocutor } { ...props } />
                 </>
                 :
-                <div className={ classes.start_text_wrap }>
-                    <span className={ classes.start_text_style }>Select a dialog and start communication</span>
-                </div> }
+                <>
+                    { !props.isMobileVersion &&
+                    <div className={ classes.start_text_wrap }>
+                        <span className={ classes.start_text_style }>Select a dialog and start communication</span>
+                    </div> }
+                </> }
         </div>
     )
 };
@@ -57,7 +60,8 @@ ChatSection.propTypes = {
     isMobileVersion: PropTypes.bool,
     currentUser: PropTypes.object,
     dialogsData: PropTypes.object,
-    addNewMessage: PropTypes.func
+    addNewMessage: PropTypes.func,
+    toggleUserIsTyping: PropTypes.func
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(ChatSection)

@@ -70,14 +70,13 @@ export const setUserIsTyping = (dialogId, isTyping, userId, userName) => {
     })
 };
 
-export const setUser = (userId, userPhoneNumber) => {
-    firebase.database().ref(`/users/${ userId }`)
-        .set({
-            id: userId,
-            name: '',
-            phoneNumber: userPhoneNumber,
-            avatar: 0
-        })
+export const setUser = async (userId, userPhoneNumber) => {
+    return await axios.put(getUrl('users', userId), {
+        id: userId,
+        name: '',
+        phoneNumber: userPhoneNumber,
+        avatar: 0
+    });
 };
 
 export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
@@ -89,6 +88,8 @@ export const searchByPhoneNumber = (value) => firebase.database().ref(`/users`)
 export const getRefCurrentDialogs = (userId) => firebase.database().ref(`/users/${ userId }/currentDialogs`);
 
 export const getRefDialogContent = (key) => firebase.database().ref(`/dialogs/${ key }/content`);
+
+export const getRefUserLastVisit = (userId) => firebase.database().ref(`/users/${ userId }/lastVisit`);
 
 export const getRefDialogCommunicationProcess = (key) => firebase.database().ref(`/dialogs/${ key }/communicationProcess`);
 
@@ -120,5 +121,6 @@ export const getDateOfDialogCreation = async (dialogId) => {
     return result.data
 };
 
+export const setUserLastVisit = (userId) => axios.patch(getUrl(`users/${ userId }`), { lastVisit: moment().valueOf() });
 
 

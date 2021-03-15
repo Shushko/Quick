@@ -8,6 +8,7 @@ import HeaderMenuContainer from "./HeaderMenu/HeaderMenuContainer";
 import TheLogo from "../../common/TheLogo/TheLogo";
 import { hideAllModalWindows, toggleMenuVisibility } from "../../redux/displayModalElements";
 import arrow_back from '../../assets/arrow_back.png'
+import InterlocutorInfo from "./InterlocutorInfo/InterlocutorInfo";
 
 const TheHeader = ({ modalWindowsState, hideAllModalWindows, toggleMenuVisibility, ...props }) => {
 
@@ -27,8 +28,20 @@ const TheHeader = ({ modalWindowsState, hideAllModalWindows, toggleMenuVisibilit
 
     return (
         <header className={ classes.header }>
-            <HeaderMenuContainer />
-            { !props.isMobileVersion && <div className={ classes.header_logo }><TheLogo /></div> }
+
+            { !props.isMobileVersion &&
+            <>
+
+                <div className={ classes.left_section }>
+                    <HeaderMenuContainer/>
+                    <div className={ classes.logo }><TheLogo/></div>
+                </div>
+
+                <div className={ classes.right_section }>
+                    { props.match.params.dialogId && <InterlocutorInfo/> }
+                </div>
+
+            </> }
 
             { props.isMobileVersion &&
             <>
@@ -37,14 +50,15 @@ const TheHeader = ({ modalWindowsState, hideAllModalWindows, toggleMenuVisibilit
                     <img src={ arrow_back } alt="Back"/>
                 </div> }
 
-                <div className={ classes.header_title }>
+                <div className={ classes.title }>
                     { modalWindowsState.activeTitle ?
                         <div>{ modalWindowsState.activeTitle }</div> :
                         <div>
                             { dialogsListIsVisible && <div className={ classes.before_logo }/> }
-                            <TheLogo />
+                            { props.match.params.dialogId ? <InterlocutorInfo /> : <TheLogo /> }
                         </div> }
                 </div>
+                <HeaderMenuContainer/>
             </> }
         </header>
     )

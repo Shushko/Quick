@@ -11,15 +11,15 @@ const MessageItemWithAvatar = ({ message, interlocutor, currentUser }) => {
         <div className={ classes.message_item }>
             <img src={ avatar } className={ classes.user_photo } alt="avatar"/>
             <span className={ classes.user_name }>{ name }</span>
-            <MessageItem message={ message } currentUserId={ currentUser.id }/>
+            <MessageItem message={ message } currentUser={ currentUser }/>
         </div>
     )
 };
 
 MessageItemWithAvatar.propTypes = {
-    messageItem: PropTypes.object,
+    message: PropTypes.object,
     interlocutor: PropTypes.object,
-    currentUserId: PropTypes.string
+    currentUser: PropTypes.object
 };
 
 export default MessageItemWithAvatar
